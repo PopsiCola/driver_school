@@ -3,23 +3,23 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>后台登录-X-admin2.1</title>
+	<title>驾校预约管理系统登录</title>
 	<meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="stylesheet" th:href="@{/css/font.css}">
 	<link rel="stylesheet" th:href="@{/css/xadmin.css}">
-    <script type="text/javascript" th:src="@{/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery/jquery.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
-    <script type="text/javascript" th:src="@[/js/cookie.js"></script>
+    <script type="text/javascript" th:src="@{/js/cookie.js}"></script>
 
 </head>
 <body class="login-bg">
     
     <div class="login layui-anim layui-anim-up">
-        <div class="message">x-admin2.0-管理登录</div>
+        <div class="message">驾校预约管理系统登录</div>
         <div id="darkbannerwrap"></div>
         
         <form method="post" class="layui-form" >
@@ -31,7 +31,7 @@
             <hr class="hr20" >
         </form>
     </div>
-
+    <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
     <script>
         $(function  () {
             layui.use('form', function(){
@@ -41,10 +41,30 @@
               //   });
               //监听提交
               form.on('submit(login)', function(data){
-                // alert(888)
-                layer.msg(JSON.stringify(data.field),function(){
-                    location.href='index.html'
-                });
+
+                  alert(JSON.stringify(data.field));
+                // layer.msg(JSON.stringify(data.field),function(){
+                //     // location.href='index.html'
+                //     location.href='index.html'
+                // })
+                  alert(ctx);
+                  $.ajax({
+                      type: "GET",
+                      url: ctx+"login",
+                      data: JSON.stringify(data.field),
+                      dataType: "json",
+                      success: function(result){
+                          if(200==result.code){
+
+                              window.location.href=ctx+"index";
+
+                          }else{
+                              alert("账户或密码不正确！");
+                              $('input[name="username"]').val("");
+                              $('input[name="password"]').val("");
+                          }
+                      }
+                  });
                 return false;
               });
             });

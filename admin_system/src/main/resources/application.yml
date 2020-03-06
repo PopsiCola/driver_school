@@ -5,14 +5,14 @@ spring:
       name: admin_system
   datasource:
     druid:
-      url: jdbc:mysql://www.liulebin.cn/admin_system?characterEncoding=utf-8
+      url: jdbc:mysql://www.liulebin.cn/driver_school?characterEncoding=utf-8
       username: root
       password: nevergiveup?
       initial-size: 1
       min-idle: 1
       max-active: 20
       test-on-borrow: true
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
 #热部署是否启用
   devtools:
     restart:
