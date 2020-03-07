@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.llb.mapper.StudentMapper">
-
+    <!--通过姓名查找学员-->
+    <select id="findStudentById" resultType="com.llb.entity.Student" parameterType="String">
+        SELECT *
+        FROM student
+        WHERE stu_id = #{account}
+    </select>
 </mapper>

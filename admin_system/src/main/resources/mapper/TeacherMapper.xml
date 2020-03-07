@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.llb.mapper.TeacherMapper">
-
+    <!--通过姓名查找教练-->
+    <select id="findTeacherById" resultType="com.llb.entity.Teacher" parameterType="String">
+        SELECT *
+        FROM teacher
+        WHERE tea_id = #{teaId}
+    </select>
 </mapper>

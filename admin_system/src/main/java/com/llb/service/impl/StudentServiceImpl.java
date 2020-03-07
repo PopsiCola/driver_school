@@ -4,6 +4,7 @@ import com.llb.entity.Student;
 import com.llb.mapper.StudentMapper;
 import com.llb.service.IStudentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +18,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
 
+    @Autowired
+    private StudentMapper studentMapper;
+
+
+    @Override
+    public Student findStudentById(String stuId) {
+        return studentMapper.findStudentById(stuId);
+    }
 }

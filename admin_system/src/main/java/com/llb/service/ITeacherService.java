@@ -2,6 +2,7 @@ package com.llb.service;
 
 import com.llb.entity.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.llb.mapper.TeacherMapper;
 
 /**
  * <p>
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITeacherService extends IService<Teacher> {
 
+    /**
+     * 根据教练名查询教练
+     * @param teaId
+     * @return
+     */
+    Teacher findTeacherById(String teaId);
 }

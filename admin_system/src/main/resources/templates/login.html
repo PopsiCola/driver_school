@@ -23,40 +23,57 @@
         <div id="darkbannerwrap"></div>
         
         <form method="post" class="layui-form" >
-            <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+            <input name="account" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
+            <hr class="hr15">
+            <div align="center">
+                <input type="radio"  name="role" value="1" title="学员" checked>
+                <input type="radio" name="role" value="3" title="教练">
+                <input type="radio" name="role" value="2" title="管理员">
+            </div>
             <hr class="hr15">
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
             <hr class="hr20" >
         </form>
     </div>
-    <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
     <script>
         $(function  () {
             layui.use('form', function(){
               var form = layui.form;
+
               // layer.msg('玩命卖萌中', function(){
               //   //关闭后的操作
               //   });
               //监听提交
               form.on('submit(login)', function(data){
-
-                  alert(JSON.stringify(data.field));
-                // layer.msg(JSON.stringify(data.field),function(){
-                //     // location.href='index.html'
-                //     location.href='index.html'
-                // })
-                  alert(ctx);
+                    //获取用户名、密码、还有类型
+                  // var account=$('input[name="account"]').val();
+                  // var password=$('input[name="password"]').val();
+                  // var role=$('input[name="role"]').val();
+                  // var data = {
+                  //     account:account,
+                  //     password:password,
+                  //     type:role
+                  // };
+                  // alert(JSON.stringify(data.field));
                   $.ajax({
-                      type: "GET",
-                      url: ctx+"login",
+                      type: "POST",
+                      url: "login",
                       data: JSON.stringify(data.field),
+                      // data: data,
                       dataType: "json",
+                      contentType:"application/json",
                       success: function(result){
                           if(200==result.code){
+                              if(result.role = 1) {
+                                  window.location.href="/admin/index.html"
+                              } else if(role = 2) {
+                                  window.location.href="/admin/index.html"
+                              } else {
+                                  window.location.href="/admin/index.html"
+                              }
 
-                              window.location.href=ctx+"index";
 
                           }else{
                               alert("账户或密码不正确！");
@@ -65,6 +82,7 @@
                           }
                       }
                   });
+
                 return false;
               });
             });

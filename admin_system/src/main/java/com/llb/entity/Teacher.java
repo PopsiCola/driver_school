@@ -39,6 +39,12 @@ public class Teacher implements Serializable {
     private String teaName;
 
     /**
+     * 教练密码
+     */
+    @TableField("tea_pwd")
+    private String teaPwd;
+
+    /**
      * 性别 1:男 0:女
      */
     @TableField("tea_sex")

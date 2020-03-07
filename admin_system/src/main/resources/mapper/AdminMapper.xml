@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.llb.mapper.AdminMapper">
 
+    <!--通过姓名查找管理员-->
+    <select id="findAdminById" resultType="com.llb.entity.Admin" parameterType="String">
+        SELECT *
+        FROM admin
+        WHERE admin_id = #{account}
+    </select>
 </mapper>

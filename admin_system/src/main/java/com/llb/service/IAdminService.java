@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IAdminService extends IService<Admin> {
 
+    /**
+     * 根据管理员名称查询管理员
+     * @param adminName
+     * @param password
+     * @return
+     */
+    Admin findAdminById(String adminName);
 }

@@ -39,6 +39,12 @@ public class Student implements Serializable {
     private String stuName;
 
     /**
+     * 学员密码
+     */
+    @TableField("stu_pwd")
+    private String stuPwd;
+
+    /**
      * 性别 1男 0女
      */
     @TableField("stu_sex")

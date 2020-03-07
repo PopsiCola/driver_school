@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IStudentService extends IService<Student> {
 
+    /**
+     * 根据学员名查询学员
+     * @param stuId
+     * @return
+     */
+    Student findStudentById(String stuId);
 }
