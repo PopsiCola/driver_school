@@ -66,12 +66,12 @@
                       contentType:"application/json",
                       success: function(result){
                           if(200==result.code){
-                              if(result.role = 1) {
-                                  window.location.href="/admin/index.html"
-                              } else if(role = 2) {
-                                  window.location.href="/admin/index.html"
+                              if(result.role == 1) {
+                                  window.location.href="/student/index"
+                              } else if(result.role == 2) {
+                                  window.location.href="/admin/index"
                               } else {
-                                  window.location.href="/admin/index.html"
+                                  window.location.href="/teacher/index"
                               }
 
 

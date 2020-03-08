@@ -30,6 +30,10 @@ public class LoginController {
     @Autowired
     private IAdminService adminService;
 
+    /**
+     * 显示登录页
+     * @return
+     */
     @RequestMapping("/index")
     public String toLogin() {
         return "login";
