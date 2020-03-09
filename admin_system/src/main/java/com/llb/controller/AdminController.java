@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 管理员 前端控制器
@@ -30,10 +32,21 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "/index")
-    public ModelAndView index() {
+    public ModelAndView index(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("admin/index");
         return modelAndView;
     }
+
+    /**
+     * 展示管理员信息
+     * @return
+     */
+    @RequestMapping(value = "/admin-info")
+    public ModelAndView showInfo(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("admin/admin-info");
+        return modelAndView;
+    }
+
 
 }
 

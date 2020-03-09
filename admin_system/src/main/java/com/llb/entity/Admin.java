@@ -39,6 +39,12 @@ public class Admin implements Serializable {
     private String adminPwd;
 
     /**
+     * 管理员邮箱
+     */
+    @TableField("admin_mail")
+    private String adminMail;
+
+    /**
      * 管理员创建时间
      */
     @TableField("admin_createdate")

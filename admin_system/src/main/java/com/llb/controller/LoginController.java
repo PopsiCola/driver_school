@@ -8,7 +8,9 @@ import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -69,6 +71,7 @@ public class LoginController {
             if(admin != null && admin.getAdminPwd().equals(password)) {
                 flag = true;
                 request.getSession().setAttribute("admin", admin);
+                System.out.println(admin);
             }
         } else {
             teacher = teacherService.findTeacherById(account);
@@ -93,5 +96,19 @@ public class LoginController {
     @RequestMapping("/welcome")
     public String welcome() {
         return "welcome";
+    }
+
+    @RequestMapping("/loginOut")
+    public String loginOut(String role, HttpServletRequest request) {
+        //判断是哪个角色，注销登录
+        if("1".equals(role)) {
+            request.getSession().removeAttribute("student");
+        } else if("2".equals(role)) {
+            request.getSession().removeAttribute("admin");
+        } else {
+            request.getSession().removeAttribute("teacher");
+        }
+        //获取session
+        return "login";
     }
 }

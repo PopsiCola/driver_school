@@ -10,6 +10,8 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <link rel="stylesheet" th:href="@{/css/font.css}">
 	<link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <script type="text/javascript" th:src="@{/js/jquery/jquery.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
@@ -34,9 +36,71 @@
             </div>
             <hr class="hr15">
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
-            <hr class="hr20" >
+            <hr class="hr15">
         </form>
+        <div class="layui-form-item" style="float: right">
+            <a href="#" data-toggle="modal" data-target="#myModal">忘记密码?</a>
+        </div>
+        <hr class="hr20" >
     </div>
+
+    <!-- 忘记密码 -->
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog " style=" width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        找回密码
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">账号:</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="account"
+                                   required lay-verify="required" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码:</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="resetpassword" name="forgetPhone"
+                                   required lay-verify="required" placeholder="密码"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">确认:</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="confirm" name="password"
+                                   required lay-verify="required" placeholder="确认密码"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button id="submitbutton" type="button" class="layui-btn layui-btn-primary"
+                            data-toggle="resetPasswordModal" data-dismiss="modal" data-target="#resetPasswordModal">
+                        保存
+                    </button>
+                    <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script th:src="@{/lib/layui/layui.js}"></script>
+    <script th:src="@{/js/jquery/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
     <script>
         $(function  () {
             layui.use('form', function(){
@@ -87,6 +151,11 @@
               });
             });
         })
+
+        function showModel() {
+
+            $('#myModal').model('show');
+        }
 
         
     </script>
