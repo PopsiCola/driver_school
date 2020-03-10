@@ -18,7 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * 登录、注销、修改密码
+ * 登录、注销、修改密码、注册
+ * role 类型:1.用户 2.管理员 3.教练
  * 三种角色登录有可以通过账号、邮箱登录，这两个属性必须唯一。
  * @Author llb
  * Date on 2020/3/4
@@ -111,7 +112,7 @@ public class LoginController {
         } else {
             request.getSession().removeAttribute("teacher");
         }
-        return "login";
+        return "redirect:/login/index";
     }
 
 
@@ -140,19 +141,22 @@ public class LoginController {
             return result;
         }
 
-        //判断是哪个角色，注销登录
+        String email = map.get("mail");
+        String password = map.get("password");
+        //判断是哪个角色，重置密码
         if("1".equals(role)) {
-            Student student = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
-//            根据账户名或邮箱查找账户，如果有则修改密码
 
-            request.getSession().removeAttribute("student");
+            //修改密码
+            result = studentService.editStuPwd(email, password);
         } else if("2".equals(role)) {
-            request.getSession().removeAttribute("admin");
+            //修改密码
+            result = adminService.editAdminPwd(email, password);
         } else {
-            request.getSession().removeAttribute("teacher");
+            //修改密码
+            result = studentService.editStuPwd(email, password);
         }
 
-        return null;
+        return result;
     }
 
     /**
@@ -167,11 +171,11 @@ public class LoginController {
                                         HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         String email = map.get("email");
-        String account = map.get("account");
+//        String account = map.get("account");
         //判断用户是否填写了账户名称，如果填写了，则显示账户名称，没有则用邮件账户作为用户账户称呼
-        if(account == null || "".equals(account)) {
-            account = email;
-        }
+//        if(account == null || "".equals(account)) {
+//            account = email;
+//        }
 //        String role = map.get("role");
         result = mailService.sendHtmlMail(email, "修改密码");
 

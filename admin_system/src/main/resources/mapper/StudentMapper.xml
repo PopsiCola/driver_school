@@ -7,4 +7,18 @@
         FROM student
         WHERE stu_id = #{account}
     </select>
+
+    <!--通过邮箱查找学员-->
+    <select id="findStuByEmail" resultType="Student" parameterType="String">
+        SELECT *
+        FROM student
+        WHERE stu_email = #{stuEmail}
+    </select>
+
+    <!--修改密码-->
+    <update id="updateStuPwd" parameterType="String">
+        UPDATE student
+        SET stu_pwd = #{stuPwd}
+        WHERE stu_email = #{stuEmail}
+    </update>
 </mapper>

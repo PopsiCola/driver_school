@@ -14,4 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface AdminMapper extends BaseMapper<Admin> {
 
     Admin findAdminById(String adminId);
+
+    Admin findAdminByEmail(String adminEmail);
+
+    void updateAdminPwd(String adminEmail, String adminPwd);
 }

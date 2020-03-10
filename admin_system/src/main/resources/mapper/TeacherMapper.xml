@@ -7,4 +7,18 @@
         FROM teacher
         WHERE tea_id = #{teaId}
     </select>
+
+    <!--通过邮箱查找教练-->
+    <select id="findTeacherByEmail" resultType="Teacher" parameterType="String">
+        SELECT *
+        FROM teacher
+        WHERE tea_email = #{teaEmail}
+    </select>
+
+    <!--修改密码-->
+    <update id="updateTeaPwd" parameterType="String">
+        UPDATE teacher
+        SET tea_pwd = #{teacherPwd}
+        WHERE tea_email = #{teaEmail}
+    </update>
 </mapper>

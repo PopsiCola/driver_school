@@ -14,4 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface TeacherMapper extends BaseMapper<Teacher> {
 
     Teacher findTeacherById(String teacherName);
+
+    Teacher findTeacherByEmail(String teaEmail);
+
+    void updateTeaPwd(String teaEmail, String teacherPwd);
 }

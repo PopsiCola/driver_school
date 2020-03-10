@@ -14,4 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface StudentMapper extends BaseMapper<Student> {
 
     Student findStudentById(String stuId);
+
+    Student findStuByEmail(String stuEmail);
+
+    void updateStuPwd(String stuEmail, String stuPwd);
 }

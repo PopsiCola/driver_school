@@ -62,7 +62,7 @@
                         <label class="layui-form-label">账号:</label>
                         <div class="layui-input-block">
                             <input type="text" id="account" name="account"
-                                   required lay-verify="required" class="layui-input">
+                                   required lay-verify="required" class="layui-input" placeholder="账号">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -73,14 +73,16 @@
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="input-group">
-                        <label class="layui-form-label">验证码:</label>
-                        <div class="layui-input-block">
-                            <input type="text" id="getcode" class="layui-input " style="width:140px;"/>
-                        </div>
+                    <div class="layui-form-item">
+                        <div class="input-group">
+                            <label class="layui-form-label">验证码:</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="getcode" class="layui-input " style="width:140px;" placeholder="验证码"/>
+                            </div>
                             <span class="form-group input-group-btn">
-                                 <button class="btn btn-default" id="getCheckCode" type="button">获取验证码</button>
+                             <button class="btn btn-default" id="getCheckCode" type="button">获取验证码</button>
                             </span>
+                        </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">密码:</label>

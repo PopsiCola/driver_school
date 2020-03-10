@@ -8,4 +8,18 @@
         FROM admin
         WHERE admin_id = #{account}
     </select>
+
+    <!--根据邮箱查询管理员-->
+    <select id="findAdminByEmail" parameterType="String" resultType="Admin">
+        SELECT *
+        FROM admin
+        WHERE admin_email = #{adminEmail}
+    </select>
+
+    <!--修改密码-->
+    <update id="updateAdminPwd" parameterType="String">
+        UPDATE admin
+        SET admin_pwd = #{adminPwd}
+        WHERE admin_email = #{adminEmail}
+    </update>
 </mapper>

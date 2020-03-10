@@ -33,6 +33,12 @@ public class Admin implements Serializable {
     private String adminId;
 
     /**
+     * 管理员账户名称
+     */
+    @TableField("admin_account")
+    private String adminAccount;
+
+    /**
      * 管理员密码
      */
     @TableField("admin_pwd")
