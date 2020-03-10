@@ -36,7 +36,19 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView("admin/index");
         return modelAndView;
     }
-
+    
+    @RequestMapping(value = "/admin-list")
+    public ModelAndView admin_list() {
+    	ModelAndView modelAndView = new ModelAndView("admin-list");
+    	return modelAndView;
+    }
+    
+    @RequestMapping(value = "/admin-edit")
+    public ModelAndView admin_edit() {
+    	ModelAndView modelAndView = new ModelAndView("admin-edit");
+    	return modelAndView;
+    }
+    
     /**
      * 展示管理员信息
      * @return
