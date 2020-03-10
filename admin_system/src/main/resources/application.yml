@@ -21,6 +21,17 @@ spring:
   mvc.static-path-pattern: /**
   resources.static-locations: classpath:/static/
 
+#邮箱
+  mail:
+    username: liulebinn@163.com
+    password: llb1998
+    host: smtp.qq.com
+    default-encoding: utf-8
+#邮件发件人
+mail:
+  fromMail:
+    addr: liulebinn@163.com
+
 #thymeleaf
   thymeleaf:
     cache: false
