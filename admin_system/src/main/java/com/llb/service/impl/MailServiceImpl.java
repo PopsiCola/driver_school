@@ -4,12 +4,16 @@ import com.llb.service.MailService;
 import com.llb.utils.VerifycodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +54,8 @@ public class MailServiceImpl implements MailService{
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
-        message.setSubject(subject);
-        message.setText(code+"");
+        message.setSubject("欢迎使用王者荣耀驾校服务-"+subject);
+        message.setText(template);
 
         try {
             //邮件发送
@@ -62,9 +66,50 @@ public class MailServiceImpl implements MailService{
         } catch (Exception e) {
             result.put("code", 201);
             result.put("msg", "邮件发送异常");
-
+            e.printStackTrace();
         }
 
         return  result;
+    }
+
+    /**
+     * 发送html邮件
+     * @param to
+     * @param subject
+     * @return
+     */
+    public Map<String, Object> sendHtmlMail(String to, String subject) {
+        Map<String, Object> result = new HashMap<>();
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        //生成随机验证码
+        VerifycodeUtil verifyCode = new VerifycodeUtil();
+        int code = verifyCode.randomCode();
+
+        //创建邮件正文
+        Context context = new Context();
+        context.setVariable("verifyCode", code);
+        context.setVariable("userMail", to);
+        //将模板内容解析成html
+        String template = templateEngine.process("emailTemplate", context);
+        try {
+            //true表示创建一个multipart message
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setFrom(from);
+            helper.setTo(to);
+            helper.setSubject("欢迎使用王者荣耀驾校服务-"+subject);
+            //true表示发送的是html邮件
+            helper.setText(template, true);
+
+            mailSender.send(mimeMessage);
+            result.put("code", 200);
+            result.put("verifyMailCode", code);
+            result.put("msg", "邮件发送成功，请注意查收");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "邮件发送异常");
+        }
+        return result;
     }
 }

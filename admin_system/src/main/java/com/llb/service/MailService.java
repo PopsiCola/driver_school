@@ -16,4 +16,11 @@ public interface MailService {
      */
     public Map<String, Object> sendMail(String to, String subject);
 
+    /**
+     * 发送HTML邮件验证码
+     * @param to
+     * @param subject
+     */
+    public Map<String, Object> sendHtmlMail(String to, String subject);
+
 }
