@@ -4,7 +4,6 @@ import com.llb.service.MailService;
 import com.llb.utils.VerifycodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -35,6 +34,12 @@ public class MailServiceImpl implements MailService{
     @Autowired
     TemplateEngine templateEngine;
 
+    /**
+     * 发送普通邮件
+     * @param to
+     * @param subject 邮件主题
+     * @return
+     */
     @Override
     public Map<String, Object> sendMail(String to, String subject) {
         Map<String, Object> result = new HashMap<>();
@@ -75,7 +80,7 @@ public class MailServiceImpl implements MailService{
     /**
      * 发送html邮件
      * @param to
-     * @param subject
+     * @param subject 邮件主题，这里我们将类别氛围，注册、登录、修改密码
      * @return
      */
     public Map<String, Object> sendHtmlMail(String to, String subject) {
