@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
@@ -171,6 +172,9 @@ public class LoginController {
                                         HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         String email = map.get("email");
+
+        final HttpSession httpSession = request.getSession();
+
 //        String account = map.get("account");
         //判断用户是否填写了账户名称，如果填写了，则显示账户名称，没有则用邮件账户作为用户账户称呼
 //        if(account == null || "".equals(account)) {
@@ -180,7 +184,7 @@ public class LoginController {
         result = mailService.sendHtmlMail(email, "修改密码");
 
         //将验证码放到浏览器缓存5分钟，5分钟失效
-        request.getSession().setAttribute("verifyMailCode", result.get("verifyMailCode"));
+        httpSession.setAttribute("verifyMailCode", result.get("verifyMailCode"));
 
         try {
             //设置失效时间
@@ -188,11 +192,11 @@ public class LoginController {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    request.getSession().removeAttribute("verifyMailCode");
+                    httpSession.removeAttribute("verifyMailCode");
                     System.out.println("邮箱验证码缓存信息删除成功");
                     timer.cancel();
                 }
-            }, 5*60*1000);
+            }, 20000);
         } catch (Exception e) {
             e.printStackTrace();
             result.put("code", 201);

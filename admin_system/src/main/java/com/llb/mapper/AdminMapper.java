@@ -2,6 +2,7 @@ package com.llb.mapper;
 
 import com.llb.entity.Admin;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -17,5 +18,5 @@ public interface AdminMapper extends BaseMapper<Admin> {
 
     Admin findAdminByEmail(String adminEmail);
 
-    void updateAdminPwd(String adminEmail, String adminPwd);
+    void updateAdminPwd(@Param("adminEmail") String adminEmail, @Param("adminPwd") String adminPwd);
 }
