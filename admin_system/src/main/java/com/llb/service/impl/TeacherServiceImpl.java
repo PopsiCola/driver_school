@@ -25,16 +25,54 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     @Autowired
     private TeacherMapper teacherMapper;
 
+    /**
+     * 根据教练名或邮箱查询教练
+     * @param account
+     * @return
+     */
     @Override
-    public Teacher findTeacherById(String teaId) {
-        return teacherMapper.findTeacherById(teaId);
+    public Teacher findTeacher(String account) {
+        return teacherMapper.findTeacher(account);
     }
 
+    /**
+     * 根据教练名或邮箱查询教练
+     * @param account
+     * @param email
+     * @return
+     */
+    @Override
+    public Teacher findTeacher(String account, String email) {
+        return teacherMapper.findTeacher(account, email);
+    }
+
+    /**
+     * 根据用户名称和邮箱查询教练
+     * @param account
+     * @param email
+     * @return
+     */
+    @Override
+    public Teacher findTeaByAccAndPwd(String account, String email) {
+        return teacherMapper.findTeaByAccAndPwd(account, email);
+    }
+
+    /**
+     * 根据邮箱查询教练
+     * @param teaEmail
+     * @return
+     */
     @Override
     public Teacher findTeacherByEamil(String teaEmail) {
         return teacherMapper.findTeacherByEmail(teaEmail);
     }
 
+    /**
+     * 修改教练密码
+     * @param teaEmail
+     * @param teaPwd
+     * @return
+     */
     @Override
     public Map<String, Object> editTeaPwd(String teaEmail, String teaPwd) {
         Map<String, Object> result = new HashMap<>();
@@ -50,5 +88,14 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         result.put("code", 200);
         result.put("msg", "密码修改成功！");
         return result;
+    }
+
+    /**
+     * 保存教练信息
+     * @param teacher
+     */
+    @Override
+    public void saveTeacher(Teacher teacher) {
+        teacherMapper.saveTeacher(teacher);
     }
 }

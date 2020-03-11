@@ -2,6 +2,7 @@ package com.llb.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -31,6 +32,12 @@ public class Student implements Serializable {
      */
     @TableId("stu_id")
     private String stuId;
+
+    /**
+     * 学员名称
+     */
+    @TableField("stu_account")
+    private String stuAccount;
 
     /**
      * 学员姓名
@@ -78,7 +85,7 @@ public class Student implements Serializable {
      * 学员报名时间
      */
     @TableField("stu_createdate")
-    private LocalDateTime stuCreatedate;
+    private Date stuCreatedate;
 
 
 }

@@ -24,17 +24,53 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Autowired
     private StudentMapper studentMapper;
 
-
+    /**
+     * 根据学员名或邮箱查询学员
+     * @param account
+     * @return
+     */
     @Override
-    public Student findStudentById(String stuId) {
-        return studentMapper.findStudentById(stuId);
+    public Student findStudent(String account) {
+        return studentMapper.findStudent(account);
     }
 
+    /**
+     * 根据学员名或邮箱查询学员
+     * @param account
+     * @return
+     */
+    @Override
+    public Student findStudent(String account, String email) {
+        return studentMapper.findStudent(account, email);
+    }
+
+    /**
+     * 根据学员账号和邮箱查找学员
+     * @param account
+     * @param email
+     * @return
+     */
+    @Override
+    public Student findStuByAccAndMail(String account, String email) {
+        return studentMapper.findStuByAccAndMail(account, email);
+    }
+
+    /**
+     * 根据邮箱查询学员
+     * @param email
+     * @return
+     */
     @Override
     public Student findStuByEmail(String email) {
         return studentMapper.findStuByEmail(email);
     }
 
+    /**
+     * 修改学员密码
+     * @param stuEmail
+     * @param stuPwd
+     * @return
+     */
     @Override
     public Map<String, Object> editStuPwd(String stuEmail, String stuPwd) {
         Map<String, Object> result = new HashMap<>();
@@ -50,5 +86,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         result.put("code", 200);
         result.put("msg", "密码修改成功！");
         return result;
+    }
+
+    /**
+     * 保存学员信息
+     * @param student
+     */
+    @Override
+    public void saveStudent(Student student) {
+        studentMapper.saveStudent(student);
     }
 }

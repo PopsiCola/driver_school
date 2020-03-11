@@ -14,9 +14,15 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface AdminMapper extends BaseMapper<Admin> {
 
-    Admin findAdminById(String adminId);
+    Admin findAdmin(String account);
+
+    Admin findAdmin(@Param("account") String account, @Param("email") String email);
+
+    Admin findAdminByAccAndMail(@Param("account") String account, @Param("email") String email);
 
     Admin findAdminByEmail(String adminEmail);
 
     void updateAdminPwd(@Param("adminEmail") String adminEmail, @Param("adminPwd") String adminPwd);
+
+    void saveAdmin(Admin admin);
 }

@@ -2,11 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.llb.mapper.AdminMapper">
 
-    <!--通过姓名查找管理员-->
-    <select id="findAdminById" resultType="com.llb.entity.Admin" parameterType="String">
+    <!--通过用户名或邮箱查找管理员-->
+    <select id="findAdmin" resultType="com.llb.entity.Admin" parameterType="String">
         SELECT *
         FROM admin
-        WHERE admin_id = #{account}
+        WHERE admin_account = #{account} OR admin_mail = #{account}
+    </select>
+
+    <!--通过用户名或邮箱查找管理员-->
+    <select id="findAdmin" resultType="com.llb.entity.Admin" parameterType="String">
+        SELECT *
+        FROM admin
+        WHERE admin_account = #{account} OR admin_mail = #{email}
+    </select>
+
+    <!--通过用户名和邮箱查找管理员-->
+    <select id="findAdminByAccAndMail" resultType="com.llb.entity.Admin" parameterType="String">
+        SELECT *
+        FROM admin
+        WHERE admin_account = #{account} AND admin_mail = #{email}
     </select>
 
     <!--根据邮箱查询管理员-->
@@ -22,4 +36,43 @@
         SET admin_pwd = #{adminPwd}
         WHERE admin_mail = #{adminEmail}
     </update>
+
+    <!--保存管理员信息-->
+    <insert id="saveAdmin" parameterType="Admin">
+        INSERT INTO admin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adminId != null">
+                admin_id,
+            </if>
+            <if test="adminAccount != null">
+                admin_account,
+            </if>
+            <if test="adminPwd != null">
+                admin_pwd,
+            </if>
+            <if test="adminMail != null">
+                admin_mail,
+            </if>
+            <if test="adminCreatedate != null">
+                admin_createdate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adminId != null">
+                #{admin_id},
+            </if>
+            <if test="adminAccount != null">
+                #{admin_account},
+            </if>
+            <if test="adminPwd != null">
+                #{admin_pwd},
+            </if>
+            <if test="adminMail != null">
+                #{admin_mail},
+            </if>
+            <if test="adminCreatedate != null">
+                #{admin_createdate},
+            </if>
+        </trim>
+    </insert>
 </mapper>

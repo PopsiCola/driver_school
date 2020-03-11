@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.llb.mapper.StudentMapper">
-    <!--通过姓名查找学员-->
-    <select id="findStudentById" resultType="com.llb.entity.Student" parameterType="String">
+    <!--通过用户名和邮箱查找学员-->
+    <select id="findStudent" resultType="com.llb.entity.Student" parameterType="String">
         SELECT *
         FROM student
-        WHERE stu_id = #{account}
+        WHERE stu_account = #{account} OR stu_email = #{account}
+    </select>
+
+    <!--通过用户名和邮箱查找学员-->
+    <select id="findStudent" resultType="com.llb.entity.Student" parameterType="String">
+        SELECT *
+        FROM student
+        WHERE stu_account = #{account} OR stu_email = #{email}
+    </select>
+
+    <!--通过姓名查找学员-->
+    <select id="findStuByAccAndMail" resultType="com.llb.entity.Student" parameterType="String">
+        SELECT *
+        FROM student
+        WHERE stu_account = #{account} AND stu_email = #{email}
     </select>
 
     <!--通过邮箱查找学员-->
@@ -21,4 +35,73 @@
         SET stu_pwd = #{stuPwd}
         WHERE stu_email = #{stuEmail}
     </update>
+
+    <!--保存学员信息-->
+    <insert id="saveStudent" parameterType="Admin">
+        INSERT INTO student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="stuAccount != null">
+                stu_account,
+            </if>
+            <if test="stuName != null">
+                stu_name,
+            </if>
+            <if test="stuEmail != null">
+                stu_email,
+            </if>
+            <if test="stuPwd != null">
+                stu_pwd,
+            </if>
+            <if test="stuSex != null">
+                stu_sex,
+            </if>
+            <if test="stuAge != null">
+                stu_age,
+            </if>
+            <if test="stuAddress != null">
+                stu_address,
+            </if>
+            <if test="stuPhone != null">
+                stu_phone,
+            </if>
+            <if test="stuCreatedate != null">
+                stu_createdate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">
+                #{stuId},
+            </if>
+            <if test="stuAccount != null">
+                #{stuAccount},
+            </if>
+            <if test="stuName != null">
+                #{stuName},
+            </if>
+            <if test="stuEmail != null">
+                #{stuEmail},
+            </if>
+            <if test="stuPwd != null">
+                #{stuPwd},
+            </if>
+            <if test="stuSex != null">
+                #{stuSex},
+            </if>
+            <if test="stuAge != null">
+                #{stuAge},
+            </if>
+            <if test="stuAddress != null">
+                #{stuAddress},
+            </if>
+            <if test="stuPhone != null">
+                #{stuPhone},
+            </if>
+            <if test="stuCreatedate != null">
+                #{stuCreatedate},
+            </if>
+        </trim>
+    </insert>
 </mapper>

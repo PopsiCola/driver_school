@@ -25,9 +25,9 @@
         <div id="darkbannerwrap"></div>
         
         <form method="post" class="layui-form" >
-            <input name="account" placeholder="用户名或邮箱"  type="text" lay-verify="required" class="layui-input" >
+            <input id= "account" name="account" placeholder="用户名或邮箱"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
+            <input id="password" name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
             <hr class="hr15">
             <div align="center">
                 <input type="radio"  name="role" value="1" title="学员" checked>
@@ -65,14 +65,14 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">用户名:</label>
                         <div class="layui-input-block">
-                            <input type="text" id="account" name="account"
+                            <input type="text" id="resetAccount" name="resetAccount"
                                    required lay-verify="required" class="layui-input" placeholder="用户名">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">邮箱号:</label>
                         <div class="layui-input-block">
-                            <input type="text" id="checkcodeMail" name="email"
+                            <input type="text" id="resetMail" name="resetMail"
                                    required lay-verify="email" placeholder="邮箱号"
                                    autocomplete="off" class="layui-input">
                         </div>
@@ -120,8 +120,8 @@
         </div>
     </div>
 
-	<!-- 注册 -->
-    <div class="modal" id="myRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	<!-- 用户注册 -->
+    <div class="modal" id="myRegister" tabindex="-1" role="dialog" aria-labelledby="registModalLabel" aria-hidden="true"
          data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog " style=" width: 400px">
             <div class="modal-content">
@@ -129,7 +129,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">
+                    <h4 class="modal-title" id="registModalLabel">
                         用户注册
                     </h4>
                 </div>
@@ -137,14 +137,14 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">用户名:</label>
                         <div class="layui-input-block">
-                            <input type="text" id="" name=""
+                            <input type="text" id="registName" name="registName"
                                    required lay-verify="required" class="layui-input" placeholder="用户名">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">邮箱号:</label>
                         <div class="layui-input-block">
-                            <input type="text" id="" name=""
+                            <input type="text" id="registMail" name="registMail"
                                    required lay-verify="email" placeholder="邮箱号"
                                    autocomplete="off" class="layui-input">
                         </div>
@@ -153,17 +153,17 @@
                         <div class="input-group">
                             <label class="layui-form-label">验证码:</label>
                             <div class="layui-input-block">
-                                <input type="text" id="getcode" class="layui-input " style="width:140px;" placeholder="验证码"/>
+                                <input type="text" id="registCode" class="layui-input " style="width:140px;" placeholder="验证码"/>
                             </div>
                             <span class="form-group input-group-btn">
-                             <button class="btn btn-default" id="getCheckCode" type="button">获取验证码</button>
+                             <button class="btn btn-default" id="registCheckCode" type="button">获取验证码</button>
                             </span>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">密码:</label>
                         <div class="layui-input-block">
-                            <input type="password" id="" name=""
+                            <input type="password" id="registWord" name="registWord"
                                    required lay-verify="required" placeholder="密码"
                                    autocomplete="off" class="layui-input">
                         </div>
@@ -171,7 +171,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">确认:</label>
                         <div class="layui-input-block">
-                            <input type="" id="confirm" name="confirm"
+                            <input type="password" id="registConfirm" name="confirm"
                                    required lay-verify="required" placeholder="确认密码"
                                    autocomplete="off" class="layui-input">
                         </div>
@@ -180,9 +180,9 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button id="submitbutton" type="button" class="layui-btn layui-btn-primary"
-                            data-toggle="resetPasswordModal" data-dismiss="modal" data-target="#resetPasswordModal">
-                        保存
+                    <button id="registButton" type="button" class="layui-btn layui-btn-primary"
+                            data-toggle="registPasswordModal" data-dismiss="modal" data-target="#registPasswordModal">
+                        注册
                     </button>
                     <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">
                         取消
@@ -200,9 +200,6 @@
             layui.use('form', function(){
               var form = layui.form;
 
-              // layer.msg('玩命卖萌中', function(){
-              //   //关闭后的操作
-              //   });
               //监听提交
               form.on('submit(login)', function(data){
                     //获取用户名、密码、还有类型
@@ -231,8 +228,6 @@
                               } else {
                                   window.location.href="/teacher/index"
                               }
-
-
                           }else{
                               alert("账户或密码不正确！");
                               $('input[name="username"]').val("");
@@ -245,11 +240,55 @@
               });
             });
 
-                //发送验证码
+            //忘记密码 模态框传参
+            $('#myModal').on('show.bs.modal', function (event) {
+                var modal = $(this);  //获得这个模态框。必不可少
+                var email = "";
+                var account = $("#account").val();//获取用户名或邮箱
+                var password = $("#password").val();//获取获取密码
+                var role = $("input[name='role']:checked").val()//获取获取密码
+                //判断是否是邮箱，将用户名和邮箱分别传到对应文本框中
+                var flag = checkEmail(account);
+                if(flag) {
+                    email = account;
+                    account = "";
+                }
+                //给模态框传值
+                $("#resetAccount").val(account);
+                $("#resetMail").val(email);
+                $("#resetpassword").val(password);
+            });
+
+            //用户注册 模态框传参
+            $('#myRegister').on('show.bs.modal', function (event) {
+                var modal = $(this);  //获得这个模态框
+                var email = "";
+                var account = $("#account").val();//获取用户名或邮箱
+                var password = $("#password").val();//获取获取密码
+                var role = $("input[name='role']:checked").val()//获取获取密码
+                //判断是否是邮箱，将用户名和邮箱分别传到对应文本框中
+                var flag = checkEmail(account);
+                if(flag) {
+                    email = account;
+                    account = "";
+                }
+                //给模态框传值
+                $("#registName").val(account);
+                $("#registMail").val(email);
+                $("#registWord").val(password);
+            });
+
+            //用户登录发送验证码
             $("#getCheckCode").click(function () {
-            	alert("!111")
-                var email=$('input[name="email"]').val();
-                console.log(email);
+                var email = $("#resetMail").val();
+                var account = $("#resetAccount").val();
+                var role = $("input[name='role']:checked").val();
+                var data= {
+                    account:account,
+                    email:email,
+                    role:role
+                };
+                console.log(data);
                 if ($("#checkcodeMail").val()==0){
                     layer.msg('请填写邮箱号', {
                         time: 2000,
@@ -264,8 +303,37 @@
                     return;
                 }
                 //发起验证码
-                getCode();
+                getCode(data);
                 settime($("#getCheckCode"));
+            });
+
+            //用户注册发送验证码
+            $("#registCheckCode").click(function () {
+                var email = $("#registMail").val();
+                var account = $("#registName").val();
+                var role = $("input[name='role']:checked").val();
+                var data= {
+                    account:account,
+                    email:email,
+                    role:role
+                };
+                console.log(data);
+                if ($("#registMail").val()==0){
+                    layer.msg('请填写邮箱号', {
+                        time: 2000,
+                        btn: ['返回']
+                    });
+                    return;
+                } else if(!checkEmail(email)){
+                    layer.msg('邮箱格式不正确', {
+                        time: 2000,
+                        btn: ['返回']
+                    });
+                    return;
+                }
+                //发起验证码
+                getRegistCode(data);
+                settime($("#registCheckCode"));
             });
 
 
@@ -282,7 +350,7 @@
             //验证验证码
             $("#submitbutton").click(function () {
 
-                if ($("#checkcodeMail").val().length==0){
+                if ($("#resetMail").val().length==0){
                     layer.msg('请填写邮箱号', {
                         time: 2000,
                         btn: ['返回']
@@ -309,6 +377,35 @@
 
             });
 
+            //注册码验证
+            $("#registButton").click(function () {
+
+                if ($("#registMail").val().length==0){
+                    layer.msg('请填写邮箱号', {
+                        time: 2000,
+                        btn: ['返回']
+                    });
+                    return;
+                }
+                if($("#registCode").val().length==0){
+                    layer.msg('请输入验证码', {
+                        time: 2000, //20s后自动关闭
+                        btn: ['好的']
+                    });
+                }
+                var password=$("#registWord").val();
+                var confirm=$("#registConfirm").val();
+                if (password==confirm){
+                    registAccount();
+                }
+                else {
+                    layer.msg('密码不一致', {
+                        time: 1000, //20s后自动关闭
+                        btn: ['好的']
+                    });
+                }
+
+            });
 
             //验证倒计时
             var countdown = 60;
@@ -329,26 +426,34 @@
                     , 1000)
             }
 
-            //获取邮箱验证码
-            function getCode(){
-                var json = {email:$("#checkcodeMail").val(),
-                    account:$('input[name="account"]').val(),
-                    role: $("input[name='role']:checked").val()};
-                console.log(json);
+            //获取注册用户邮箱验证码
+            function getRegistCode(data){
+                console.log(data);
                 $.ajax({
-                    url:"/login/getCode",
+                    url:"/login/getRegistCode",
                     type:"post",
                     cache:false,
                     contentType:"application/json",
                     datatype:"json",
-                    data:JSON.stringify(json),
+                    data:JSON.stringify(data),
                     success:function(result){
-                        console.log(result.msg);
-                        if(result.code==200){
+                        layer.msg(result.msg, {
+                            time: 2000, //2s后自动关闭
+                        });
+                        /*if(result.code==200){
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
                             console.log(result.verifyMailCode);
                         } else if(result.code == 201) {
-                            console.log(result.msg);
-                        }
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
+                        }*/
                     }
                     ,
                     error:function(response){
@@ -359,12 +464,49 @@
 
             };
 
+            //获取找回密码邮箱验证码：这里先进行判断用户名和邮箱是否对应，如果不对应则不是一个账号
+            function getCode(data){
+                console.log(data);
+                $.ajax({
+                    url:"/login/getCode",
+                    type:"post",
+                    cache:false,
+                    contentType:"application/json",
+                    datatype:"json",
+                    data:JSON.stringify(data),
+                    success:function(result){
+                        layer.msg(result.msg, {
+                            time: 2000, //2s后自动关闭
+                        });
+                        /*if(result.code==200){
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
+                            console.log(result.verifyMailCode);
+                        } else if(result.code == 201) {
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
+                        } else {
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
+                        }*/
+                    }
+                    ,
+                    error:function(response){
+                        console.log("出错返回: " + response);
+                        console.log("出错数据: " + JSON.stringify(response));
+                    }
+                });
+            };
+
             //重置密码
             function restPassword() {
 
                 var json = {
-                    account:$("#account").val(),
-                    mail:$("#checkcodeMail").val(),
+                    account:$("#resetAccount").val(),
+                    email:$("#resetMail").val(),
                     emailCode:$("#getcode").val(),
                     role: $("input[name='role']:checked").val(),
                     // password:hex_md5($("#resetpassword").val().trim())
@@ -380,6 +522,10 @@
                     datatype:"json",
                     data:JSON.stringify(json),
                     success:function(result){
+                        layer.msg(result.msg, {
+                            time: 2000, //2s后自动关闭
+                        });
+/*
                         if(result.code==200){
                             layer.msg(result.msg, {
                                 time: 2000, //2s后自动关闭
@@ -394,7 +540,56 @@
                             layer.msg('密码修改失败请重试', {
                                 time: 2000, //2s后自动关闭
                             });
+                        }*/
+                    }
+                    ,
+                    error:function(response){
+                        console.log("出错返回: " + response);
+                        console.log("出错数据: " + JSON.stringify(response));
+                    }
+                });
+
+            };
+
+            //注册用户
+            function registAccount() {
+
+                var json = {
+                    account:$("#registName").val(),
+                    email:$("#registMail").val(),
+                    emailCode:$("#registCode").val(),
+                    role: $("input[name='role']:checked").val(),
+                    // password:hex_md5($("#resetpassword").val().trim())
+                    password:$("#registWord").val()
+                };
+
+                console.log(json);
+                $.ajax({
+                    url:"/login/regist",
+                    type:"post",
+                    cache:false,
+                    contentType:"application/json",
+                    datatype:"json",
+                    data:JSON.stringify(json),
+                    success:function(result){
+                        layer.msg(result.msg, {
+                            time: 2000, //2s后自动关闭
+                        });
+                        /*if(result.code==200){
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
                         }
+                        else if(result.code==201) {
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
+
+                        }else {
+                            layer.msg('密码修改失败请重试', {
+                                time: 2000, //2s后自动关闭
+                            });
+                        }*/
                     }
                     ,
                     error:function(response){
@@ -404,7 +599,7 @@
                 });
 
             }
-        })
+        });
 
 
         

@@ -2,6 +2,7 @@ package com.llb.mapper;
 
 import com.llb.entity.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,9 +14,15 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface StudentMapper extends BaseMapper<Student> {
 
-    Student findStudentById(String stuId);
+    Student findStudent(String account);
+
+    Student findStudent(@Param("account") String account, @Param("email") String email);
+
+    Student findStuByAccAndMail(@Param("account") String account, @Param("email") String email);
 
     Student findStuByEmail(String stuEmail);
 
     void updateStuPwd(String stuEmail, String stuPwd);
+
+    void saveStudent(Student student);
 }

@@ -16,12 +16,26 @@ import java.util.Map;
 public interface IStudentService extends IService<Student> {
 
     /**
-     * 根据学员名查询学员
-     * @param stuId
+     * 根据学员名或邮箱查询学员
+     * @param account
      * @return
      */
-    Student findStudentById(String stuId);
+    Student findStudent(String account);
 
+    /**
+     * 根据学员名或邮箱查询学员
+     * @param account
+     * @return
+     */
+    Student findStudent(String account, String email);
+
+    /**
+     * 根据学员账号和邮箱查找学员
+     * @param account
+     * @param email
+     * @return
+     */
+    Student findStuByAccAndMail(String account, String email);
     /**
      * 修改学院账号信息
      * @param student
@@ -43,4 +57,10 @@ public interface IStudentService extends IService<Student> {
      * @return
      */
     Map<String, Object> editStuPwd(String stuEmail, String stuPwd);
+
+    /**
+     * 保存学员信息
+     * @param student
+     */
+    void saveStudent(Student student);
 }

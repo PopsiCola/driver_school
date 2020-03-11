@@ -16,12 +16,27 @@ import java.util.Map;
 public interface IAdminService extends IService<Admin> {
 
     /**
-     * 根据管理员名称查询管理员
-     * @param adminName
-     * @param password
+     * 根据管理员名称或邮箱查询管理员
+     * @param account
      * @return
      */
-    Admin findAdminById(String adminName);
+    Admin findAdmin(String account);
+
+    /**
+     * 根据管理员名称或邮箱查询管理员
+     * @param account
+     * @param admin
+     * @return
+     */
+    Admin findAdmin(String account, String email);
+
+    /**
+     * 根据管理员名称和密码查询管理员
+     * @param account
+     * @param admin
+     * @return
+     */
+    Admin findAdminByAccAndMail(String account, String admin);
 
     /**
      * 根据管理员邮箱查询管理员
@@ -37,4 +52,10 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     Map<String, Object> editAdminPwd(String email, String adminPwd);
+
+    /**
+     * 保存管理员
+     * @param admin
+     */
+    void saveAdmin(Admin admin);
 }

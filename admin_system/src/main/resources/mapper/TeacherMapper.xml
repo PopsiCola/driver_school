@@ -2,10 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.llb.mapper.TeacherMapper">
     <!--通过姓名查找教练-->
-    <select id="findTeacherById" resultType="com.llb.entity.Teacher" parameterType="String">
+    <select id="findTeacher" resultType="com.llb.entity.Teacher" parameterType="String">
         SELECT *
         FROM teacher
-        WHERE tea_id = #{teaId}
+        WHERE tea_account = #{account} OR tea_email = #{account}
+    </select>
+
+    <!--通过姓名查找教练-->
+    <select id="findTeacher" resultType="com.llb.entity.Teacher" parameterType="String">
+        SELECT *
+        FROM teacher
+        WHERE tea_account = #{account} OR tea_email = #{email}
+    </select>
+
+    <!--通过姓名查找教练-->
+    <select id="findTeaByAccAndPwd" resultType="com.llb.entity.Teacher" parameterType="String">
+        SELECT *
+        FROM teacher
+        WHERE tea_account = #{account} AND tea_email = #{email}
     </select>
 
     <!--通过邮箱查找教练-->
@@ -21,4 +35,73 @@
         SET tea_pwd = #{teacherPwd}
         WHERE tea_email = #{teaEmail}
     </update>
+
+    <!--保存教练信息-->
+    <insert id="saveTeacher" parameterType="Admin">
+        INSERT INTO teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                tea_id,
+            </if>
+            <if test="teaAccount != null">
+                tea_account,
+            </if>
+            <if test="teaName != null">
+                tea_name,
+            </if>
+            <if test="teaEmail != null">
+                tea_email,
+            </if>
+            <if test="teaPwd != null">
+                tea_pwd,
+            </if>
+            <if test="teaSex != null">
+                tea_sex,
+            </if>
+            <if test="teaAge != null">
+                tea_age,
+            </if>
+            <if test="teaAddress != null">
+                tea_address,
+            </if>
+            <if test="teaPhone != null">
+                tea_phone,
+            </if>
+            <if test="teaCreatdate != null">
+                tea_createdate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teaId != null">
+                #{tea_id},
+            </if>
+            <if test="teaAccount != null">
+                #{tea_account},
+            </if>
+            <if test="teaName != null">
+                #{tea_name},
+            </if>
+            <if test="stuEmail != null">
+                #{tea_email},
+            </if>
+            <if test="teaPwd != null">
+                #{tea_pwd},
+            </if>
+            <if test="teaSex != null">
+                #{tea_sex},
+            </if>
+            <if test="teaAge != null">
+                #{tea_age},
+            </if>
+            <if test="teaAddress != null">
+                #{tea_address},
+            </if>
+            <if test="teaPhone != null">
+                #{tea_phone},
+            </if>
+            <if test="teaCreatedate != null">
+                #{tea_createdate},
+            </if>
+        </trim>
+    </insert>
 </mapper>
