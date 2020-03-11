@@ -3,7 +3,7 @@ package com.llb.service;
 import java.util.Map;
 
 /**
- * 邮件服务类
+ * 邮件服务类接口
  * @Author llb
  * Date on 2020/3/9
  */
