@@ -13,13 +13,13 @@
     <select id="findAdminByEmail" parameterType="String" resultType="Admin">
         SELECT *
         FROM admin
-        WHERE admin_email = #{adminEmail}
+        WHERE admin_mail = #{adminEmail}
     </select>
 
     <!--修改密码-->
     <update id="updateAdminPwd" parameterType="String">
         UPDATE admin
         SET admin_pwd = #{adminPwd}
-        WHERE admin_email = #{adminEmail}
+        WHERE admin_mail = #{adminEmail}
     </update>
 </mapper>
