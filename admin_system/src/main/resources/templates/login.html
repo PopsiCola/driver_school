@@ -41,7 +41,82 @@
         <div class="layui-form-item" style="float: right">
             <a href="#" data-toggle="modal" data-target="#myModal">忘记密码?</a>
         </div>
+        <p>
+            <a href="#" data-toggle="modal" data-target="#myRegister" style="float: left">忘记密码?</a>
+        </p>
         <hr class="hr20" >
+    </div>
+
+	<!-- 注册 -->
+    <div class="modal" id="myRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog " style=" width: 400px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        用户注册
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户名:</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="account" name="account"
+                                   required lay-verify="required" class="layui-input" placeholder="用户名">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱号:</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="checkcodeMail" name="email"
+                                   required lay-verify="email" placeholder="邮箱号"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="input-group">
+                            <label class="layui-form-label">验证码:</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="getcode" class="layui-input " style="width:140px;" placeholder="验证码"/>
+                            </div>
+                            <span class="form-group input-group-btn">
+                             <button class="btn btn-default" id="getCheckCode" type="button">获取验证码</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码:</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="resetpassword" name="resetpassword"
+                                   required lay-verify="required" placeholder="密码"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">确认:</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="confirm" name="confirm"
+                                   required lay-verify="required" placeholder="确认密码"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button id="submitbutton" type="button" class="layui-btn layui-btn-primary"
+                            data-toggle="resetPasswordModal" data-dismiss="modal" data-target="#resetPasswordModal">
+                        保存
+                    </button>
+                    <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 忘记密码 -->
@@ -114,7 +189,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <script th:src="@{/lib/layui/layui.js}"></script>
