@@ -42,7 +42,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         Student student = findStuByEmail(stuEmail);
         //未注册
         if(student == null) {
-            result.put("code", 200);
+            result.put("code", 201);
             result.put("msg", "该邮箱没有被注册，请先注册！");
             return result;
         }

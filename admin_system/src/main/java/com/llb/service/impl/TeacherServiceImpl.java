@@ -42,7 +42,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         Teacher teacher = findTeacherByEamil(teaEmail);
         //未注册
         if(teacher == null) {
-            result.put("code", 200);
+            result.put("code", 201);
             result.put("msg", "该邮箱没有被注册，请先注册！");
             return result;
         }

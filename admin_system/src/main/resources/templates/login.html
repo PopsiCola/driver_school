@@ -303,14 +303,14 @@
                     contentType:"application/json",
                     datatype:"json",
                     data:JSON.stringify(json),
-                    success:function(response){
-                        if(response.code==200){
-                            layer.msg('修改成功', {
+                    success:function(result){
+                        if(result.code==200){
+                            layer.msg(result.msg, {
                                 time: 2000, //2s后自动关闭
                             });
                         }
-                        else if(response.code==201) {
-                            layer.msg('验证码失效请重试', {
+                        else if(result.code==201) {
+                            layer.msg(result.msg, {
                                 time: 2000, //2s后自动关闭
                             });
 

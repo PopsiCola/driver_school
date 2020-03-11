@@ -41,7 +41,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Admin admin = findAdminByEmail(email);
         //未注册
         if(admin == null) {
-            result.put("code", 200);
+            result.put("code", 201);
             result.put("msg", "该邮箱没有被注册，请先注册！");
             return result;
         }
