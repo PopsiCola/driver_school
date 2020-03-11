@@ -42,13 +42,14 @@
             <a href="#" data-toggle="modal" data-target="#myModal">忘记密码?</a>
         </div>
         <p>
-            <a href="#" data-toggle="modal" data-target="#myRegister" style="float: left">忘记密码?</a>
+            <a href="#" data-toggle="modal" data-target="#myRegister" style="float: left">用户注册</a>
         </p>
         <hr class="hr20" >
     </div>
 
-	<!-- 注册 -->
-    <div class="modal" id="myRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	
+    <!-- 忘记密码 -->
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
          data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog " style=" width: 400px">
             <div class="modal-content">
@@ -57,7 +58,7 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        用户注册
+                        找回密码
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -119,8 +120,8 @@
         </div>
     </div>
 
-    <!-- 忘记密码 -->
-    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	<!-- 注册 -->
+    <div class="modal" id="myRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
          data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog " style=" width: 400px">
             <div class="modal-content">
@@ -129,21 +130,21 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        找回密码
+                        用户注册
                     </h4>
                 </div>
                 <div class="modal-body">
                     <div class="layui-form-item">
                         <label class="layui-form-label">用户名:</label>
                         <div class="layui-input-block">
-                            <input type="text" id="account" name="account"
+                            <input type="text" id="" name=""
                                    required lay-verify="required" class="layui-input" placeholder="用户名">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">邮箱号:</label>
                         <div class="layui-input-block">
-                            <input type="text" id="checkcodeMail" name="email"
+                            <input type="text" id="" name=""
                                    required lay-verify="email" placeholder="邮箱号"
                                    autocomplete="off" class="layui-input">
                         </div>
@@ -162,7 +163,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">密码:</label>
                         <div class="layui-input-block">
-                            <input type="password" id="resetpassword" name="resetpassword"
+                            <input type="password" id="" name=""
                                    required lay-verify="required" placeholder="密码"
                                    autocomplete="off" class="layui-input">
                         </div>
@@ -170,7 +171,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">确认:</label>
                         <div class="layui-input-block">
-                            <input type="password" id="confirm" name="confirm"
+                            <input type="" id="confirm" name="confirm"
                                    required lay-verify="required" placeholder="确认密码"
                                    autocomplete="off" class="layui-input">
                         </div>
@@ -246,6 +247,7 @@
 
                 //发送验证码
             $("#getCheckCode").click(function () {
+            	alert("!111")
                 var email=$('input[name="email"]').val();
                 console.log(email);
                 if ($("#checkcodeMail").val()==0){
