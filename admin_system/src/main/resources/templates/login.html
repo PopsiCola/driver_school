@@ -27,7 +27,7 @@
         <form method="post" class="layui-form" >
             <input id= "account" name="account" placeholder="用户名或邮箱"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <input id="password" name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
+            <input id="password" name="password" lay-verify="pass" placeholder="密码"  type="password" class="layui-input">
             <hr class="hr15">
             <div align="center">
                 <input type="radio"  name="role" value="1" title="学员" checked>
@@ -92,7 +92,7 @@
                         <label class="layui-form-label">密码:</label>
                         <div class="layui-input-block">
                             <input type="password" id="resetpassword" name="resetpassword"
-                                   required lay-verify="required" placeholder="密码"
+                                   required lay-verify="pass" placeholder="密码"
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                         <label class="layui-form-label">确认:</label>
                         <div class="layui-input-block">
                             <input type="password" id="confirm" name="confirm"
-                                   required lay-verify="required" placeholder="确认密码"
+                                   required lay-verify="resetConfirmPass" placeholder="确认密码"
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                         <label class="layui-form-label">密码:</label>
                         <div class="layui-input-block">
                             <input type="password" id="registWord" name="registWord"
-                                   required lay-verify="required" placeholder="密码"
+                                   required lay-verify="pass" placeholder="密码"
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                         <label class="layui-form-label">确认:</label>
                         <div class="layui-input-block">
                             <input type="password" id="registConfirm" name="confirm"
-                                   required lay-verify="required" placeholder="确认密码"
+                                   required lay-verify="registConfirmPass" placeholder="确认密码"
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
@@ -199,6 +199,21 @@
         $(function  () {
             layui.use('form', function(){
               var form = layui.form;
+
+                //自定义验证规则
+                form.verify({
+                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                    registConfirmPass: function(value){
+                        if($('#registWord').val()!=$('#registConfirm').val()){
+                            return '两次密码不一致';
+                        }
+                    },
+                    resetConfirmPass: function(value){
+                        if($('#resetpassword').val()!=$('#confirm').val()){
+                            return '两次密码不一致';
+                        }
+                    }
+                });
 
               //监听提交
               form.on('submit(login)', function(data){
