@@ -29,11 +29,16 @@ public class TeacherController {
      * 展示首页
      * @return
      */
-    @RequestMapping(value = "index")
+    @RequestMapping(value = "/index")
     public ModelAndView showIndex() {
         ModelAndView modelAndView = new ModelAndView("teacher/index");
         return modelAndView;
     }
-
+    
+    @RequestMapping(value = "/information")
+    public ModelAndView information() {
+        ModelAndView modelAndView = new ModelAndView("teacher/information");
+        return modelAndView;
+    }
 }
 

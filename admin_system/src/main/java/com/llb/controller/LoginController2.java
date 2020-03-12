@@ -1,21 +1,7 @@
 package com.llb.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.llb.entity.Admin;
-import com.llb.entity.Student;
-import com.llb.entity.Teacher;
-import com.llb.service.IAdminService;
-import com.llb.service.IStudentService;
-import com.llb.service.ITeacherService;
-import com.llb.service.MailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 登录、注销、修改密码、注册
