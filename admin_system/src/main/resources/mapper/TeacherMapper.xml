@@ -67,40 +67,40 @@
             <if test="teaPhone != null">
                 tea_phone,
             </if>
-            <if test="teaCreatdate != null">
+            <if test="teaCreatedate != null">
                 tea_createdate,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="teaId != null">
-                #{tea_id},
+                #{teaId},
             </if>
             <if test="teaAccount != null">
-                #{tea_account},
+                #{teaAccount},
             </if>
             <if test="teaName != null">
-                #{tea_name},
+                #{teaName},
             </if>
-            <if test="stuEmail != null">
-                #{tea_email},
+            <if test="teaEmail != null">
+                #{teaEmail},
             </if>
             <if test="teaPwd != null">
-                #{tea_pwd},
+                #{teaPwd},
             </if>
             <if test="teaSex != null">
-                #{tea_sex},
+                #{teaSex},
             </if>
             <if test="teaAge != null">
-                #{tea_age},
+                #{teaAge},
             </if>
             <if test="teaAddress != null">
-                #{tea_address},
+                #{teaAddress},
             </if>
             <if test="teaPhone != null">
-                #{tea_phone},
+                #{teaPhone},
             </if>
             <if test="teaCreatedate != null">
-                #{tea_createdate},
+                #{teaCreatedate},
             </if>
         </trim>
     </insert>

@@ -85,7 +85,7 @@ public class Teacher implements Serializable {
      * 创建时间
      */
     @TableField("tea_createdate")
-    private Date teaCreatdate;
+    private Date teaCreatedate;
 
 
 }

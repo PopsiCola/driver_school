@@ -91,7 +91,7 @@ public class LoginController {
             }
         } else {
             teacher = teacherService.findTeacher(account);
-            if(admin != null && teacher.getTeaPwd().equals(password)) {
+            if(teacher != null && teacher.getTeaPwd().equals(password)) {
                 flag = true;
                 request.getSession().setAttribute("teacher", teacher);
             } else if(teacher == null){
@@ -165,7 +165,7 @@ public class LoginController {
             teacher.setTeaAccount(account);
             teacher.setTeaEmail(email);
             teacher.setTeaPwd(password);
-            teacher.setTeaCreatdate(new Date());
+            teacher.setTeaCreatedate(new Date());
             //保存教练
             teacherService.saveTeacher(teacher);
 
