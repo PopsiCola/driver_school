@@ -94,7 +94,7 @@ public class MailServiceImpl implements MailService{
         //创建邮件正文
         Context context = new Context();
         context.setVariable("verifyCode", code);
-        context.setVariable("userMail", to);
+        context.setVariable("subject", subject);
         //将模板内容解析成html
         String template = templateEngine.process("emailTemplate", context);
         try {
