@@ -221,6 +221,10 @@
                       contentType:"application/json",
                       success: function(result){
                           if(200==result.code){
+                              layer.msg(result.msg, {
+                                  time: 2000,
+                                  btn: ['返回']
+                              });
                               if(result.role == 1) {
                                   window.location.href="/student/index"
                               } else if(result.role == 2) {
@@ -229,7 +233,11 @@
                                   window.location.href="/teacher/index"
                               }
                           }else{
-                              alert("账户或密码不正确！");
+                              // alert("账户或密码不正确！");
+                              layer.msg(result.msg, {
+                                  time: 2000,
+                                  btn: ['返回']
+                              });
                               $('input[name="username"]').val("");
                               $('input[name="password"]').val("");
                           }

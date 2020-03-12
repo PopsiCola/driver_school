@@ -29,7 +29,7 @@ public class TeacherController {
      * 展示首页
      * @return
      */
-    @RequestMapping(value = "index", method = RequestMethod.POST)
+    @RequestMapping(value = "index")
     public ModelAndView showIndex() {
         ModelAndView modelAndView = new ModelAndView("teacher/index");
         return modelAndView;
