@@ -83,7 +83,7 @@
                             <div class="layui-input-block">
                                 <input type="text" id="getcode" class="layui-input " style="width:140px;" placeholder="验证码"/>
                             </div>
-                            <span class="form-group input-group-btn">
+                            <span class="form-group input-group-btn" style="padding-bottom: 7px">
                              <button class="btn btn-default" id="getCheckCode" type="button">获取验证码</button>
                             </span>
                         </div>
@@ -155,7 +155,7 @@
                             <div class="layui-input-block">
                                 <input type="text" id="registCode" class="layui-input " style="width:140px;" placeholder="验证码"/>
                             </div>
-                            <span class="form-group input-group-btn">
+                            <span class="form-group input-group-btn"  style="padding-bottom: 7px">
                              <button class="btn btn-default" id="registCheckCode" type="button">获取验证码</button>
                             </span>
                         </div>
@@ -229,7 +229,7 @@
                   // alert(JSON.stringify(data.field));
                   $.ajax({
                       type: "POST",
-                      url: "login",
+                      url: "login/login",
                       data: JSON.stringify(data.field),
                       // data: data,
                       dataType: "json",
