@@ -35,5 +35,17 @@ public class StudentController {
         return modelAndView;
     }
 
+    /**
+     * 显示学员修改信息页
+     * @return
+     */
+    @RequestMapping(value ="/student-info")
+    public ModelAndView studentInfo() {
+        ModelAndView modelAndView = new ModelAndView("student/student-info");
+        return modelAndView;
+    }
+
+
+
 }
 
