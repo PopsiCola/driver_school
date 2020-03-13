@@ -96,4 +96,36 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public void saveStudent(Student student) {
         studentMapper.saveStudent(student);
     }
+
+    /**
+     * 修改学员信息
+     * @param student
+     */
+    @Override
+    public void editStudent(Student student) {
+        studentMapper.editStudent(student);
+    }
+
+    /**
+     * 验证密码是否正确
+     * @param email
+     * @param pwd
+     * @return
+     */
+    @Override
+    public Map<String, Object> verifyPwd(String email, String pwd) {
+        Map<String, Object> result = new HashMap<>();
+        //邮箱号唯一，可以根据邮箱号查找学员的密码
+        Student student = findStuByEmail(email);
+        //对比密码是否正确
+        if(!pwd.equals(student.getStuPwd())) {
+            result.put("code", 201);
+            result.put("msg", "密码错误，请重新输入！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("student", student);
+        result.put("msg", "密码正确！");
+        return result;
+    }
 }

@@ -18,6 +18,16 @@
     <script>
         // 是否开启刷新记忆tab功能
         // var is_remember = false;
+        function Close(){
+            var tabtitle = $(".layui-tab-title li");
+            // alert(tabtitle)
+            var ids = new Array();
+            $.each(tabtitle, function (i) {
+                ids[i] = $(this).attr("lay-id");
+            })
+            //如果关闭所有 ，即将所有的lay-id放进数组，执行tabDeleteAll
+            setCookie('tab_list',[]);
+        }
     </script>
 </head>
 <body>
@@ -33,7 +43,7 @@
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
               <dd><a onclick="x_admin_show('个人信息','/student/student-info')">个人信息</a></dd>
                 <dd><a onclick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
-              <dd><a href="/login/loginOut">退出</a></dd>
+              <dd><a href="/login/loginOut?role=1" onclick="Close()">退出</a></dd>
             </dl>
           </li>
           <li class="layui-nav-item to-index"><a href="/">首页</a></li>

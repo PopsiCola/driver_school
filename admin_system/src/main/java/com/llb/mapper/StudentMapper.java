@@ -25,4 +25,6 @@ public interface StudentMapper extends BaseMapper<Student> {
     void updateStuPwd(String stuEmail, String stuPwd);
 
     void saveStudent(Student student);
+
+    void editStudent(Student student);
 }

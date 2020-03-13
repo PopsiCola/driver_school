@@ -1,12 +1,12 @@
 package com.llb.entity;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -64,10 +64,11 @@ public class Student implements Serializable {
     private Integer stuSex;
 
     /**
-     * 学员年龄
+     * 学员生日
      */
-    @TableField("stu_age")
-    private Integer stuAge;
+    @TableField("stu_birthday")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    private Date stuBirthday;
 
     /**
      * 学员家庭地址
@@ -85,6 +86,7 @@ public class Student implements Serializable {
      * 学员报名时间
      */
     @TableField("stu_createdate")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date stuCreatedate;
 
 

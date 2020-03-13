@@ -63,4 +63,17 @@ public interface IStudentService extends IService<Student> {
      * @param student
      */
     void saveStudent(Student student);
+
+    /**
+     * 修改学员信息
+     * @param student
+     */
+    void editStudent(Student student);
+
+    /**
+     * 验证密码是否正确
+     * @param pwd
+     * @return
+     */
+    Map<String, Object> verifyPwd(String email, String pwd);
 }

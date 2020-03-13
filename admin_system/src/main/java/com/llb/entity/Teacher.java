@@ -67,7 +67,7 @@ public class Teacher implements Serializable {
      * 教练年龄
      */
     @TableField("tea_age")
-    private Integer teaAge;
+    private Date teaAge;
 
     /**
      * 教练地址
