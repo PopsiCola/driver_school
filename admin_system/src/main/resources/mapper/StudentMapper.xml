@@ -3,26 +3,26 @@
 <mapper namespace="com.llb.mapper.StudentMapper">
     <!--通过用户名或邮箱查找学员-->
     <select id="findStudent" resultType="com.llb.entity.Student" parameterType="String">
-        SELECT stu_id, stu_account , stu_name, stu_email, stu_pwd, stu_sex, DATE_FORMAT(stu_birthday,'%Y-%m-%d'),
-         stu_address, stu_phone, DATE_FORMAT(stu_createdate,'%Y-%m-%d')
-        FROM student
-        WHERE stu_account = #{account} OR stu_email = #{account}
+        SELECT s.stu_id, s.stu_account , s.stu_name, s.stu_email, s.stu_pwd, s.stu_sex, DATE_FORMAT(s.stu_birthday,'%Y-%m-%d') as stu_birthday,
+         s.stu_address, s.stu_phone, DATE_FORMAT(s.stu_createdate,'%Y-%m-%d %H:%i:%S') as stu_createDate
+        FROM student s
+        WHERE s.stu_account = #{account} OR s.stu_email = #{account}
     </select>
 
     <!--通过用户名和邮箱查找学员-->
     <select id="findStuByAccAndMail" resultType="com.llb.entity.Student" parameterType="String">
-        SELECT stu_id, stu_account , stu_name, stu_email, stu_pwd, stu_sex, DATE_FORMAT(stu_birthday,'%Y-%m-%d'),
-         stu_address, stu_phone, DATE_FORMAT(stu_createdate,'%Y-%m-%d')
-        FROM student
-        WHERE stu_account = #{account} AND stu_email = #{email}
+        SELECT s.stu_id, s.stu_account , s.stu_name, s.stu_email, s.stu_pwd, s.stu_sex, DATE_FORMAT(s.stu_birthday,'%Y-%m-%d') as stu_birthday,
+         s.stu_address, s.stu_phone, DATE_FORMAT(s.stu_createdate,'%Y-%m-%d %H:%i:%S') as stu_createDate
+        FROM student s
+        WHERE s.stu_account = #{account} AND s.stu_email = #{email}
     </select>
 
     <!--通过邮箱查找学员-->
     <select id="findStuByEmail" resultType="Student" parameterType="String">
-        SELECT stu_id, stu_account , stu_name, stu_email, stu_pwd, stu_sex, DATE_FORMAT(stu_birthday,'%Y-%m-%d'),
-         stu_address, stu_phone, DATE_FORMAT(stu_createdate,'%Y-%m-%d')
-        FROM student
-        WHERE stu_email = #{stuEmail}
+        SELECT s.stu_id, s.stu_account , s.stu_name, s.stu_email, s.stu_pwd, s.stu_sex, DATE_FORMAT(s.stu_birthday,'%Y-%m-%d') as stu_birthday,
+         s.stu_address, s.stu_phone, DATE_FORMAT(s.stu_createdate,'%Y-%m-%d %H:%i:%S') as stu_createDate
+        FROM student s
+        WHERE s.stu_email = #{stuEmail}
     </select>
 
     <!--修改密码-->

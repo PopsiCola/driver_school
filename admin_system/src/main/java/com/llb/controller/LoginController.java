@@ -8,9 +8,9 @@ import com.llb.service.IAdminService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
+import com.llb.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -140,7 +140,7 @@ public class LoginController {
             student.setStuAccount(account);
             student.setStuEmail(email);
             student.setStuPwd(password);
-            student.setStuCreatedate(new Date());
+            student.setStuCreatedate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd"));
 
             //保存信息
             studentService.saveStudent(student);
