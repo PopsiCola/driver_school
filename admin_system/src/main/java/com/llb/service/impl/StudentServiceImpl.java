@@ -108,15 +108,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     /**
      * 验证密码是否正确
-     * @param email
+     * @param id
      * @param pwd
      * @return
      */
     @Override
-    public Map<String, Object> verifyPwd(String email, String pwd) {
+    public Map<String, Object> verifyPwd(String id, String pwd) {
         Map<String, Object> result = new HashMap<>();
         //邮箱号唯一，可以根据邮箱号查找学员的密码
-        Student student = findStuByEmail(email);
+        Student student = studentMapper.findStudentById(id);
         //对比密码是否正确
         if(!pwd.equals(student.getStuPwd())) {
             result.put("code", 201);

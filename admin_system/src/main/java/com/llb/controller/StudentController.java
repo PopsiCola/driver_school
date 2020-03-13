@@ -63,8 +63,9 @@ public class StudentController {
         //将用户传来的表单数据转换成实体类
         Student student = JSONObject.parseObject(JSONObject.toJSONString(stuInfo), Student.class);
         String stuEmail = stuInfo.get("stuEmail");
+        String stuId = stuInfo.get("stuId");
         //验证密码是否正确
-        result = studentService.verifyPwd(stuEmail, stuInfo.get("stuPwd"));
+        result = studentService.verifyPwd(stuId, stuInfo.get("stuPwd"));
         //密码正确
         if("200".equals(result.get("code").toString())) {
             //修改学员信息

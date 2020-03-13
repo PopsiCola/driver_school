@@ -30,7 +30,7 @@
                   <span class="x-red">*</span>用户名
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="account" name="account" lay-verify="required" th:value="${session.student.stuAccount}" class="layui-input">
+                  <input type="text" id="account" name="account" th:value="${session.student.stuAccount}" class="layui-input">
               </div>
               <div class="layui-form-mid layui-word-aux">
                   <span class="x-red">*</span>可以成为您的登入名
@@ -53,7 +53,7 @@
                   <span class="x-red">*</span>邮箱
               </label>
               <div class="layui-input-inline">
-                  <input type="text" th:value="${session.student.stuEmail}" id="L_email" name="email" lay-verify="email"
+                  <input type="text" th:value="${session.student.stuEmail}" id="L_email" name="email"
                   autocomplete="off" class="layui-input">
               </div>
               <div class="layui-form-mid layui-word-aux">
@@ -92,9 +92,9 @@
               </label>
               <p ></p>
               <div align="left">
-                  <input type="radio"  name="sex" value="1" title="男" th:checked="${session.student.stuSex eq '1'}?checked:''">
-                  <input type="radio" name="sex" value="0" title="女" th:checked="${session.student.stuSex eq '0'}?checked:''">
-                  <input type="radio" name="sex" value="2" title="未知" th:checked="${session.student.stuSex eq '2'}?checked:''">
+                  <input type="radio"  name="sex" value="1" title="男" th:checked="${(session.student.stuSex == 1)}? 'true' : 'false'">
+                  <input type="radio" name="sex" value="0" title="女" th:checked="${(session.student.stuSex == 0)}? 'true' : 'false'">
+                  <input type="radio" name="sex" value="2" title="未知" th:checked="${(session.student.stuSex != 1 && session.student.stuSex != 0)}? 'true' : 'false'">
               </div>
           </div>
           <div class="layui-form-item">
@@ -143,6 +143,8 @@
           </div>
       </form>
     </div>
+    <script th:src="@{/js/driversystem/common/mailCode.js}"></script>
+    <script th:src="@{/js/driversystem/common/verifyInput.js}"></script>
     <script>
 
         //时间选择器
@@ -180,6 +182,28 @@
           //监听提交
           form.on('submit(add)', function(data){
 
+              var stuAccount = $("#account").val();
+              var stuEmail = $("#L_email").val();
+              console.log(stuAccount);
+              console.log(stuEmail);
+              //对用户名和邮箱进行判断，不能都为空
+              if(stuAccount == '' && stuEmail == '') {
+                  layer.msg('用户名和邮箱不能同时为空！', {
+                      time: 2000, //2s后自动关闭
+                  });
+                  return false;
+              }
+
+              //验证邮箱格式
+              if(stuEmail != null && stuEmail != '') {
+                if(!checkEmail(stuEmail)) {
+                    layer.msg('邮箱格式不正确！', {
+                        time: 2000, //2s后自动关闭
+                    });
+                    return false;
+                }
+              }
+
             var data = {stuId:$("#stuId").val(),
                 stuAccount:$("#account").val(),
                 stuName:$("#username").val(),
@@ -208,13 +232,12 @@
                               var index = parent.layer.getFrameIndex(window.name);
                               //关闭当前frame
                               parent.layer.close(index);
+                              //重新加载页面
+                              parent.location.reload();
                           });
                       }else{
                           layer.alert(result.msg, {icon: 5},function () {
-                              // 获得frame索引
-                              var index = parent.layer.getFrameIndex(window.name);
-                              //关闭当前frame
-                              parent.layer.close(index);
+                              time: 2000//2s后自动关闭
                           });
                           // $('input[name="username"]').val();
                           // $('input[name="password"]').val();
