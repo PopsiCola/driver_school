@@ -116,6 +116,7 @@
           <if test="stuAccount!=null">stu_account=#{stuAccount},</if>
           <if test="stuName!=null">stu_name=#{stuName},</if>
           <if test="stuEmail!=null">stu_email=#{stuEmail},</if>
+          <if test="stuPwd!=null">stu_pwd=#{stuPwd},</if>
           <if test="stuSex!=null">stu_sex=#{stuSex},</if>
           <if test="stuBirthday!=null">stu_birthday=#{stuBirthday},</if>
           <if test="stuAddress!=null">stu_address=#{stuAddress},</if>

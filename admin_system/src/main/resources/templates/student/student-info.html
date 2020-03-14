@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>管理员信息</title>
+    <title>学员信息</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -26,8 +26,7 @@
         <input type="text" hidden="hidden" id="stuId" th:value="${session.student.stuId}"/>
         <form class="layui-form" th:align="center">
           <div class="layui-form-item">
-              <label for="account" class="layui-form-label">
-                  <span class="x-red">*</span>用户名
+              <label for="account" class="layui-form-label">用户名
               </label>
               <div class="layui-input-inline">
                   <input type="text" id="account" name="account" th:value="${session.student.stuAccount}" class="layui-input">
@@ -196,10 +195,10 @@
 
               //验证邮箱格式
               if(stuEmail != null && stuEmail != '') {
-                if(!checkEmail(stuEmail)) {
-                    layer.msg('邮箱格式不正确！', {
-                        time: 2000, //2s后自动关闭
-                    });
+                if(!checkEmail(stuEmail)) {layer.msg('邮箱格式不正确！', {
+                    time: 2000, //2s后自动关闭
+                });
+
                     return false;
                 }
               }

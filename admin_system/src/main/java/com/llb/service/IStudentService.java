@@ -23,7 +23,14 @@ public interface IStudentService extends IService<Student> {
     Student findStudent(String account);
 
     /**
-     * 根据学员名或邮箱查询学员
+     * 根据学员id查询信息
+     * @param stuId
+     * @return
+     */
+    Student findStuById(String stuId);
+
+    /**
+     * 根据学员名和邮箱查询学员
      * @param account
      * @return
      */

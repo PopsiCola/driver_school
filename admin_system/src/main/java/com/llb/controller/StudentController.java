@@ -7,7 +7,6 @@ import com.llb.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +49,16 @@ public class StudentController {
     }
 
     /**
+     * 显示学员修改密码页
+     * @return
+     */
+    @RequestMapping("/showStuEditPwd")
+    public ModelAndView showStuEditPwd() {
+        ModelAndView modelAndView = new ModelAndView("student/editPassword");
+        return modelAndView;
+    }
+
+    /**
      * 编辑学员信息
      * @param stuInfo 前端表单中填写的的数据
      * @param request
@@ -81,8 +90,40 @@ public class StudentController {
         return result;
     }
 
+    /**
+     * 学员修改密码
+     * @param map
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "editSutPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> editSutPwd(@RequestBody Map<String, String> map, HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+        //将用户传来的表单数据转换成实体类
+        Student newUser = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
+        String stuNewPwd = map.get("stuNewPwd");
+        Student student = studentService.findStuById(newUser.getStuId());
+        //既然能够给到stuId，那么用户就是存在的
+        if(student == null) {
+            result.put("code", 202);
+            result.put("msg", "用户不存在！");
+            return result;
+        }
+        //判断学员密码是否正确
+        if(!newUser.getStuPwd().equals(student.getStuPwd())) {
+            result.put("code", 201);
+            result.put("msg", "密码错误！");
+            return result;
+        }
+        //修改密码
+        newUser.setStuPwd(stuNewPwd);
+        studentService.editStudent(newUser);
 
-
+        result.put("code", 200);
+        result.put("msg", "修改密码成功！");
+        return result;
+    }
 
 }
 

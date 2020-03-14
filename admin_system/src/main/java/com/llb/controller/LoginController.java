@@ -132,6 +132,7 @@ public class LoginController {
         Admin admin = new Admin();
         Teacher teacher = new Teacher();
 
+        //角色判断
         if("1".equals(role)) {
             String s = UUID.randomUUID().toString();
             System.out.println(s);
