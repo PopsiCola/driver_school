@@ -4,14 +4,18 @@ package com.llb.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.llb.entity.Student;
 import com.llb.service.IStudentService;
+import com.llb.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * <p>
@@ -27,6 +31,8 @@ public class StudentController {
 
     @Autowired
     private IStudentService studentService;
+    @Autowired
+    private MailService mailService;
 
     /**
      * 展示学员首页
@@ -96,7 +102,7 @@ public class StudentController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "editSutPwd", method = RequestMethod.POST)
+    @RequestMapping(value = "/editSutPwd", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> editSutPwd(@RequestBody Map<String, String> map, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
@@ -120,6 +126,101 @@ public class StudentController {
         newUser.setStuPwd(stuNewPwd);
         studentService.editStudent(newUser);
 
+        result.put("code", 200);
+        result.put("msg", "修改密码成功！");
+        return result;
+    }
+
+    /**
+     * 显示邮箱找回密码界面
+     * @return
+     */
+    @RequestMapping("/found_password")
+    public ModelAndView foundPassword(){
+        ModelAndView modelAndView = new ModelAndView("student/found_password");
+        return modelAndView;
+    }
+
+    /**
+     * 发送学员验证码
+     * @param map
+     * @param request
+     * @return
+     */
+    @RequestMapping("/getCode")
+    public Map<String, Object> sendForgetPwd(@RequestBody Map<String, String> map, HttpServletRequest request) {
+        final HttpSession httpSession = request.getSession();
+        Map<String, Object> result = new HashMap<>();
+        //获取学员id
+        String stuId = map.get("stuId");
+        //获取邮箱号
+        String stuEmail = map.get("stuEmail");
+        //验证邮箱号是不是该学员绑定的邮箱号
+        Student student = studentService.findStuById(stuId);
+        if(!stuEmail.equals(student.getStuEmail())) {
+            result.put("code", 200);
+            result.put("msg", "邮箱未绑定该账号");
+            return result;
+        }
+
+        //给邮箱发送验证码
+       result = mailService.sendHtmlMail(stuEmail, "忘记密码");
+
+        //将验证码放到浏览器缓存5分钟，5分钟失效
+        httpSession.setAttribute("verifyMailCode", result.get("verifyMailCode"));
+        //设置过期时间
+        try {
+            //设置失效时间
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    httpSession.removeAttribute("verifyMailCode");
+                    System.out.println("邮箱验证码缓存信息删除成功");
+                    timer.cancel();
+                }
+            }, 5*60*1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "发送验证码失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "验证码已发送至邮箱，注意查收！");
+
+        return result;
+    }
+
+    /**
+     * 通过邮箱验证码来修改密码-学员忘记密码
+     * @param map
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/editPwdByMail", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> editPwdByMail(@RequestBody Map<String, String> map, HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+
+        //将用户传来的表单数据转换成实体类
+        Student student = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
+        //获取用户验证码
+        String verifyCode = map.get("verifyCode");
+
+        //获取验证码
+        Object verifyMailCode = request.getSession().getAttribute("verifyMailCode");
+        if("".equals(verifyMailCode) || verifyMailCode == null) {
+            result.put("code", 201);
+            result.put("msg", "验证码已过期！");
+            return result;
+        } else if(verifyCode == verifyMailCode) {
+            result.put("code", 201);
+            result.put("msg", "验证码不正确，请重新输入！");
+            return result;
+        }
+
+        studentService.editStudent(student);
         result.put("code", 200);
         result.put("msg", "修改密码成功！");
         return result;

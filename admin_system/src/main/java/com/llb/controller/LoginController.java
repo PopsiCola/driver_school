@@ -280,6 +280,7 @@ public class LoginController {
         //将验证码放到浏览器缓存5分钟，5分钟失效
         httpSession.setAttribute("verifyMailCode", result.get("verifyMailCode"));
 
+        //设置过期时间
         try {
             //设置失效时间
             Timer timer = new Timer();

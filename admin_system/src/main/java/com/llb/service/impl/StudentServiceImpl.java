@@ -75,6 +75,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return studentMapper.findStuByEmail(email);
     }
 
+    
+
     /**
      * 修改学员密码
      * @param stuEmail
