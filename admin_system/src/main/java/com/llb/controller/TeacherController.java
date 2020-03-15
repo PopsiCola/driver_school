@@ -35,9 +35,9 @@ public class TeacherController {
         return modelAndView;
     }
     
-    @RequestMapping(value = "/information")
+    @RequestMapping(value = "/student_administer")
     public ModelAndView information() {
-        ModelAndView modelAndView = new ModelAndView("teacher/information");
+        ModelAndView modelAndView = new ModelAndView("teacher/student_administer");
         return modelAndView;
     }
 }
