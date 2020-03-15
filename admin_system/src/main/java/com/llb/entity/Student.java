@@ -85,6 +85,12 @@ public class Student implements Serializable {
      */
     @TableField("stu_createdate")
     private String stuCreatedate;
+    
+    /**
+     * 学员报名时间
+     */
+    @TableField("stu_two")
+    private String stuTwo;
 
 
 }

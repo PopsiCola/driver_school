@@ -53,11 +53,11 @@
               <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
             <th>ID</th>
-            <th>登录名</th>
-            <th>手机</th>
+            <th>姓名</th>
             <th>邮箱</th>
-            <th>角色</th>
-            <th>加入时间</th>
+            <th>密码</th>
+            <th>报名时间</th>
+            <th>家庭地址</th>
             <th>状态</th>
             <th>操作</th>
         </thead>
@@ -66,12 +66,12 @@
             <td>
               <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
             </td>
-            <td>1</td>
-            <td>admin</td>
-            <td>18925139194</td>
-            <td>113664000@qq.com</td>
-            <td>超级管理员</td>
-            <td>2017-01-01 11:11:42</td>
+            <td th:text="${list.stuId}"></td>
+            <td th:text="${list.stuName}"></td>
+            <td th:text="${list.stuEmail}"></td>
+            <td th:text="${list.stuPwd}"></td>
+            <td th:text="${list.stuCreatedate}"></td>
+            <td th:text="${list.stuAddress}"></td>
             <td class="td-status">
               <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
             <td class="td-manage">

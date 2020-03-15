@@ -94,6 +94,7 @@ public class LoginController {
             if(admin != null && teacher.getTeaPwd().equals(password)) {
                 flag = true;
                 request.getSession().setAttribute("teacher", teacher);
+                System.out.println(teacher);
             } else if(teacher == null){
                 result.put("msg", "用户名或账户不存在！");
             } else {

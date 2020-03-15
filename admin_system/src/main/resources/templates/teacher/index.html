@@ -66,7 +66,7 @@
     <div id="side-nav">
         <ul id="nav">
             <li>
-                <a _href="/teacher/information">
+                <a th:_href="@{/teacher/student_administer(teaId=${session.teacher.teaId})}">
                     <i class="iconfont">&#xe70b;</i>
                     <cite>会员管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>

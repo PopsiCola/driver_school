@@ -17,6 +17,14 @@
         WHERE s.stu_id = #{stuId}
     </select>
 
+    <!--通过教练id查找学员-->
+    <select id="findTeachertwoById" resultType="com.llb.entity.Student" parameterType="String">
+        SELECT s.stu_id, s.stu_account , s.stu_name, s.stu_email, s.stu_pwd, s.stu_sex, DATE_FORMAT(s.stu_birthday,'%Y-%m-%d') as stu_birthday,
+        s.stu_address, s.stu_phone,s.stu_two, DATE_FORMAT(s.stu_createdate,'%Y-%m-%d %H:%i:%S') as stu_createDate
+        FROM student s
+        WHERE s.stu_two = #{teaId}
+    </select>
+
     <!--通过用户名和邮箱查找学员-->
     <select id="findStuByAccAndMail" resultType="com.llb.entity.Student" parameterType="String">
         SELECT s.stu_id, s.stu_account , s.stu_name, s.stu_email, s.stu_pwd, s.stu_sex, DATE_FORMAT(s.stu_birthday,'%Y-%m-%d') as stu_birthday,

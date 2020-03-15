@@ -43,6 +43,16 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public Student findStuById(String stuId) {
         return studentMapper.findStudentById(stuId);
     }
+    
+    /**
+     * 根据教练id查询信息
+     * @param stuId
+     * @return
+     */
+    @Override
+    public Student findTeaTwoById(String teaId) {
+    	return studentMapper.findTeachertwoById(teaId);
+    }
 
     /**
      * 根据学员名或邮箱查询学员
