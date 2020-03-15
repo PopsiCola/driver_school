@@ -18,6 +18,10 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
 
     Teacher findTeacher(@Param("account") String account, @Param("email") String email);
 
+    Teacher findTeacherById(String teaId);
+
+    void editTeacher(Teacher teacher);
+
     Teacher findTeaByAccAndPwd(@Param("account") String account, @Param("email") String email);
 
     Teacher findTeacherByEmail(String teaEmail);

@@ -66,8 +66,8 @@ public class Teacher implements Serializable {
     /**
      * 教练年龄
      */
-    @TableField("tea_age")
-    private Date teaAge;
+    @TableField("tea_birthday")
+    private String teaBirthday;
 
     /**
      * 教练地址
@@ -85,7 +85,7 @@ public class Teacher implements Serializable {
      * 创建时间
      */
     @TableField("tea_createdate")
-    private Date teaCreatedate;
+    private String teaCreatedate;
 
 
 }

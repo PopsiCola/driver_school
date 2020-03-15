@@ -15,7 +15,14 @@
         WHERE tea_account = #{account} OR tea_email = #{email}
     </select>
 
-    <!--通过姓名查找教练-->
+    <!--通过id查找教练-->
+    <select id="findTeacherById" resultType="com.llb.entity.Teacher" parameterType="String">
+        SELECT *
+        FROM teacher
+        WHERE tea_id = #{teaId}
+    </select>
+
+    <!--通过账号和邮箱号查找教练-->
     <select id="findTeaByAccAndPwd" resultType="com.llb.entity.Teacher" parameterType="String">
         SELECT *
         FROM teacher
@@ -34,6 +41,22 @@
         UPDATE teacher
         SET tea_pwd = #{teacherPwd}
         WHERE tea_email = #{teaEmail}
+    </update>
+
+    <!--修改教练信息-->
+    <update id="editTeacher" parameterType="Teacher">
+        UPDATE teacher
+        <trim prefix="set" suffixOverrides=",">
+            <if test="teaAccount!=null">tea_account=#{teaAccount},</if>
+            <if test="teaName!=null">tea_name=#{teaName},</if>
+            <if test="teaEmail!=null">tea_email=#{teaEmail},</if>
+            <if test="teaPwd!=null">tea_pwd=#{teaPwd},</if>
+            <if test="teaSex!=null">tea_sex=#{teaSex},</if>
+            <if test="teaBirthday!=null">tea_birthday=#{teaBirthday},</if>
+            <if test="teaAddress!=null">tea_address=#{teaAddress},</if>
+            <if test="teaPhone!=null">tea_phone=#{teaPhone},</if>
+        </trim>
+        WHERE tea_id = #{teaId}
     </update>
 
     <!--保存教练信息-->
@@ -58,8 +81,8 @@
             <if test="teaSex != null">
                 tea_sex,
             </if>
-            <if test="teaAge != null">
-                tea_age,
+            <if test="teaBirthday != null">
+                tea_birthday,
             </if>
             <if test="teaAddress != null">
                 tea_address,
@@ -90,8 +113,8 @@
             <if test="teaSex != null">
                 #{teaSex},
             </if>
-            <if test="teaAge != null">
-                #{teaAge},
+            <if test="teaBirthday != null">
+                #{teaBirthday},
             </if>
             <if test="teaAddress != null">
                 #{teaAddress},

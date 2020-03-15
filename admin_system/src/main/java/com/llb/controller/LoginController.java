@@ -154,7 +154,7 @@ public class LoginController {
             admin.setAdminAccount(account);
             admin.setAdminMail(email);
             admin.setAdminPwd(password);
-            admin.setAdminCreatedate(new Date());
+            admin.setAdminCreatedate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd"));
             //保存管理员
             adminService.saveAdmin(admin);
 
@@ -167,7 +167,7 @@ public class LoginController {
             teacher.setTeaAccount(account);
             teacher.setTeaEmail(email);
             teacher.setTeaPwd(password);
-            teacher.setTeaCreatedate(new Date());
+            teacher.setTeaCreatedate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd"));
             //保存教练
             teacherService.saveTeacher(teacher);
 

@@ -47,6 +47,25 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     /**
+     * 通过教练id查询教练
+     * @param teaId
+     * @return
+     */
+    @Override
+    public Teacher findTeacherById(String teaId) {
+        return teacherMapper.findTeacherById(teaId);
+    }
+
+    /**
+     * 修改教练信息
+     * @param teacher
+     */
+    @Override
+    public void editTeacher(Teacher teacher) {
+        teacherMapper.editTeacher(teacher);
+    }
+
+    /**
      * 根据用户名称和邮箱查询教练
      * @param account
      * @param email

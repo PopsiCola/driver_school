@@ -54,5 +54,5 @@ public class Admin implements Serializable {
      * 管理员创建时间
      */
     @TableField("admin_createdate")
-    private Date adminCreatedate;
+    private String adminCreatedate;
 }

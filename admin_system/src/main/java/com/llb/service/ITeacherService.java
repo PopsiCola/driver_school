@@ -31,6 +31,19 @@ public interface ITeacherService extends IService<Teacher> {
     Teacher findTeacher(String account, String email);
 
     /**
+     * 通过教练id查询教练
+     * @param teaId
+     * @return
+     */
+    Teacher findTeacherById(String teaId);
+
+    /**
+     * 修改用户信息
+     * @param teacher
+     */
+    void editTeacher(Teacher teacher);
+
+    /**
      * 根据用户名称和邮箱查询教练
      * @param account
      * @param email
