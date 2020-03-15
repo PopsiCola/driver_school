@@ -226,7 +226,7 @@
                   contentType:"application/json",
                   success: function(result){
                       if(200==result.code){
-                          layer.alert(result.msg, {icon: 6},function () {
+                           layer.alert(result.msg, {icon: 6},function () {
                               // 获得frame索引
                               var index = parent.layer.getFrameIndex(window.name);
                               //关闭当前frame
@@ -235,19 +235,12 @@
                               parent.location.reload();
                           });
                       }else{
-                          layer.alert(result.msg, {icon: 5},function () {
-                              time: 2000//2s后自动关闭
+                          layer.alert(result.msg, {icon: 5},function (index) {
+                              layer.close(index);
                           });
-                          // $('input[name="username"]').val();
-                          // $('input[name="password"]').val();
-                          // $('input[name="password"]').val();
-                          // $('input[name="password"]').val();
-                          // $('input[name="password"]').val();
-                          // $('input[name="password"]').val();
                       }
                   }
               });
-
             return false;
           });
 
