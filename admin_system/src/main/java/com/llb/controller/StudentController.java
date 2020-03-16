@@ -226,5 +226,16 @@ public class StudentController {
         return result;
     }
 
+
+    /**
+     * 学员预约教练
+     * @return
+     */
+    @RequestMapping("/appointmentCoach")
+    public ModelAndView appointmentCoach() {
+        ModelAndView modelAndView = new ModelAndView("teacher/appointmentCoach");
+        return modelAndView;
+    }
+
 }
 
