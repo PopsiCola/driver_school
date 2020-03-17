@@ -37,6 +37,11 @@ public class Appointment implements Serializable {
     private String teaId;
 
     /**
+     * 预约科目
+     */
+    private String subject;
+
+    /**
      * 学员预约开始时间
      */
     private String appointmentStart;
@@ -76,5 +81,9 @@ public class Appointment implements Serializable {
      */
     private String appointmentFlag;
 
+    /**
+     * 时间戳
+     */
+    private String datestamp;
 
 }

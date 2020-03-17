@@ -2,4 +2,90 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.llb.mapper.AppointmentMapper">
 
+    <!--保存学员预约信息-->
+    <insert id="saveAppointMent" parameterType="Appointment">
+        INSERT INTO appointment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stuId != null">
+                stu_id,
+            </if>
+            <if test="teaId != null">
+                tea_id,
+            </if>
+            <if test="subject != null">
+                subject,
+            </if>
+            <if test="appointmentStart != null">
+                appointment_start,
+            </if>
+            <if test="appointmentEnd != null">
+                appointment_end,
+            </if>
+            <if test="boardingTime != null">
+                boarding_time,
+            </if>
+            <if test="alightingTime != null">
+                alighting_time,
+            </if>
+            <if test="stuStar != null">
+                stu_star,
+            </if>
+            <if test="stuContent != null">
+                stu_content,
+            </if>
+            <if test="teaContent != null">
+                tea_content,
+            </if>
+            <if test="appointmentFlag != null">
+                appointment_flag,
+            </if>
+            <if test="datestamp != null">
+                datestamp,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="stuId != null">
+                #{stuId},
+            </if>
+            <if test="teaId != null">
+                #{teaId},
+            </if>
+            <if test="subject != null">
+                #{subject},
+            </if>
+            <if test="appointmentStart != null">
+                #{appointmentStart},
+            </if>
+            <if test="appointmentEnd != null">
+                #{appointmentEnd},
+            </if>
+            <if test="boardingTime != null">
+                #{boardingTime},
+            </if>
+            <if test="alightingTime != null">
+                #{alightingTime},
+            </if>
+            <if test="stuStar != null">
+                #{stuStar},
+            </if>
+            <if test="stuContent != null">
+                #{stuContent},
+            </if>
+            <if test="teaContent != null">
+                #{teaContent},
+            </if>
+            <if test="appointmentFlag != null">
+                #{appointmentFlag},
+            </if>
+            <if test="datestamp != null">
+                #{datestamp},
+            </if>
+        </trim>
+    </insert>
 </mapper>

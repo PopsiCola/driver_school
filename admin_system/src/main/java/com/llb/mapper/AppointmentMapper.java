@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface AppointmentMapper extends BaseMapper<Appointment> {
 
+    void saveAppointMent(Appointment appointment);
 }

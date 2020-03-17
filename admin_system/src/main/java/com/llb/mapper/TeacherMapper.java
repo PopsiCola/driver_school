@@ -4,6 +4,8 @@ import com.llb.entity.Teacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  * 教练员表 Mapper 接口
@@ -13,6 +15,8 @@ import org.apache.ibatis.annotations.Param;
  * @since 2020-03-06
  */
 public interface TeacherMapper extends BaseMapper<Teacher> {
+
+    List<Teacher> findAllTeacher();
 
     Teacher findTeacher(String account);
 

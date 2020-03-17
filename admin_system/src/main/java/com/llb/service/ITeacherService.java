@@ -2,8 +2,8 @@ package com.llb.service;
 
 import com.llb.entity.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.llb.mapper.TeacherMapper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +15,12 @@ import java.util.Map;
  * @since 2020-03-06
  */
 public interface ITeacherService extends IService<Teacher> {
+
+    /**
+     * 查找所有的教练
+     * @return
+     */
+    List<Teacher> findAllTeacher();
 
     /**
      * 根据教练名或邮箱查询教练

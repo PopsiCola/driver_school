@@ -1,6 +1,5 @@
 package com.llb.service.impl;
 
-import com.llb.entity.Student;
 import com.llb.entity.Teacher;
 import com.llb.mapper.TeacherMapper;
 import com.llb.service.ITeacherService;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +24,16 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
 
     @Autowired
     private TeacherMapper teacherMapper;
+
+
+    /**
+     * 查找所有的教练
+     * @return
+     */
+    @Override
+    public List<Teacher> findAllTeacher() {
+        return teacherMapper.findAllTeacher();
+    }
 
     /**
      * 根据教练名或邮箱查询教练

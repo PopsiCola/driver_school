@@ -3,7 +3,9 @@ package com.llb.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.llb.entity.Student;
+import com.llb.entity.Teacher;
 import com.llb.service.IStudentService;
+import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * <p>
@@ -31,6 +30,8 @@ public class StudentController {
 
     @Autowired
     private IStudentService studentService;
+    @Autowired
+    private ITeacherService teacherService;
     @Autowired
     private MailService mailService;
 
@@ -233,7 +234,11 @@ public class StudentController {
      */
     @RequestMapping("/appointmentCoach")
     public ModelAndView appointmentCoach() {
-        ModelAndView modelAndView = new ModelAndView("teacher/appointmentCoach");
+        ModelAndView modelAndView = new ModelAndView("student/appointmentCoach");
+
+        //学员预约时，需要知道有哪些教练可以预约
+        List<Teacher> teacherList = teacherService.findAllTeacher();
+        modelAndView.addObject("teacherList", teacherList);
         return modelAndView;
     }
 
