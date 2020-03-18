@@ -17,6 +17,7 @@ import sun.misc.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,8 +58,16 @@ public class TeacherController {
     public ModelAndView information(String teaId) {
     	System.out.println(studentService.findTeaTwoById(teaId));
         ModelAndView modelAndView = new ModelAndView("teacher/student_administer");
-        modelAndView.addObject("list", studentService.findTeaTwoById(teaId));
+        modelAndView.addObject("teaId", teaId);
+        modelAndView.addObject("student_list", studentService.findTeaTwoById(teaId));
         return modelAndView;
+    }
+    
+    //根据教练id查询学员表
+    @RequestMapping(value = "/student_two_id")
+    public List<Student> student_two_id(String teaId) {
+    	System.out.println(studentService.findTeaTwoById(teaId));
+    	return studentService.findTeaTwoById(teaId);
     }
 
     /**

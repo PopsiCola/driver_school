@@ -3,6 +3,7 @@ package com.llb.service;
 import com.llb.entity.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,11 +31,11 @@ public interface IStudentService extends IService<Student> {
     Student findStuById(String stuId);
     
     /**
-     * 根据学员id查询信息
+     * 根据教练id查询信息
      * @param stuId
      * @return
      */
-    Student findTeaTwoById(String teaId);
+    List<Student> findTeaTwoById(String teaId);
 
     /**
      * 根据学员名和邮箱查询学员
