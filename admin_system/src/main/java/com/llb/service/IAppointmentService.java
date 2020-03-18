@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.llb.mapper.AppointmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Map;
+
 /**
  * <p>
  * 学员-教练 预约练车记录表 服务类
@@ -20,5 +22,12 @@ public interface IAppointmentService extends IService<Appointment> {
      * @param appointment
      */
     void saveAppointMent(Appointment appointment);
+
+    /**
+     * 根据学员id查找预约记录
+     * @param stuId
+     * @return
+     */
+    Map<String, Object> findAppointByStuId(String stuId);
 
 }

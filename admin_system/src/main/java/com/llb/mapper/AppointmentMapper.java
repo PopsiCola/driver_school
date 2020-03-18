@@ -3,6 +3,8 @@ package com.llb.mapper;
 import com.llb.entity.Appointment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 学员-教练 预约练车记录表 Mapper 接口
@@ -14,4 +16,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface AppointmentMapper extends BaseMapper<Appointment> {
 
     void saveAppointMent(Appointment appointment);
+
+    List<Appointment> findAppointByStuId(String stuId);
 }
