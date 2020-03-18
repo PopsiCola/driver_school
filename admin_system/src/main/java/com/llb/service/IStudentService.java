@@ -35,7 +35,7 @@ public interface IStudentService extends IService<Student> {
      * @param stuId
      * @return
      */
-    List<Student> findTeaTwoById(String teaId);
+    List<Student> findTeaTwoById(String teaId,String stu_name);
 
     /**
      * 根据学员名和邮箱查询学员

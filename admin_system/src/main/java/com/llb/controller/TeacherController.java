@@ -7,12 +7,12 @@ import com.llb.entity.Teacher;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
+import com.llb.web.Message;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.ModelAndView;
-import sun.misc.Request;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -55,19 +55,26 @@ public class TeacherController {
 
 
     @RequestMapping(value = "/student_administer")
-    public ModelAndView information(String teaId) {
-    	System.out.println(studentService.findTeaTwoById(teaId));
+    public ModelAndView information(String teaId,String stu_name) {
         ModelAndView modelAndView = new ModelAndView("teacher/student_administer");
         modelAndView.addObject("teaId", teaId);
-        modelAndView.addObject("student_list", studentService.findTeaTwoById(teaId));
+//        modelAndView.addObject("student_list", studentService.findTeaTwoById(teaId,stu_name));
         return modelAndView;
     }
     
     //根据教练id查询学员表
     @RequestMapping(value = "/student_two_id")
-    public List<Student> student_two_id(String teaId) {
-    	System.out.println(studentService.findTeaTwoById(teaId));
-    	return studentService.findTeaTwoById(teaId);
+    @ResponseBody
+    public Message student_two_id(String teaId,String stu_name) {
+    	System.out.println(teaId);
+    	System.out.println(stu_name);
+    	System.out.println(studentService.findTeaTwoById(teaId,stu_name));
+    	Message me= new Message();
+    	me.put("data", studentService.findTeaTwoById(teaId,stu_name)) ;
+    	me.put("code", 0);
+		me.put("msg", "");
+		me.put("count",1000);
+    	return me;
     }
 
     /**

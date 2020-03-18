@@ -23,6 +23,9 @@
         s.stu_address, s.stu_phone,s.stu_two, DATE_FORMAT(s.stu_createdate,'%Y-%m-%d %H:%i:%S') as stu_createDate
         FROM student s
         WHERE s.stu_two = #{teaId}
+        <if test="stu_name != null and stu_name != ''">
+        and s.stu_name like concat('%',#{stu_name},'%')
+        </if>
     </select>
 
     <!--通过用户名和邮箱查找学员-->

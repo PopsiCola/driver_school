@@ -21,7 +21,7 @@ public interface StudentMapper extends BaseMapper<Student> {
 
     Student findStudentById(String stuId);
     
-    List<Student> findTeachertwoById(String teaId);
+    List<Student> findTeachertwoById(String teaId,String stu_name);
 
     Student findStudent(@Param("account") String account, @Param("email") String email);
 

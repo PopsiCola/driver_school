@@ -51,8 +51,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return
      */
     @Override
-    public List<Student> findTeaTwoById(String teaId) {
-    	return studentMapper.findTeachertwoById(teaId);
+    public List<Student> findTeaTwoById(String teaId,String stu_name) {
+    	return studentMapper.findTeachertwoById(teaId,stu_name);
     }
 
     /**
