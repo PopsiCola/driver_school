@@ -227,7 +227,6 @@ public class StudentController {
         return result;
     }
 
-
     /**
      * 学员预约教练
      * @return
@@ -239,6 +238,16 @@ public class StudentController {
         //学员预约时，需要知道有哪些教练可以预约
         List<Teacher> teacherList = teacherService.findAllTeacher();
         modelAndView.addObject("teacherList", teacherList);
+        return modelAndView;
+    }
+
+    /**
+     * 学员预约教练
+     * @return
+     */
+    @RequestMapping("/appointmentRecord")
+    public ModelAndView appointmentRecord() {
+        ModelAndView modelAndView = new ModelAndView("student/appointmentRecord");
         return modelAndView;
     }
 
