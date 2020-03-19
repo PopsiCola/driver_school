@@ -26,6 +26,10 @@
         <if test="stu_name != null and stu_name != ''">
         and s.stu_name like concat('%',#{stu_name},'%')
         </if>
+        <if test="start_time != null">
+        and s.stu_createDate &lt; #{End_time}
+        and s.stu_createDate &gt; #{start_time}
+        </if>
     </select>
 
     <!--通过用户名和邮箱查找学员-->

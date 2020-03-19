@@ -34,29 +34,23 @@
     <div class="x-body">
       <div class="layui-row">
 		<div class="searchTable">        
-<!-- 			<input class="layui-input" placeholder="日期范围" name="start" id="start"> -->
+		<div class="layui-inline">
+			<input class="layui-input" placeholder="日期范围" name="start" id="start">
+		</div>
+		<div class="layui-inline">
           	<input type="text" name="username" id="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+		</div>
           	<button class="layui-btn"  data-type="reload"><i class="layui-icon">&#xe615;</i></button>
         </div> 
       </div>
-      <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','./admin-add.html')"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
-      </xblock>
+<!--       <xblock> -->
+<!--         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button> -->
+<!--         <button class="layui-btn" onclick="x_admin_show('添加用户','./admin-add.html')"><i class="layui-icon"></i>添加</button> -->
+<!--         <span class="x-right" style="line-height:40px">共有数据：88 条</span> -->
+<!--       </xblock> -->
       <table id="test" class="layui-hide">
       </table>
-      <div class="page">
-        <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
-        </div>
         <input type="hidden" id="teaId" th:value="${teaId}" />
-      </div>
 
     </div>
     <script>
@@ -65,6 +59,7 @@
         	,table = layui.table;
         var teaId=$("#teaId").val();
       	var stu_name=$("#username").val();
+      	var bm_date = $("#start").val();
 	  	  table.render({
 	  	    elem: '#test',
 	  	    method:'post',
@@ -72,10 +67,11 @@
    	        url: '/teacher/student_two_id', //请求数据的地址
   	        dataType: "json", //返回数据形式为json
 //   	        data:{'teaId':teaId,'stu_name':stu_name},
-			where: {'teaId':teaId,'stu_name':stu_name},
+			where: {'teaId':teaId,'stu_name':stu_name,'bm_date':bm_date},
 	  	    cols: [
 	  	    	[
-	  	    	 {field:'stuId', title: '住院号', sort: true}
+	  	    	   {type:'checkbox'}
+	  	    	  ,{field:'stuId', title: '住院号', sort: true}
 			      ,{field:'stuAccount', title: '姓名'}
 			      ,{field:'stuEmail', title: '身份证号'}
 			      ,{field:'stuAddress', title: '民族', sort: true}
@@ -83,17 +79,24 @@
 	  	    ]
 	  	    	]
 	  		,even:true
-	  		,page: true
+	  		,page:{ //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+	  	      layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+	        //,curr: 5 //设定初始在第 5 页
+	        ,groups: 1 //只显示 1 个连续页码
+	        ,first: false //不显示首页
+	        ,last: false //不显示尾页
+	      }
 	  	  });
 	  	  var active={
   			  reload:function (){
   				 var teaId=$("#teaId").val();
   		      	 var stu_name=$("#username").val();
+  		      	 var bm_date = $("#start").val();
   		      	 var index =layer.msg('查询中',{icon: 16,time:false,shade:0});
   		      	 setTimeout(function(){
   		      		 table.reload('allAttTable',{
   		      			 where:{
-  		      				'teaId':teaId,'stu_name':stu_name
+  		      				'teaId':teaId,'stu_name':stu_name,'bm_date':bm_date
   		      			 }
   		      		 });
   		      		 	layer.close(index);
@@ -102,7 +105,6 @@
 	  	  }
 	  	  
 		$('.searchTable .layui-btn').on('click',function(){
-			alert("监听已请用")
 			var type=$(this).data('type');
 			active[type] ? active[type].call(this) :'';
 		})

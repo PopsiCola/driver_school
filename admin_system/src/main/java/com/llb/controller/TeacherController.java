@@ -16,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,12 +68,21 @@ public class TeacherController {
     //根据教练id查询学员表
     @RequestMapping(value = "/student_two_id")
     @ResponseBody
-    public Message student_two_id(String teaId,String stu_name) {
-    	System.out.println(teaId);
+    public Message student_two_id(String teaId,String stu_name,String bm_date) {
+    	System.out.println("sdgsghsh");
+    	String start_time=null;
+    	String End_time = null;
+    	if (bm_date != "") {
+    		System.out.println("sdgsghsh");
+    		System.out.println(bm_date.substring(0,10));
+    		start_time=bm_date.substring(0,10);
+    		System.out.println(bm_date.substring(13,23));
+    		End_time = bm_date.substring(13,23);
+		}
     	System.out.println(stu_name);
-    	System.out.println(studentService.findTeaTwoById(teaId,stu_name));
+//    	System.out.println(studentService.findTeaTwoById(teaId,stu_name));
     	Message me= new Message();
-    	me.put("data", studentService.findTeaTwoById(teaId,stu_name)) ;
+    	me.put("data", studentService.findTeaTwoById(teaId,stu_name,start_time,End_time)) ;
     	me.put("code", 0);
 		me.put("msg", "");
 		me.put("count",1000);
