@@ -101,7 +101,7 @@ public class Appointment implements Serializable {
     /**
      * 时间戳
      */
-    @TableField("datestamp")
-    private String datestamp;
+    @TableField("create_date")
+    private String createDate;
 
 }

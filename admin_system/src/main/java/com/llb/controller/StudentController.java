@@ -2,8 +2,10 @@ package com.llb.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.llb.entity.Appointment;
 import com.llb.entity.Student;
 import com.llb.entity.Teacher;
+import com.llb.service.IAppointmentService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
@@ -14,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.crypto.Data;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * <p>
@@ -34,6 +38,8 @@ public class StudentController {
     private ITeacherService teacherService;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private IAppointmentService appointmentService;
 
     /**
      * 展示学员首页
@@ -248,6 +254,25 @@ public class StudentController {
     @RequestMapping("/appointmentRecord")
     public ModelAndView appointmentRecord() {
         ModelAndView modelAndView = new ModelAndView("student/appointmentRecord");
+        return modelAndView;
+    }
+
+    /**
+     * 展示学员预约时间线
+     * @return
+     */
+    @RequestMapping("/appointmentTimeline")
+    public ModelAndView appointmentTimeline(HttpServletRequest request) {
+       ModelAndView modelAndView = new ModelAndView("student/appointment_timeline");
+        Student student = (Student) request.getSession().getAttribute("student");
+
+        //查询学员预约记录
+        List appoint = appointmentService.findAppointByStuId(student.getStuId());
+
+        //TODO: th识别不出来
+        System.out.println(appoint);
+        modelAndView.addObject("appointList", appoint);
+
         return modelAndView;
     }
 

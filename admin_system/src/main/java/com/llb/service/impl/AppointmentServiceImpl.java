@@ -40,19 +40,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
      * @return
      */
     @Override
-    public Map<String, Object> findAppointByStuId(String stuId) {
-        Map<String, Object> result = new HashMap<>();
-        List<Appointment> appointList = appointmentMapper.findAppointByStuId(stuId);
-        if(appointList == null) {
-            result.put("code", 201);
-            result.put("msg", "没有预约记录！");
-            return result;
-        }
-
-        result.put("data", appointList);
-        result.put("code", 200);
-        result.put("msg", "查询成功");
-        result.put("count", appointList.size());
-        return result;
+    public List<Map<String, String>> findAppointByStuId(String stuId) {
+        return appointmentMapper.findAppointByStuId(stuId);
     }
 }

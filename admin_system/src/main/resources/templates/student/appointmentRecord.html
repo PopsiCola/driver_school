@@ -35,9 +35,9 @@
         <form class="layui-form layui-col-md12 x-so">
           <input class="layui-input" placeholder="开始日" name="start" id="start">
           <input class="layui-input" placeholder="截止日" name="end" id="end">
-          <input type="text" name="subject"  placeholder="请输入科目" autocomplete="off" class="layui-input">
-          <input type="text" name="teacherName"  placeholder="请输入教练名" autocomplete="off" class="layui-input">
-          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+          <input type="text" name="subject" id="subject" placeholder="请输入科目" autocomplete="off" class="layui-input">
+          <input type="text" name="teacherName" id="teacherName" placeholder="请输入教练名" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
@@ -57,13 +57,15 @@
         //执行一个laydate实例
         laydate.render({
           elem: '#start', //指定元素
-          trigger: 'click'  //必须有，否则则会自动关闭
+          trigger: 'click',  //必须有，否则则会自动关闭
+          type: 'datetime'
         });
 
         //执行一个laydate实例
         laydate.render({
           elem: '#end', //指定元素
-            trigger: 'click'  //必须有，否则则会自动关闭
+          trigger: 'click',  //必须有，否则则会自动关闭
+          type: 'datetime'
         });
       });
 
@@ -72,7 +74,7 @@
           var table = layui.table;
 
           var stuId = $('#stuId').val();
-          table.render({
+          var tableResult = table.render({
               elem: '#record'
               ,url:'/appointment/recordListById?stuId=' + stuId
               ,response: {
@@ -83,18 +85,52 @@
                   dataName: 'data'  // 对应 data
               }
               ,cols: [[
-                  {type:'checkbox'}
-                  ,{field:'tea_name', title: '教练'}
+                  // {type:'checkbox'},
+                  {field:'tea_name', title: '教练'}
                   ,{field:'subject', title: '预约项目'}
                   ,{field:'appointment_start', title: '预约开始时间', sort: true}
                   ,{field:'appointment_end', title: '预约结束时间', sort: true}
                   ,{field:'boarding_time', title: '上车时间', sort: true}
                   ,{field:'alighting_time', title: '下车时间', sort: true}
                   ,{field:'appointment_flag', title: '预约状态', sort: true}
-                  ,{field:'datestamp', title: '预约创建时间', sort: true}
+                  ,{field:'create_date', title: '预约创建时间', sort: true}
               ]]
               ,page: true
           });
+
+          //条件筛选，重新加载
+          $("#search").click(function () {
+             var appointmentStart = $("start").val();
+             var appointmentEnd = $("end").val();
+             var subject = $("subject").val();
+             var teaName = $("teacherName").val();
+              var data = {appointmentStart:appointmentStart,
+                  appointmentEnd:appointmentEnd,
+                  subject:subject,
+                  teaName:teaName
+              };
+
+              //条件查询
+              $.ajax({
+                  type: "POST",
+                  url: "/appointment/queryRecordByTerm",
+                  data: JSON.stringify(data),
+                  // data: data,
+                  dataType: "json",
+                  contentType:"application/json",
+                  success: function(result){
+                      if(200==result.code){
+                          console.log(result);
+                      }else{
+                          layer.msg(result.msg, {
+                              time: 2000, //2s后自动关闭
+                          });
+                      }
+                  }
+              });
+
+          });
+
       });
 
        /*用户-停用*/

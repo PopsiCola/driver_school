@@ -4,6 +4,7 @@ import com.llb.entity.Appointment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -17,5 +18,5 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
 
     void saveAppointMent(Appointment appointment);
 
-    List<Appointment> findAppointByStuId(String stuId);
+    List<Map<String, String>> findAppointByStuId(String stuId);
 }

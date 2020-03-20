@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * <p>
@@ -78,7 +75,7 @@ public class AppointmentController {
         appointment.setId(UUID.randomUUID().toString().replaceAll("-", "").trim());
         appointment.setAppointmentStart(start);
         appointment.setAppointmentEnd(end);
-        appointment.setDatestamp(new DateUtil().formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"));
+        appointment.setCreateDate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"));
         //保存预约信息
         try {
             appointmentService.saveAppointMent(appointment);
@@ -110,9 +107,37 @@ public class AppointmentController {
         Page<Appointment> pageAppointment = new Page<Appointment>(page, limit);
 
         //查询学员预约记录
-        result = appointmentService.findAppointByStuId(stuId);
+        List<Map<String, String>> appoint = appointmentService.findAppointByStuId(stuId);
+        if(appoint.size() == 0) {
+            result.put("code", 201);
+            result.put("msg", "没有预约记录！");
+            return result;
+        }
 
+        result.put("data", appoint);
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", appoint.size());
         System.out.println("result= " + result);
+        return result;
+    }
+
+    /**
+     * 条件查询学员预约记录
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/queryRecordByTerm", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> queryRecordByTerm(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //获取条件参数
+        String appointmentStart = map.get("appointmentStart");
+        String appointmentEnd = map.get("appointmentEnd");
+        String subject = map.get("subject");
+        String teaName = map.get("teaName");
+
+
         return result;
     }
 }

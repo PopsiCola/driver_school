@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.llb.mapper.AppointmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +29,6 @@ public interface IAppointmentService extends IService<Appointment> {
      * @param stuId
      * @return
      */
-    Map<String, Object> findAppointByStuId(String stuId);
+    List<Map<String, String>> findAppointByStuId(String stuId);
 
 }
