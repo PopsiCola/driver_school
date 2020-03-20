@@ -42,8 +42,8 @@
             <if test="appointmentFlag != null">
                 appointment_flag,
             </if>
-            <if test="datestamp != null">
-                datestamp,
+            <if test="createDate != null">
+                create_date,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -83,8 +83,8 @@
             <if test="appointmentFlag != null">
                 #{appointmentFlag},
             </if>
-            <if test="datestamp != null">
-                #{datestamp},
+            <if test="createDate != null">
+                #{createDate},
             </if>
         </trim>
     </insert>
@@ -95,7 +95,8 @@
         a.appointment_end, a.boarding_time, a.alighting_time, a.stu_star, a.stu_content,
         a.tea_content, a.appointment_flag, a.create_date
         FROM appointment a LEFT JOIN teacher t
-        ON a.tea_id = t.tea_id AND stu_id = #{stuId}
+        ON a.tea_id = t.tea_id
+        WHERE stu_id = #{stuId}
         ORDER BY a.create_date DESC
     </select>
 </mapper>

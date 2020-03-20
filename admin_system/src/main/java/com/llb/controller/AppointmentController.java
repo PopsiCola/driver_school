@@ -2,6 +2,7 @@ package com.llb.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Appointment;
 import com.llb.service.IAppointmentService;
@@ -76,6 +77,8 @@ public class AppointmentController {
         appointment.setAppointmentStart(start);
         appointment.setAppointmentEnd(end);
         appointment.setCreateDate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"));
+        //预约提交后，状态应为待同意  1.待同意 2.已拒绝 3.已批准
+        appointment.setAppointmentFlag(1);
         //保存预约信息
         try {
             appointmentService.saveAppointMent(appointment);
@@ -99,25 +102,29 @@ public class AppointmentController {
     @RequestMapping("/recordListById")
     @ResponseBody
     public Map<String, Object> recordListById(@RequestParam(required = true) String stuId,
+                                              @RequestParam("appointmentStart") String appointmentStart,
+                                              @RequestParam("appointmentEnd") String appointmentEnd,
+                                              @RequestParam("subject") String subject,
+                                              @RequestParam("teaName") String teaName,
                                               @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
-                                              @RequestParam(defaultValue = "10", required = false, value = "limit") Integer limit) {
+                                              @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
         Map<String, Object> result = new HashMap<>();
 
         //分页操作
-        Page<Appointment> pageAppointment = new Page<Appointment>(page, limit);
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
 
         //查询学员预约记录
-        List<Map<String, String>> appoint = appointmentService.findAppointByStuId(stuId);
-        if(appoint.size() == 0) {
+        IPage<Map<String, Object>> appoints = appointmentService.findAppointByStuId(pageParam, stuId);
+        if(appoints.getTotal() == 0) {
             result.put("code", 201);
             result.put("msg", "没有预约记录！");
             return result;
         }
 
-        result.put("data", appoint);
+        result.put("data", appoints.getRecords());
         result.put("code", 200);
         result.put("msg", "查询成功");
-        result.put("count", appoint.size());
+        result.put("count", appoints.getTotal());
         System.out.println("result= " + result);
         return result;
     }

@@ -96,7 +96,7 @@ public class Appointment implements Serializable {
      * 预约状态。1：学员预约，教练未同意。2：学员预约，教练同意
      */
     @TableField("appointment_flag")
-    private String appointmentFlag;
+    private Integer appointmentFlag;
 
     /**
      * 时间戳

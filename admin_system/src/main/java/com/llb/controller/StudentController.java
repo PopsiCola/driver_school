@@ -2,6 +2,7 @@ package com.llb.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Appointment;
 import com.llb.entity.Student;
 import com.llb.entity.Teacher;
@@ -267,11 +268,10 @@ public class StudentController {
         Student student = (Student) request.getSession().getAttribute("student");
 
         //查询学员预约记录
-        List appoint = appointmentService.findAppointByStuId(student.getStuId());
+        List<Map<String, Object>> list = appointmentService.findAppointListByStuId(student.getStuId());
 
-        //TODO: th识别不出来
-        System.out.println(appoint);
-        modelAndView.addObject("appointList", appoint);
+        System.out.println(list);
+        modelAndView.addObject("appointList", list);
 
         return modelAndView;
     }

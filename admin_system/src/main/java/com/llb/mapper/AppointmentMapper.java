@@ -1,7 +1,10 @@
 package com.llb.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Appointment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -18,5 +21,7 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
 
     void saveAppointMent(Appointment appointment);
 
-    List<Map<String, String>> findAppointByStuId(String stuId);
+    IPage<Map<String,Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, @Param("stuId") String stuId);
+
+    List<Map<String, Object>> findAppointByStuId(String stuId);
 }

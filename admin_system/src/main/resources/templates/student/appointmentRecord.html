@@ -51,9 +51,12 @@
 
     </div>
     <script type="text/javascript" th:inline="none">
-      layui.use('laydate', function(){
-        var laydate = layui.laydate;
+      layui.use(['laydate', 'form', 'table'], function(){
+        var laydate = layui.laydate,
+            form = layui.form;
+            table = layui.table;
 
+         var stuId = $("stuId").val();
         //执行一个laydate实例
         laydate.render({
           elem: '#start', //指定元素
@@ -67,72 +70,91 @@
           trigger: 'click',  //必须有，否则则会自动关闭
           type: 'datetime'
         });
+
+
+        //渲染表格
+        var stuId = $('#stuId').val();
+        table.render({
+            elem: '#record',
+            where: {stuId: stuId},
+            url:'/appointment/recordListById',
+            limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+            response: {
+                statusCode: 200, //成功的状态码，默认：0
+                statusName: 'code' ,// 对应 code
+                msgName: 'msg'  , // 对应 msg
+                countName: 'count' , // 对应 count
+                dataName: 'data'  // 对应 data
+            }
+            ,cols: [[
+                // {type:'checkbox'},
+                {field:'tea_name', title: '教练'}
+                ,{field:'subject', title: '预约项目'}
+                ,{field:'appointment_start', title: '预约开始时间', sort: true}
+                ,{field:'appointment_end', title: '预约结束时间', sort: true}
+                ,{field:'boarding_time', title: '上车时间', sort: true}
+                ,{field:'alighting_time', title: '下车时间', sort: true}
+                ,{field:'appointment_flag', title: '预约状态', sort: true/*, templet:function (d) {
+                        var appointment_flag = d.appointment_flag;
+                        var str = '<a class="layui-hide" ><span class="fa fa-angle-right"></span>&nbsp; &nbsp; &nbsp; &nbsp;' + appointment_flag + '</a>';
+                        return str;
+                    }*/}
+                ,{field:'create_date', title: '预约创建时间', sort: true}
+            ]]
+            ,page: true
+        });
+        //搜索按钮事件
+        form.on('submit(search)',function(data){
+            var appointmentStart = $("start").val();
+            var appointmentEnd = $("end").val();
+            var subject = $("subject").val();
+            var teaName = $("teacherName").val();
+            var data = {
+                appointmentStart: appointmentStart,
+                appointmentEnd: appointmentEnd,
+                subject: subject,
+                teaName: teaName
+            };
+            table.reload('record', {
+                where: data,
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+        //条件筛选，重新加载
+        /*$("#search").click(function () {
+            var appointmentStart = $("start").val();
+            var appointmentEnd = $("end").val();
+            var subject = $("subject").val();
+            var teaName = $("teacherName").val();
+            var data = {
+                appointmentStart: appointmentStart,
+                appointmentEnd: appointmentEnd,
+                subject: subject,
+                teaName: teaName
+            };
+
+            //条件查询
+            $.ajax({
+                type: "POST",
+                url: "/appointment/queryRecordByTerm",
+                data: JSON.stringify(data),
+                // data: data,
+                dataType: "json",
+                contentType: "application/json",
+                success: function (result) {
+                    if (200 == result.code) {
+                        console.log(result);
+                    } else {
+                        layer.msg(result.msg, {
+                            time: 2000, //2s后自动关闭
+                        });
+                    }
+                }
+            });
+        })*/
       });
-
-      //渲染表格
-      layui.use('table', function(){
-          var table = layui.table;
-
-          var stuId = $('#stuId').val();
-          var tableResult = table.render({
-              elem: '#record'
-              ,url:'/appointment/recordListById?stuId=' + stuId
-              ,response: {
-                  statusCode: 200, //成功的状态码，默认：0
-                  statusName: 'code' ,// 对应 code
-                  msgName: 'msg'  , // 对应 msg
-                  countName: 'count' , // 对应 count
-                  dataName: 'data'  // 对应 data
-              }
-              ,cols: [[
-                  // {type:'checkbox'},
-                  {field:'tea_name', title: '教练'}
-                  ,{field:'subject', title: '预约项目'}
-                  ,{field:'appointment_start', title: '预约开始时间', sort: true}
-                  ,{field:'appointment_end', title: '预约结束时间', sort: true}
-                  ,{field:'boarding_time', title: '上车时间', sort: true}
-                  ,{field:'alighting_time', title: '下车时间', sort: true}
-                  ,{field:'appointment_flag', title: '预约状态', sort: true}
-                  ,{field:'create_date', title: '预约创建时间', sort: true}
-              ]]
-              ,page: true
-          });
-
-          //条件筛选，重新加载
-          $("#search").click(function () {
-             var appointmentStart = $("start").val();
-             var appointmentEnd = $("end").val();
-             var subject = $("subject").val();
-             var teaName = $("teacherName").val();
-              var data = {appointmentStart:appointmentStart,
-                  appointmentEnd:appointmentEnd,
-                  subject:subject,
-                  teaName:teaName
-              };
-
-              //条件查询
-              $.ajax({
-                  type: "POST",
-                  url: "/appointment/queryRecordByTerm",
-                  data: JSON.stringify(data),
-                  // data: data,
-                  dataType: "json",
-                  contentType:"application/json",
-                  success: function(result){
-                      if(200==result.code){
-                          console.log(result);
-                      }else{
-                          layer.msg(result.msg, {
-                              time: 2000, //2s后自动关闭
-                          });
-                      }
-                  }
-              });
-
-          });
-
-      });
-
        /*用户-停用*/
       function member_stop(obj,id){
           layer.confirm('确认要停用吗？',function(index){

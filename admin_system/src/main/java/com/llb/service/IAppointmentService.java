@@ -1,5 +1,7 @@
 package com.llb.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Appointment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.llb.mapper.AppointmentMapper;
@@ -29,6 +31,13 @@ public interface IAppointmentService extends IService<Appointment> {
      * @param stuId
      * @return
      */
-    List<Map<String, String>> findAppointByStuId(String stuId);
+    IPage<Map<String,Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, String stuId);
+
+    /**
+     * 根据学员id查找预约列表
+     * @param stuId
+     * @return
+     */
+    List<Map<String, Object>> findAppointListByStuId(String stuId);
 
 }
