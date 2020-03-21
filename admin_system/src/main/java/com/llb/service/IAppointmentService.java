@@ -31,7 +31,12 @@ public interface IAppointmentService extends IService<Appointment> {
      * @param stuId
      * @return
      */
-    IPage<Map<String,Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, String stuId);
+    IPage<Map<String,Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, String stuId,
+                                                 String appointmentStart,
+                                                 String appointmentEnd,
+                                                 String subject,
+                                                 String teaName
+                                                 );
 
     /**
      * 根据学员id查找预约列表
@@ -39,5 +44,12 @@ public interface IAppointmentService extends IService<Appointment> {
      * @return
      */
     List<Map<String, Object>> findAppointListByStuId(String stuId);
+
+    /**
+     * 根据预约记录id修改状态
+     * @param stuId
+     * @param appointmentFlag
+     */
+    void editAppointFlag(String id, Integer appointmentFlag);
 
 }

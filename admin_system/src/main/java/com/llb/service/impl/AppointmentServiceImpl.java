@@ -43,8 +43,12 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
      * @return
      */
     @Override
-    public IPage<Map<String, Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, String stuId) {
-        return appointmentMapper.findAppointByStuId(pageParam, stuId);
+    public IPage<Map<String, Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, String stuId,
+                                                         String appointmentStart,
+                                                         String appointmentEnd,
+                                                         String subject,
+                                                         String teaName) {
+        return appointmentMapper.findAppointByStuId(pageParam, stuId, appointmentStart, appointmentEnd, subject, teaName);
     }
 
     /**
@@ -55,5 +59,15 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     @Override
     public List<Map<String, Object>> findAppointListByStuId(String stuId) {
         return appointmentMapper.findAppointByStuId(stuId);
+    }
+
+    /**
+     * 根据预约记录id修改状态
+     * @param id
+     * @param appointmentFlag
+     */
+    @Override
+    public void editAppointFlag(String id, Integer appointmentFlag) {
+        appointmentMapper.editAppointFlag(id, appointmentFlag);
     }
 }

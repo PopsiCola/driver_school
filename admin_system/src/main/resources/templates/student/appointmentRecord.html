@@ -32,18 +32,17 @@
     <div class="x-body">
       <input type="text" hidden="hidden" id="stuId" th:value="${session.student.stuId}"/>
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-          <input class="layui-input" placeholder="开始日" name="start" id="start">
-          <input class="layui-input" placeholder="截止日" name="end" id="end">
-          <input type="text" name="subject" id="subject" placeholder="请输入科目" autocomplete="off" class="layui-input">
-          <input type="text" name="teacherName" id="teacherName" placeholder="请输入教练名" autocomplete="off" class="layui-input">
-          <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+        <form class="layui-form layui-col-md12 x-so" action="javascript:;">
+            <input class="layui-input" placeholder="开始日" name="start" id="start">
+            <input class="layui-input" placeholder="截止日" name="end" id="end">
+            <input type="text" name="subject" id="subject" placeholder="请输入科目" autocomplete="off" class="layui-input">
+            <input type="text" name="teaName" id="teaName" placeholder="请输入教练名" autocomplete="off" class="layui-input">
+            <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','./admin-add.html')"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
+        <button class="layui-btn">预约记录</button>
       </xblock>
 
       <!--表格显示-->
@@ -71,7 +70,6 @@
           type: 'datetime'
         });
 
-
         //渲染表格
         var stuId = $('#stuId').val();
         table.render({
@@ -94,67 +92,71 @@
                 ,{field:'appointment_end', title: '预约结束时间', sort: true}
                 ,{field:'boarding_time', title: '上车时间', sort: true}
                 ,{field:'alighting_time', title: '下车时间', sort: true}
-                ,{field:'appointment_flag', title: '预约状态', sort: true/*, templet:function (d) {
+                ,{field:'appointment_flag', title: '预约状态', sort: true, templet:function (d) {
                         var appointment_flag = d.appointment_flag;
-                        var str = '<a class="layui-hide" ><span class="fa fa-angle-right"></span>&nbsp; &nbsp; &nbsp; &nbsp;' + appointment_flag + '</a>';
-                        return str;
-                    }*/}
-                ,{field:'create_date', title: '预约创建时间', sort: true}
+                        if(appointment_flag == 1) {
+                            appointment_flag = "预约中";
+                        } else if(appointment_flag == 2) {
+                            appointment_flag = "预约成功";
+                        } else {
+                            appointment_flag = "已取消";
+                        }
+                        return appointment_flag;
+                    }}
+                ,{field:'create_date', title: '预约创建时间', sort: true},
+                {field:'appointment_flag', title: '取消预约', templet:function (d) {
+                        var appointment_flag = d.appointment_flag;
+                        var id = d.id;
+                        if(appointment_flag == 1 || appointment_flag == 2) {
+                            appointment_flag = "取消预约";
+                        } else {
+                            appointment_flag = "已取消";
+                        }
+                        var html = '<button id="cancle" type="button" class="layui-btn layui-btn-normal" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                        return html;
+                    }}
             ]]
             ,page: true
         });
         //搜索按钮事件
         form.on('submit(search)',function(data){
-            var appointmentStart = $("start").val();
-            var appointmentEnd = $("end").val();
-            var subject = $("subject").val();
-            var teaName = $("teacherName").val();
-            var data = {
-                appointmentStart: appointmentStart,
-                appointmentEnd: appointmentEnd,
-                subject: subject,
-                teaName: teaName
-            };
+
             table.reload('record', {
-                where: data,
+                where: data.field,
                 page: {
                     curr: 1 //重新从第 1 页开始
                 }
             });
         });
-        //条件筛选，重新加载
-        /*$("#search").click(function () {
-            var appointmentStart = $("start").val();
-            var appointmentEnd = $("end").val();
-            var subject = $("subject").val();
-            var teaName = $("teacherName").val();
-            var data = {
-                appointmentStart: appointmentStart,
-                appointmentEnd: appointmentEnd,
-                subject: subject,
-                teaName: teaName
-            };
-
-            //条件查询
-            $.ajax({
-                type: "POST",
-                url: "/appointment/queryRecordByTerm",
-                data: JSON.stringify(data),
-                // data: data,
-                dataType: "json",
-                contentType: "application/json",
-                success: function (result) {
-                    if (200 == result.code) {
-                        console.log(result);
-                    } else {
-                        layer.msg(result.msg, {
-                            time: 2000, //2s后自动关闭
-                        });
-                    }
-                }
-            });
-        })*/
       });
+
+      //取消预约操作
+      function cancle(id, appointmentFlag) {
+
+          var data = {id:id, appointmentFlag:appointmentFlag};
+
+          $.ajax({
+              type: "POST",
+              url: "/appointment/cancle",
+              data: JSON.stringify(data),
+              dataType: "json",
+              contentType:"application/json",
+              success: function(result){
+                  if(200==result.code){
+                      layer.alert(result.msg, {icon: 6},function () {
+                          //重新加载页面
+                          location.reload();
+                      });
+                  }else{
+                      layer.msg(result.msg, {
+                          time: 2000,
+                          btn: ['返回']
+                      });
+                  }
+              }
+          });
+      }
+
        /*用户-停用*/
       function member_stop(obj,id){
           layer.confirm('确认要停用吗？',function(index){

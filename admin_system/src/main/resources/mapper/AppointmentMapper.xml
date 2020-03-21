@@ -97,6 +97,29 @@
         FROM appointment a LEFT JOIN teacher t
         ON a.tea_id = t.tea_id
         WHERE stu_id = #{stuId}
+        <if test="appointmentStart!=null and appointmentStart!=''">
+            <![CDATA[
+				AND	DATE_FORMAT(a.appointment_start, '%Y-%m-%d')>= DATE_FORMAT(#{appointmentStart}, '%Y-%m-%d')
+			]]>
+        </if>
+        <if test="appointmentEnd!=null and appointmentEnd!=''">
+            <![CDATA[
+				AND	DATE_FORMAT(a.appointment_end, '%Y-%m-%d')<= DATE_FORMAT(#{appointmentEnd}, '%Y-%m-%d')
+			]]>
+        </if>
+        <if test="subject!=null and subject!=''">
+            AND a.subject=#{subject}
+        </if>
+        <if test="teaName!=null and teaName!=''">
+            AND t.teaName=#{teaName}
+        </if>
         ORDER BY a.create_date DESC
     </select>
+
+    <!--取消预约：修改预约状态-->
+    <update id="editAppointFlag">
+      UPDATE appointment
+      SET appointment_flag = #{appointmentFlag}
+      WHERE id = #{id}
+    </update>
 </mapper>

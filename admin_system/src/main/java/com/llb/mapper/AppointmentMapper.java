@@ -21,7 +21,14 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
 
     void saveAppointMent(Appointment appointment);
 
-    IPage<Map<String,Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, @Param("stuId") String stuId);
+    IPage<Map<String,Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, @Param("stuId") String stuId,
+                                                 @Param("appointmentStart") String appointmentStart,
+                                                 @Param("appointmentEnd") String appointmentEnd,
+                                                 @Param("subject") String subject,
+                                                 @Param("teaName") String teaName
+                                                 );
 
     List<Map<String, Object>> findAppointByStuId(String stuId);
+
+    void editAppointFlag(@Param("id") String id, @Param("appointmentFlag") Integer appointmentFlag);
 }

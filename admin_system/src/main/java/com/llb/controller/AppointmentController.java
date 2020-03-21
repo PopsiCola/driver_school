@@ -11,6 +11,7 @@ import com.llb.service.ITeacherService;
 import com.llb.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -26,7 +27,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/appointment")
 public class AppointmentController {
-
 
     @Autowired
     private IStudentService studentService;
@@ -102,10 +102,10 @@ public class AppointmentController {
     @RequestMapping("/recordListById")
     @ResponseBody
     public Map<String, Object> recordListById(@RequestParam(required = true) String stuId,
-                                              @RequestParam("appointmentStart") String appointmentStart,
-                                              @RequestParam("appointmentEnd") String appointmentEnd,
-                                              @RequestParam("subject") String subject,
-                                              @RequestParam("teaName") String teaName,
+                                              String start,
+                                              String end,
+                                              String subject,
+                                              String teaName,
                                               @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
                                               @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
         Map<String, Object> result = new HashMap<>();
@@ -114,7 +114,7 @@ public class AppointmentController {
         Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
 
         //查询学员预约记录
-        IPage<Map<String, Object>> appoints = appointmentService.findAppointByStuId(pageParam, stuId);
+        IPage<Map<String, Object>> appoints = appointmentService.findAppointByStuId(pageParam, stuId, start, end, subject, teaName);
         if(appoints.getTotal() == 0) {
             result.put("code", 201);
             result.put("msg", "没有预约记录！");
@@ -125,7 +125,27 @@ public class AppointmentController {
         result.put("code", 200);
         result.put("msg", "查询成功");
         result.put("count", appoints.getTotal());
-        System.out.println("result= " + result);
+        return result;
+    }
+
+    /**
+     * 取消预约
+     * @return
+     */
+    @RequestMapping("/cancle")
+    @ResponseBody
+    public Map<String, Object> cancleAppoint(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+
+        if("3".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已取消，不能再次取消！");
+            return result;
+        }
+
+        appointmentService.editAppointFlag(map.get("id"), 3);
+        result.put("code", 200);
+        result.put("msg", "取消预约成功！");
         return result;
     }
 
