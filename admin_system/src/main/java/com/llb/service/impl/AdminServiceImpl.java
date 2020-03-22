@@ -97,4 +97,23 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public void saveAdmin(Admin admin) {
         adminMapper.saveAdmin(admin);
     }
+
+    /**
+     * 根据管理员id查找密码
+     * @param adminId
+     * @return
+     */
+    @Override
+    public Admin findAdminById(String adminId) {
+        return adminMapper.findAdminById(adminId);
+    }
+
+    /**
+     * 修改管理员信息
+     * @param admin
+     */
+    @Override
+    public void updateAdmin(Admin admin) {
+        adminMapper.updateAdmin(admin);
+    }
 }

@@ -58,4 +58,17 @@ public interface IAdminService extends IService<Admin> {
      * @param admin
      */
     void saveAdmin(Admin admin);
+
+    /**
+     * 根据管理员id查找密码
+     * @param adminId
+     * @return
+     */
+    Admin findAdminById(String adminId);
+
+    /**
+     * 修改管理员信息
+     * @param admin
+     */
+    void updateAdmin(Admin admin);
 }

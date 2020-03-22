@@ -25,4 +25,8 @@ public interface AdminMapper extends BaseMapper<Admin> {
     void updateAdminPwd(@Param("adminEmail") String adminEmail, @Param("adminPwd") String adminPwd);
 
     void saveAdmin(Admin admin);
+
+    Admin findAdminById(String adminId);
+
+    void updateAdmin(Admin admin);
 }

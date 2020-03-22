@@ -16,6 +16,13 @@
         WHERE admin_account = #{account} OR admin_mail = #{email}
     </select>
 
+    <!--通过管理员id查找管理员-->
+    <select id="findAdminById" resultType="com.llb.entity.Admin" parameterType="String">
+        SELECT *
+        FROM admin
+        WHERE admin_id = #{adminId}
+    </select>
+
     <!--通过用户名和邮箱查找管理员-->
     <select id="findAdminByAccAndMail" resultType="com.llb.entity.Admin" parameterType="String">
         SELECT *
@@ -75,4 +82,15 @@
             </if>
         </trim>
     </insert>
+
+    <!--修改管理员信息-->
+    <update id="updateAdmin" parameterType="Admin">
+        UPDATE admin
+        <trim prefix="set" suffixOverrides=",">
+            <if test="adminAccount!=null">admin_account=#{adminAccount},</if>
+            <if test="adminPwd!=null">admin_pwd=#{adminPwd},</if>
+            <if test="adminMail!=null">admin_mail=#{adminMail},</if>
+        </trim>
+        WHERE admin_id = #{adminId}
+    </update>
 </mapper>
