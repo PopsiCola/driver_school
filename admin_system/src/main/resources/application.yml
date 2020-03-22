@@ -49,7 +49,8 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 #    二级缓存
     cache-enabled: false
-
+#    Mapper返回值为HashMap时，数据库空字段依旧返回为null
+    call-setters-on-nulls: true
 
 #打印日志
 logging:

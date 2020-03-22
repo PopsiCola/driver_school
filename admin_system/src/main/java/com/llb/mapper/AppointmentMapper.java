@@ -35,4 +35,8 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
                                                  @Param("teaName") String teaName);
 
     void editAppointFlag(@Param("id") String id, @Param("appointmentFlag") Integer appointmentFlag);
+
+    Appointment findApponitById(String id);
+
+    void editAppoint(Appointment appointment);
 }

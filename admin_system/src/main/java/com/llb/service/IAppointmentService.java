@@ -52,4 +52,17 @@ public interface IAppointmentService extends IService<Appointment> {
      */
     void editAppointFlag(String id, Integer appointmentFlag);
 
+    /**
+     * 根据id来查询预约记录
+     * @param id
+     * @return
+     */
+    Appointment findApponitById(String id);
+
+    /**
+     * 修改预约记录
+     * @param appointment
+     */
+    void editAppoint(Appointment appointment);
+
 }

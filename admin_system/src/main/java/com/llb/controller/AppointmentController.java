@@ -149,5 +149,51 @@ public class AppointmentController {
         return result;
     }
 
+    /**
+     * 学员评价(评星，评论)
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/stuContent", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> stuContent(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+
+        //获取id，根据id查询评论信息
+        Appointment apponit = appointmentService.findApponitById(map.get("id"));
+
+        System.out.println(apponit);
+
+        //判断该评论是否不存在
+        if(apponit == null) {
+            result.put("code", 201);
+            result.put("msg", "该条评论不存在！");
+            return result;
+        }
+
+        //进行逻辑判断，当预约状态为3是学员才能进行评星、评价
+        if(3 != apponit.getAppointmentFlag()) {
+            result.put("code", 201);
+            result.put("msg", "练车未结束，不能进行评价！");
+            return result;
+        }
+
+        //当有评星或评价时，不能进行重复评论操作
+        if(apponit.getStuContent() != null || apponit.getStuStar() != null) {
+            result.put("code", 201);
+            result.put("msg", "您已对该次练车进行过评价，不重复评价！");
+            return result;
+        }
+
+        //符合评价操作
+        apponit.setStuStar(Integer.parseInt(map.get("star")));
+        apponit.setStuContent(map.get("stuContent"));
+        appointmentService.editAppoint(apponit);
+
+        result.put("code", 200);
+        result.put("msg", "评论成功！");
+        return result;
+    }
+
 }
 

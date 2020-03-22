@@ -70,4 +70,23 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     public void editAppointFlag(String id, Integer appointmentFlag) {
         appointmentMapper.editAppointFlag(id, appointmentFlag);
     }
+
+    /**
+     * 根据id来查询预约记录
+     * @param id
+     * @return
+     */
+    @Override
+    public Appointment findApponitById(String id) {
+        return appointmentMapper.findApponitById(id);
+    }
+
+    /**
+     * 修改预约记录
+     * @param appointment
+     */
+    @Override
+    public void editAppoint(Appointment appointment) {
+        appointmentMapper.editAppoint(appointment);
+    }
 }
