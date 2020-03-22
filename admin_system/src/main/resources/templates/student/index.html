@@ -42,7 +42,7 @@
           <li class="layui-nav-item">
               <a href="javascript:;"><span th:text="${session.student.stuAccount} eq null?${session.student.stuAccount}:${session.student.stuEmail}"></span></a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('个人信息','/student/student-info')">个人信息</a></dd>
+                <dd><a onclick="x_admin_show('个人信息','/student/student-info')">个人信息</a></dd>
                 <dd><a onclick="x_admin_show('修改密码','/student/showStuEditPwd')">修改密码</a></dd>
               <dd><a href="/login/loginOut?role=1" onclick="Close()">退出</a></dd>
             </dl>
@@ -57,6 +57,12 @@
     <div class="left-nav">
       <div id="side-nav">
         <ul id="nav">
+            <li>
+                <a _href="appointmentTimeline">
+                    <i class="iconfont">&#xe70b;</i>
+                    <cite>我的预约</cite>
+                </a>
+            </li>
             <li>
                 <a _href="appointmentCoach">
                     <i class="iconfont">&#xe70b;</i>
@@ -78,7 +84,7 @@
     <div class="page-content">
         <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
           <ul class="layui-tab-title">
-            <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+            <li class="home"><i class="layui-icon">&#xe68e;</i>WelCome</li>
           </ul>
           <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
                 <dl>

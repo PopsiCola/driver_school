@@ -149,23 +149,5 @@ public class AppointmentController {
         return result;
     }
 
-    /**
-     * 条件查询学员预约记录
-     * @param map
-     * @return
-     */
-    @RequestMapping(value = "/queryRecordByTerm", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> queryRecordByTerm(@RequestBody Map<String, String> map) {
-        Map<String, Object> result = new HashMap<>();
-        //获取条件参数
-        String appointmentStart = map.get("appointmentStart");
-        String appointmentEnd = map.get("appointmentEnd");
-        String subject = map.get("subject");
-        String teaName = map.get("teaName");
-
-
-        return result;
-    }
 }
 

@@ -58,7 +58,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
      */
     @Override
     public List<Map<String, Object>> findAppointListByStuId(String stuId) {
-        return appointmentMapper.findAppointByStuId(stuId);
+        return appointmentMapper.findAppointByStuId(stuId, null, null, null, null);
     }
 
     /**
