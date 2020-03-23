@@ -3,6 +3,7 @@ package com.llb.service.impl;
 import com.llb.entity.Student;
 import com.llb.mapper.StudentMapper;
 import com.llb.service.IStudentService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return
      */
     @Override
-    public List<Student> findTeaTwoById(String teaId,String stu_name,String start_time,String End_time) {
-    	return studentMapper.findTeachertwoById(teaId,stu_name,start_time,End_time);
+    public IPage<Map<String,Object>> findTeaTwoById(IPage<Map<String, Object>> pageParam,String teaId,String stu_name,String start_time,String End_time) {
+    	return studentMapper.findTeachertwoById(pageParam,teaId,stu_name,start_time,End_time);
     }
 
     /**

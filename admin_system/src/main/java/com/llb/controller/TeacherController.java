@@ -2,6 +2,8 @@ package com.llb.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Student;
 import com.llb.entity.Teacher;
 import com.llb.service.IStudentService;
@@ -56,19 +58,40 @@ public class TeacherController {
         return modelAndView;
     }
 
-
+    /**
+     * 教练查看学员列表
+     * @param teaId
+     * @param stu_name
+     * @return
+     */
     @RequestMapping(value = "/student_administer")
-    public ModelAndView information(String teaId,String stu_name) {
+    public ModelAndView student_administer(String teaId,String stu_name) {
         ModelAndView modelAndView = new ModelAndView("teacher/student_administer");
         modelAndView.addObject("teaId", teaId);
 //        modelAndView.addObject("student_list", studentService.findTeaTwoById(teaId,stu_name));
         return modelAndView;
     }
     
+    /**
+     * 教练查看预约记录
+     * @param teaId
+     * @param stu_name
+     * @return
+     */
+    @RequestMapping(value = "/student_appointment")
+    public ModelAndView student_appointment(String teaId,String stu_name) {
+    	ModelAndView modelAndView = new ModelAndView("teacher/student_appointment");
+    	modelAndView.addObject("teaId", teaId);
+//        modelAndView.addObject("student_list", studentService.findTeaTwoById(teaId,stu_name));
+    	return modelAndView;
+    }
+    
     //根据教练id查询学员表
     @RequestMapping(value = "/student_two_id")
     @ResponseBody
-    public Message student_two_id(String teaId,String stu_name,String bm_date) {
+    public Message student_two_id(String teaId,String stu_name,String bm_date,
+    		@RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+            @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
     	System.out.println("sdgsghsh");
     	String start_time=null;
     	String End_time = null;
@@ -79,15 +102,17 @@ public class TeacherController {
     		System.out.println(bm_date.substring(13,23));
     		End_time = bm_date.substring(13,23);
 		}
-    	System.out.println(stu_name);
-//    	System.out.println(studentService.findTeaTwoById(teaId,stu_name));
+    	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+    	IPage<Map<String, Object>> student_map = studentService.findTeaTwoById(pageParam,teaId,stu_name,start_time,End_time);
+    	System.out.println(student_map.getRecords());
     	Message me= new Message();
-    	me.put("data", studentService.findTeaTwoById(teaId,stu_name,start_time,End_time)) ;
-    	me.put("code", 0);
-		me.put("msg", "");
-		me.put("count",1000);
+    	me.put("data", student_map.getRecords()) ;
+    	me.put("code", 200);
+		me.put("msg", "查询成功");
+		me.put("count",student_map.getTotal());
     	return me;
     }
+    
 
     /**
      * 展示教练信息

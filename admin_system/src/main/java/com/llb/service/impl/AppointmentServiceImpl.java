@@ -36,7 +36,17 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         appointmentMapper.saveAppointMent(appointment);
     }
 
-
+    
+    /**
+     * 根据教练id查询预约记录
+     */
+    @Override
+	public IPage<Map<String, Object>> appointment_teaId(Page<Map<String, Object>> pageParam, String teaId,
+			String appointmentStart, String appointmentEnd) {
+		
+		return appointmentMapper.appointment_teaId(pageParam, teaId, appointmentStart, appointmentEnd);
+	}
+    
     /**
      * 根据学员id查找预约记录
      * @param stuId
@@ -89,4 +99,5 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     public void editAppoint(Appointment appointment) {
         appointmentMapper.editAppoint(appointment);
     }
+
 }

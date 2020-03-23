@@ -9,6 +9,8 @@ import com.llb.service.IAppointmentService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.utils.DateUtil;
+import com.llb.web.Message;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -126,6 +128,36 @@ public class AppointmentController {
         result.put("msg", "查询成功");
         result.put("count", appoints.getTotal());
         return result;
+    }
+    
+    /**
+     * 根据教练id查询预约记录
+     */
+    
+    @RequestMapping(value = "/appointment_stuId")
+    @ResponseBody
+    public Message student_order(String teaId,String stu_name,String bm_date,
+    		@RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+            @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+    	System.out.println("sdgsghsh");
+    	String start_time=null;
+    	String End_time = null;
+    	if (bm_date != "") {
+    		System.out.println("sdgsghsh");
+    		System.out.println(bm_date.substring(0,10));
+    		start_time=bm_date.substring(0,10);
+    		System.out.println(bm_date.substring(13,23));
+    		End_time = bm_date.substring(13,23);
+		}
+    	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+    	IPage<Map<String, Object>> student_map = studentService.findTeaTwoById(pageParam,teaId,stu_name,start_time,End_time);
+    	System.out.println(student_map.getRecords());
+    	Message me= new Message();
+    	me.put("data", student_map.getRecords()) ;
+    	me.put("code", 200);
+		me.put("msg", "查询成功");
+		me.put("count",student_map.getTotal());
+    	return me;
     }
 
     /**

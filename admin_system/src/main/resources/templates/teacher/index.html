@@ -68,54 +68,19 @@
             <li>
                 <a th:_href="@{/teacher/student_administer(teaId=${session.teacher.teaId})}">
                     <i class="iconfont">&#xe70b;</i>
-                    <cite>会员管理</cite>
+                    <cite>学员管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
             </li>
             <li>
-                <a _href="/teacher/information">
-                    <i class="iconfont">&#xe6a7;</i>
-                    <cite>个人信息</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-            </li >
-            <li>
-                <a href="javascript:;">
+                <a th:_href="@{/teacher/student_appointment(teaId=${session.teacher.teaId})}">
                     <i class="iconfont">&#xe723;</i>
-                    <cite>订单管理</cite>
+                    <cite>预约记录</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
             </li>
             <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe723;</i>
-                    <cite>城市联动</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe726;</i>
-                    <cite>管理员管理</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6ce;</i>
-                    <cite>系统统计</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6b4;</i>
-                    <cite>图标字体</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;">
+                <a _href="javascript:;">
                     <i class="iconfont">&#xe6b4;</i>
                     <cite>其它页面</cite>
                     <i class="iconfont nav_right">&#xe697;</i>

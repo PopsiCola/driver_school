@@ -1,6 +1,8 @@
 package com.llb.service;
 
 import com.llb.entity.Student;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public interface IStudentService extends IService<Student> {
      * @param stuId
      * @return
      */
-    List<Student> findTeaTwoById(String teaId,String stu_name,String start_time,String End_time);
+    IPage<Map<String, Object>> findTeaTwoById(IPage<Map<String, Object>> pageParam,String teaId,String stu_name,String start_time,String End_time);
 
     /**
      * 根据学员名和邮箱查询学员
