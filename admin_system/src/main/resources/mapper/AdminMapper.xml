@@ -93,4 +93,22 @@
         </trim>
         WHERE admin_id = #{adminId}
     </update>
+
+    <!--查询所有管理员-->
+    <select id="findAllAdmin" parameterType="String" resultType="Map">
+        SELECT *
+        FROM admin
+        <where>
+            <if test="account != null">
+                admin_account like CONCAT('%',CONCAT(#{account},'%'))
+            </if>
+        </where>
+    </select>
+
+    <!--根据id删除管理员-->
+    <select id="deleteAdmin" parameterType="String">
+        DELETE
+        FROM admin
+        WHERE admin_id = #{adminId}
+    </select>
 </mapper>

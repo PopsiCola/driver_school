@@ -1,12 +1,14 @@
 package com.llb.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
+import com.llb.entity.Student;
 import com.llb.service.IAdminService;
 import com.llb.service.IStudentService;
-import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -124,7 +126,106 @@ public class AdminController {
         return result;
     }
 
-    
+    /**
+     * 显示管理员界面
+     * @return
+     */
+    @RequestMapping("adminList")
+    public ModelAndView adminList() {
+        ModelAndView mv = new ModelAndView("admin/adminList");
+        return mv;
+    }
+
+    /**
+     * 查询所有管理员
+     * @param account
+     * @param page
+     * @param limit
+     * @return
+     */
+    @RequestMapping("/findAllAdmin")
+    @ResponseBody
+    public Map<String, Object> findAllAdmin(String account,
+                                            @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                            @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+        Map<String, Object> result = new HashMap<>();
+
+        //分页操作
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+
+        //查询所有管理员
+        IPage<Map<String, Object>> adminList = adminService.findAllAdmin(pageParam, account);
+        if(adminList.getTotal() == 0) {
+            result.put("code", 200);
+            result.put("msg", "没有管理员！");
+            return result;
+        }
+
+        //分页查询数据传递
+        result.put("data", adminList.getRecords());
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", adminList.getTotal());
+        return result;
+    }
+
+    /**
+     * 根据id修改管理员信息
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/editAdmin", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> editAdmin(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+
+        //将用户传来的表单数据转换成实体类
+        Admin admin = JSONObject.parseObject(JSONObject.toJSONString(map), Admin.class);
+
+        String adminId = admin.getAdminId();
+
+        //根据id查找管理员信息
+        Admin adminById = adminService.findAdminById(adminId);
+
+        //判断是否有该管理员信息
+        if(adminById == null) {
+            result.put("code", 201);
+            result.put("msg", "没有该管理员！");
+            return result;
+        }
+
+        //修改信息
+        adminService.updateAdmin(admin);
+
+        result.put("code", 200);
+        result.put("msg", "修改成功！");
+        return result;
+    }
+
+    /**
+     * 根据id删除管理员信息
+     * @param adminId
+     * @return
+     */
+    @RequestMapping(value = "/deleteAdmin", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteAdmin(@RequestBody String adminId) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            adminService.deleteAdmin(adminId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "删除失败！"+ e);
+            return result;
+        }
+
+        result.put("code", 200);
+        result.put("msg", "删除成功！");
+        return result;
+    }
+
     @RequestMapping(value = "/admin-list")
     public ModelAndView admin_list() {
     	ModelAndView modelAndView = new ModelAndView("admin-list");

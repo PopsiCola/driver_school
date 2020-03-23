@@ -1,5 +1,7 @@
 package com.llb.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -71,4 +73,18 @@ public interface IAdminService extends IService<Admin> {
      * @param admin
      */
     void updateAdmin(Admin admin);
+
+    /**
+     * 查询所有管理员(分页)
+     * @param pageParam
+     * @param account
+     * @return
+     */
+    IPage<Map<String,Object>> findAllAdmin(Page<Map<String, Object>> pageParam, String account);
+
+    /**
+     * 根据id删除管理员
+     * @param adminId
+     */
+    void deleteAdmin(String adminId);
 }

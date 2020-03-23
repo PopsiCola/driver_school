@@ -1,5 +1,7 @@
 package com.llb.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
 import com.llb.mapper.AdminMapper;
 import com.llb.service.IAdminService;
@@ -115,5 +117,25 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public void updateAdmin(Admin admin) {
         adminMapper.updateAdmin(admin);
+    }
+
+    /**
+     * 查询所有管理员(分页)
+     * @param pageParam
+     * @param account
+     * @return
+     */
+    @Override
+    public IPage<Map<String, Object>> findAllAdmin(Page<Map<String, Object>> pageParam, String account) {
+        return adminMapper.findAllAdmin(pageParam, account);
+    }
+
+    /**
+     * 根据id删除管理员
+     * @param adminId
+     */
+    @Override
+    public void deleteAdmin(String adminId) {
+        adminMapper.deleteAdmin(adminId);
     }
 }
