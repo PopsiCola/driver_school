@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,6 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         appointmentMapper.saveAppointMent(appointment);
     }
 
-    
     /**
      * 根据教练id查询预约记录
      */
@@ -46,6 +47,15 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
 		
 		return appointmentMapper.appointment_teaId(pageParam, teaId, appointmentStart, appointmentEnd);
 	}
+    
+    /**
+     * 根据教练id查询预约记录
+     */
+    @Override
+    public List<Map<String, Object>> appointment_teaId(String teaId) {
+    	
+    	return appointmentMapper.appointment_teaId(teaId,null,null);
+    }
     
     /**
      * 根据学员id查找预约记录
