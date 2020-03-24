@@ -42,6 +42,18 @@ public interface IAppointmentService extends IService<Appointment> {
             );
     
     /**
+     * 根据教练id查找预约记录
+     * @param pageParam
+     * @param stuId
+     * @param appointmentStart
+     * @param appointmentEnd
+     * @param subject
+     * @param teaName
+     * @return
+     */
+    List<Map<String,Object>> appointment_teaId(String teaId);
+    
+    /**
      * 根据学员id查找预约记录
      * @param stuId
      * @return
