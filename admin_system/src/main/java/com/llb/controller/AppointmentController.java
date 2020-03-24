@@ -138,7 +138,7 @@ public class AppointmentController {
     @ResponseBody
     public Message student_order(String teaId,String bm_date,
     		@RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
-            @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+            @RequestParam(defaultValue = "5", required = false, value = "size") Integer size) {
     	System.out.println(teaId);
     	String start_time=null;
     	String End_time = null;
@@ -158,7 +158,7 @@ public class AppointmentController {
 //    		System.out.println(bm_date.substring(13,23));
 //    		End_time = bm_date.substring(13,23);
 //    	}
-    	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+    	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, size);
     	IPage<Map<String, Object>> student_map = appointmentService.appointment_teaId(pageParam, teaId, start_time, End_time);
     	System.out.println(student_map.getRecords());
     	Message me= new Message();
@@ -202,7 +202,7 @@ public class AppointmentController {
     @ResponseBody
     public Map<String, Object> cancleTeaCancleAppoint(@RequestBody Map<String, String> map) {
     	Map<String, Object> result = new HashMap<>();
-    	
+    	System.out.println(map.get("appointmentFlag")+"!!!!!");
     	if("3".equals(map.get("appointmentFlag"))) {
     		result.put("code", 201);
     		result.put("msg", "已取消，不能再次取消！");
@@ -211,6 +211,15 @@ public class AppointmentController {
         	result.put("code", 201);
             result.put("msg", "已拒绝，不能再次拒绝！");
             return result;
+		}else if ("2".equals(map.get("appointmentFlag"))) {
+	    	result.put("code", 201);
+	    	result.put("msg", "已同意预约！");
+	    	return result;
+		}else if ("同   意 ".equals(map.get("appointmentFlag"))) {
+		appointmentService.editAppointFlag(map.get("id"), 2);
+    	result.put("code", 200);
+    	result.put("msg", "同意预约！");
+    	return result;
 		}
     	
     	appointmentService.editAppointFlag(map.get("id"), 4);

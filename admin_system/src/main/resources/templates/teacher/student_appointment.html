@@ -114,10 +114,15 @@
 			      , {field:'appointment_flag', title: '预约状态',align:'center', templet:function (d) {
                       var appointment_flag = d.appointment_flag;
                       var id = d.id;
-                      if(appointment_flag == 1 || appointment_flag == 2) {
+                      if(appointment_flag == 1) {
                           appointment_flag = "拒&nbsp;&nbsp;&nbsp;绝&nbsp;";
+//                           
+                      var appointment_flag_1 = "同&nbsp;&nbsp;&nbsp;意&nbsp;";
+                      var html ='<button id="Agree" type="button" class="layui-btn" name="'+appointment_flag_1+'" value="'+id+'" onClick="Agree(this.value, this.name)">'+appointment_flag_1+'</button>'+ '<button id="cancle" type="button" class="layui-btn" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                      } else if(appointment_flag == 2){
+                          appointment_flag = "已预约";
                       var html = '<button id="cancle" type="button" class="layui-btn layui-btn-normal" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
-                      } else if(appointment_flag == 3){
+                      }else if(appointment_flag == 3){
                           appointment_flag = "已取消";
                       var html = '<button id="cancle" type="button" class="layui-btn layui-btn-disabled" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
                       } else if(appointment_flag == 4){
@@ -195,7 +200,6 @@
       
     //取消预约操作
       function cancle(id, appointmentFlag) {
-
           var data = {id:id, appointmentFlag:appointmentFlag};
 
           $.ajax({
@@ -219,7 +223,33 @@
               }
           });
       }
-    
+      
+      //确定预约操作
+        function Agree(id, appointmentFlag_1) {
+            var data = {id:id, appointmentFlag:appointmentFlag_1};
+
+            $.ajax({
+                type: "POST",
+                url: "/appointment/teaCancle",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType:"application/json",
+                success: function(result){
+                    if(200==result.code){
+                        layer.alert(result.msg, {icon: 6},function () {
+                            //重新加载页面
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(result.msg, {
+                            time: 2000,
+                            btn: ['返回']
+                        });
+                    }
+                }
+            });
+        }
+      
        /*用户-停用*/
       function member_stop(obj,id){
           layer.confirm('确认要停用吗？',function(index){
