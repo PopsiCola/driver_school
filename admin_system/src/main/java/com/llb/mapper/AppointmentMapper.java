@@ -25,6 +25,10 @@ public interface AppointmentMapper extends BaseMapper<Appointment> {
     		@Param("appointmentStart") String appointmentStart,
             @Param("appointmentEnd") String appointmentEnd);
     
+    List<Map<String, Object>> appointment_teaId(@Param("teaId") String teaId,
+    		@Param("appointmentStart") String appointmentStart,
+            @Param("appointmentEnd") String appointmentEnd);
+    
     IPage<Map<String,Object>> findAppointByStuId(Page<Map<String, Object>> pageParam, @Param("stuId") String stuId,
                                                  @Param("appointmentStart") String appointmentStart,
                                                  @Param("appointmentEnd") String appointmentEnd,
