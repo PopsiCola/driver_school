@@ -38,10 +38,6 @@
             <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
-      <xblock>
-        <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
-        <button class="layui-btn">预约记录</button>
-      </xblock>
 
       <!--表格显示-->
       <table class="layui-hide" id="adminList" lay-filter="adminList"></table>
@@ -50,7 +46,7 @@
       <script type="text/html" id="complain_toolbar">
         <div class="layui-btn-container">
           <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delBatchAll"><i class="layui-icon"></i>批量删除</button>
-          <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>
+          <!--<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>-->
         </div>
       </script>
       <!--表格下方操作-->
@@ -121,6 +117,7 @@
               // where: {stuId: stuId},
               url: '/admin/findAllAdmin',
               limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+              toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
               response: {
                   statusCode: 200, //成功的状态码，默认：0
                   statusName: 'code',// 对应 code
@@ -150,11 +147,86 @@
               });
           });
 
+          //头工具栏事件
+          table.on('toolbar(adminList)', function(obj){
+              var checkStatus = table.checkStatus(obj.config.id);
+
+
+              console.log(checkStatus.data);
+
+              if(checkStatus.data.length==0){
+                  parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
+                  return ;
+              }
+
+
+              console.log(adminIds);
+
+
+              switch(obj.event){
+                  case 'delBatchAll':
+                      //获得选中的id
+                      var adminIds = "";
+                      for(var i=0;i<checkStatus.data.length;i++){
+                          adminIds += checkStatus.data[i].admin_id+",";
+                      }
+                      parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:500});
+
+                      var data={adminIds:adminIds};
+                      $.ajax({
+                          url: "/admin/deleteBatchAdmin",
+                          type: "post",
+                          cache: false,
+                          contentType: "application/json",
+                          datatype: "json",
+                          data: JSON.stringify(data),
+                          success: function (result) {
+                              if(200==result.code){
+                                  layer.alert(result.msg, {icon: 6},function () {
+                                      //重新加载页面
+                                      location.reload();
+                                  });
+                              }else{
+                                  layer.msg(result.msg, {
+                                      time: 2000,
+                                      btn: ['返回']
+                                  });
+                              }
+                          },
+                          error: function (response) {
+                              console.log("出错返回: " + response);
+                              console.log("出错数据: " + JSON.stringify(response));
+                          }
+                      });
+                      break;
+                  case 'add':
+
+                      break;
+
+                  /*case 'getCheckData':
+                      var data = checkStatus.data;
+                      layer.alert(JSON.stringify(data));
+                      break;
+                  case 'getCheckLength':
+                      var data = checkStatus.data;
+                      layer.msg('选中了：'+ data.length + ' 个');
+                      break;
+                  case 'isAll':
+                      layer.msg(checkStatus.isAll ? '全选': '未全选');
+                      break;
+
+                  //自定义头工具栏右侧图标 - 提示
+                  case 'LAYTABLE_TIPS':
+                      layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                      break;*/
+              };
+          });
+
           //监听工具条
           table.on('tool(adminList)', function (obj) {
               var data = obj.data;
 
-              console.log(data);
+              // console.log(data);
 
               if (obj.event === 'del') {
                   layer.confirm('真的删除该条数据吗？', function (index) {
@@ -169,14 +241,18 @@
                           datatype: "json",
                           data: adminId,
                           success: function (result) {
-                              if (result.code == 200) {
-                                  layer.alert(result.msg, {icon: 6}, function () {
+                              if(200==result.code){
+                                  layer.alert(result.msg, {icon: 6},function () {
                                       // 获得frame索引
                                       var index = parent.layer.getFrameIndex(window.name);
                                       //关闭当前frame
                                       parent.layer.close(index);
                                       //重新加载页面
                                       parent.location.reload();
+                                  });
+                              }else{
+                                  layer.alert(result.msg, {icon: 5},function (index) {
+                                      layer.close(index);
                                   });
                               }
                           },
@@ -189,47 +265,64 @@
                   });
               } else if (obj.event === 'edit') {
 
-                  var adminAccount = $("#adminAccount").val(data.admin_account);
-                  var adminEmail = $("#adminEmail").val(data.admin_mail);
-                  var adminPwd = $("#adminPwd").val(data.admin_pwd);
-
-                  var data = {
-                      adminAccount: adminAccount,
-                      adminMail: adminEmail,
-                      adminPwd: adminPwd
-                  };
-
                   console.log(data);
 
-                  $.ajax({
-                      url: "/admin/editAdmin",
-                      type: "post",
-                      cache: false,
-                      contentType: "application/json",
-                      datatype: "json",
-                      data: JSON.stringify(data),
-                      success: function (result) {
-                          if (200 == result.code) {
-                              layer.alert(result.msg, {icon: 6}, function () {
-                                  // 获得frame索引
-                                  var index = parent.layer.getFrameIndex(window.name);
-                                  //关闭当前frame
-                                  parent.layer.close(index);
-                                  //重新加载页面
-                                  parent.location.reload();
-                              });
-                          } else {
-                              layer.msg(result.msg, {
-                                  time: 2000, //2s后自动关闭
-                              });
-                          }
-                      },
-                      error: function (response) {
-                          console.log("出错返回: " + response);
-                          console.log("出错数据: " + JSON.stringify(response));
-                      }
-                  });
+                  //参数传到模态框
+                  $("#adminId").val(data.admin_id);
+                  $("#adminAccount").val(data.admin_account);
+                  $("#adminEmail").val(data.admin_mail);
+                  $("#adminPwd").val(data.admin_pwd);
+
               }
+          });
+
+          //监听提交
+          $("#editAdmin").click(function () {
+
+              console.log(111);
+
+              //传参补充
+              var adminId = $("#adminId").val();
+              var adminAccount = $("#adminAccount").val();
+              var adminEmail =  $("#adminEmail").val();
+              var adminPwd = $("#adminPwd").val();
+              var data = {
+                  adminId: adminId,
+                  adminAccount: adminAccount,
+                  adminMail: adminEmail,
+                  adminPwd: adminPwd
+              };
+
+              console.log(data);
+              $.ajax({
+                  url: "/admin/editAdmin",
+                  type: "post",
+                  cache: false,
+                  contentType: "application/json",
+                  dataType: "json",
+                  data: JSON.stringify(data),
+                  success: function (result) {
+                      if(200==result.code){
+                          layer.alert(result.msg, {icon: 6},function () {
+                              //重新加载页面
+                              location.reload();
+                          });
+                      }else{
+                          layer.msg(result.msg, {
+                              time: 2000,
+                              btn: ['返回']
+                          });
+                      }
+                  },
+                  error: function (response) {
+                      console.log("出错返回: " + response);
+                      console.log("出错数据: " + JSON.stringify(response));
+                  }
+              });
+          });
+
+          $("#test").click(function(){
+              hello("张三");
           });
 
           /*用户-停用*/
@@ -265,18 +358,21 @@
               });
           }
 
-
-          function delAll(argument) {
+          function delAll() {
 
               var data = tableCheck.getData();
 
+              var checkStatus=table.checkStatus('idTest');
+              console.log(checkStatus);
               layer.confirm('确认要删除吗？' + data, function (index) {
                   //捉到所有被选中的，发异步进行删除
                   layer.msg('删除成功', {icon: 1});
                   $(".layui-form-checked").not('.header').parents('tr').remove();
               });
           }
+
       })
+
 
     </script>
     <script>var _hmt = _hmt || []; (function() {

@@ -8,6 +8,7 @@ import com.llb.entity.Admin;
 import com.llb.entity.Student;
 import com.llb.service.IAdminService;
 import com.llb.service.IStudentService;
+import org.apache.velocity.runtime.directive.Foreach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -182,6 +183,7 @@ public class AdminController {
         //将用户传来的表单数据转换成实体类
         Admin admin = JSONObject.parseObject(JSONObject.toJSONString(map), Admin.class);
 
+
         String adminId = admin.getAdminId();
 
         //根据id查找管理员信息
@@ -223,6 +225,36 @@ public class AdminController {
 
         result.put("code", 200);
         result.put("msg", "删除成功！");
+        return result;
+    }
+
+    /**
+     * 批量删除管理员
+     * @param adminIds
+     * @return
+     */
+    @RequestMapping(value = "/deleteBatchAdmin", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteBatchAdmin(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //取出所有的id
+        String adminIds = map.get("adminIds");
+        String[] ids = adminIds.split(",");
+
+        //遍历删除
+        try {
+            for (int i = 0; i < ids.length; i++) {
+                String adminId = ids[i];
+                adminService.deleteAdmin(adminId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "批量删除失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "批量删除成功！");
         return result;
     }
 
