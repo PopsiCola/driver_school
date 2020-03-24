@@ -134,23 +134,32 @@ public class AppointmentController {
      * 根据教练id查询预约记录
      */
     
-    @RequestMapping(value = "/appointment_stuId")
+    @RequestMapping(value = "/appointment_teaId")
     @ResponseBody
-    public Message student_order(String teaId,String stu_name,String bm_date,
+    public Message student_order(String teaId,String bm_date,
     		@RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
             @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
-    	System.out.println("sdgsghsh");
+    	System.out.println(teaId);
     	String start_time=null;
     	String End_time = null;
-    	if (bm_date != "") {
+    	if (bm_date == null || bm_date == "") {
+    		bm_date = null;
+    	}else {
     		System.out.println("sdgsghsh");
     		System.out.println(bm_date.substring(0,10));
     		start_time=bm_date.substring(0,10);
     		System.out.println(bm_date.substring(13,23));
     		End_time = bm_date.substring(13,23);
 		}
+//    	if (bm_date != "") {
+//    		System.out.println("sdgsghsh");
+//    		System.out.println(bm_date.substring(0,10));
+//    		start_time=bm_date.substring(0,10);
+//    		System.out.println(bm_date.substring(13,23));
+//    		End_time = bm_date.substring(13,23);
+//    	}
     	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
-    	IPage<Map<String, Object>> student_map = studentService.findTeaTwoById(pageParam,teaId,stu_name,start_time,End_time);
+    	IPage<Map<String, Object>> student_map = appointmentService.appointment_teaId(pageParam, teaId, start_time, End_time);
     	System.out.println(student_map.getRecords());
     	Message me= new Message();
     	me.put("data", student_map.getRecords()) ;
@@ -161,7 +170,7 @@ public class AppointmentController {
     }
 
     /**
-     * 取消预约
+     * 学员取消预约
      * @return
      */
     @RequestMapping("/cancle")
@@ -173,12 +182,41 @@ public class AppointmentController {
             result.put("code", 201);
             result.put("msg", "已取消，不能再次取消！");
             return result;
-        }
-
+        }else if ("4".equals(map.get("appointmentFlag"))) {
+        	result.put("code", 201);
+            result.put("msg", "已拒绝，不能再次取消！");
+            return result;
+		}
+        
         appointmentService.editAppointFlag(map.get("id"), 3);
         result.put("code", 200);
         result.put("msg", "取消预约成功！");
         return result;
+    }
+    
+    /**
+     * 教练拒绝预约
+     * @return
+     */
+    @RequestMapping("/teaCancle")
+    @ResponseBody
+    public Map<String, Object> cancleTeaCancleAppoint(@RequestBody Map<String, String> map) {
+    	Map<String, Object> result = new HashMap<>();
+    	
+    	if("3".equals(map.get("appointmentFlag"))) {
+    		result.put("code", 201);
+    		result.put("msg", "已取消，不能再次取消！");
+    		return result;
+    	}else if ("4".equals(map.get("appointmentFlag"))) {
+        	result.put("code", 201);
+            result.put("msg", "已拒绝，不能再次拒绝！");
+            return result;
+		}
+    	
+    	appointmentService.editAppointFlag(map.get("id"), 4);
+    	result.put("code", 200);
+    	result.put("msg", "拒绝预约成功！");
+    	return result;
     }
 
     /**

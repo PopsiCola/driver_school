@@ -64,7 +64,7 @@
 	  	    elem: '#test',
 	  	    method:'post',
 	  	    id:'allAttTable',
-   	        url: '/teacher/student_two_id', //请求数据的地址
+   	        url: '/appointment/appointment_teaId', //请求数据的地址
   	        dataType: "json", //返回数据形式为json
 //   	        data:{'teaId':teaId,'stu_name':stu_name},
 			where: {'teaId':teaId,'stu_name':stu_name,'bm_date':bm_date},
@@ -80,25 +80,65 @@
 	  	    	[
 // 	  	    	   {type:'checkbox'}
 // 	  	    	   {field:'stuId', title: '学员ID'},
-			      {field:'stuAccount', title: '账号名称',sort: true,align:'center'}
-			      ,{field:'stuName', title: '姓名',align:'center'}
-			      ,{field:'stuSex', title: '性别',align:'center'}
-			      ,{field:'stuEmail', title: '邮箱',align:'center'}
-			      ,{field:'stuAddress', title: '民族',align:'center'}
-			      ,{field:'stuPhone', title: '电话号码',align:'center'}
+			       {field:'stu_name', title: '姓名',align:'center'}
+			      ,{field:'subject', title: '科目',align:'center'}
+			      ,{field:'appointment_start', title: '预约开始时间',align:'center'}
+			      ,{field:'appointment_end', title: '预约结束时间',align:'center'}
+			      ,{field:'boarding_time', title: '学员上车时间',align:'center', templet:function (d) {
+                      var boarding_time = d.boarding_time;
+                      if(boarding_time == null) {
+                          appointment_flag = "未上车";
+                      }
+                      return appointment_flag;
+                  }}
+			      ,{field:'alighting_time', title: '学员下车时间',align:'center', templet:function (d) {
+                      var alighting_time = d.alighting_time;
+                      if(alighting_time == null) {
+                          appointment_flag = "未下车";
+                      } 
+                      return appointment_flag;
+                  }}
+			      ,{field:'appointment_flag', title: '预约状态',align:'center', sort: true, templet:function (d) {
+                      var appointment_flag = d.appointment_flag;
+                      if(appointment_flag == 1) {
+                          appointment_flag = "预约中";
+                      } else if(appointment_flag == 2) {
+                          appointment_flag = "预约成功";
+                      } else if(appointment_flag == 3){
+                          appointment_flag = "已取消";
+                      } else if(appointment_flag == 4){
+                          appointment_flag = "已拒绝";
+                      }
+                      return appointment_flag;
+                  }}
+			      , {field:'appointment_flag', title: '预约状态',align:'center', templet:function (d) {
+                      var appointment_flag = d.appointment_flag;
+                      var id = d.id;
+                      if(appointment_flag == 1 || appointment_flag == 2) {
+                          appointment_flag = "拒&nbsp;&nbsp;&nbsp;绝&nbsp;";
+                      var html = '<button id="cancle" type="button" class="layui-btn layui-btn-normal" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                      } else if(appointment_flag == 3){
+                          appointment_flag = "已取消";
+                      var html = '<button id="cancle" type="button" class="layui-btn layui-btn-disabled" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                      } else if(appointment_flag == 4){
+                          appointment_flag = "已拒绝";
+                      var html = '<button id="cancle" type="button" class="layui-btn layui-btn-danger" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                      }
+                      return html;
+                  }}
 	  	    ]
 	  	    	]
-	        ,done: function (res, curr, count) {
-//         	 $(".layui-table-box").find("[data-field='id']").css("display","none"); 
-	        $("[data-field='stuSex']").children().each(function(){
-	        	     if($(this).text()=='1'){
-	        		      $(this).text("男")
-	        		     }else if($(this).text()=='0'){
-	        		      $(this).text("女")
-	        		     }
-	        		    });
-// 	        pageCurr=curr;
-	        }
+// 	        ,done: function (res, curr, count) {
+// //         	 $(".layui-table-box").find("[data-field='id']").css("display","none"); 
+// 	        $("[data-field='stuSex']").children().each(function(){
+// 	        	     if($(this).text()=='1'){
+// 	        		      $(this).text("男")
+// 	        		     }else if($(this).text()=='0'){
+// 	        		      $(this).text("女")
+// 	        		     }
+// 	        		    });
+// // 	        pageCurr=curr;
+// 	        }
 	  		,even:true
 	  		,page:{ //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
 	  	      layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -145,7 +185,7 @@
 			var type=$(this).data('type');
 			active[type] ? active[type].call(this) :'';
 		})
-	
+		
         //执行一个laydate实例  时间控件
         laydate.render({
           elem: '#start', //指定元素
@@ -153,6 +193,33 @@
         });
       });
       
+    //取消预约操作
+      function cancle(id, appointmentFlag) {
+
+          var data = {id:id, appointmentFlag:appointmentFlag};
+
+          $.ajax({
+              type: "POST",
+              url: "/appointment/teaCancle",
+              data: JSON.stringify(data),
+              dataType: "json",
+              contentType:"application/json",
+              success: function(result){
+                  if(200==result.code){
+                      layer.alert(result.msg, {icon: 6},function () {
+                          //重新加载页面
+                          location.reload();
+                      });
+                  }else{
+                      layer.msg(result.msg, {
+                          time: 2000,
+                          btn: ['返回']
+                      });
+                  }
+              }
+          });
+      }
+    
        /*用户-停用*/
       function member_stop(obj,id){
           layer.confirm('确认要停用吗？',function(index){
@@ -176,7 +243,7 @@
               
           });
       }
-
+		
       /*用户-删除*/
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){

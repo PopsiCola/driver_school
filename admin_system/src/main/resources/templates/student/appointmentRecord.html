@@ -98,21 +98,28 @@
                             appointment_flag = "预约中";
                         } else if(appointment_flag == 2) {
                             appointment_flag = "预约成功";
-                        } else {
+                        } else if(appointment_flag == 3){
                             appointment_flag = "已取消";
+                        } else if(appointment_flag == 4){
+                            appointment_flag = "已拒绝";
                         }
                         return appointment_flag;
                     }}
                 ,{field:'create_date', title: '预约创建时间', sort: true},
-                {field:'appointment_flag', title: '取消预约', templet:function (d) {
+                {field:'appointment_flag', title: '预约状态', templet:function (d) {
                         var appointment_flag = d.appointment_flag;
                         var id = d.id;
                         if(appointment_flag == 1 || appointment_flag == 2) {
-                            appointment_flag = "取消预约";
-                        } else {
-                            appointment_flag = "已取消";
-                        }
+                        appointment_flag = "拒&nbsp;&nbsp;&nbsp;绝&nbsp;";
                         var html = '<button id="cancle" type="button" class="layui-btn layui-btn-normal" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                        } else if(appointment_flag == 3){
+                            appointment_flag = "已取消";
+                        var html = '<button id="cancle" type="button" class="layui-btn layui-btn-danger" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                        } else if(appointment_flag == 4){
+                            appointment_flag = "已拒绝";
+                        var html = '<button id="cancle" type="button" class="layui-btn layui-btn-disabled" name="'+d.appointment_flag+'" value="'+id+'" onClick="cancle(this.value, this.name)">'+appointment_flag+'</button>';
+                        }
+                        return html;
                         return html;
                     }}
             ]]
@@ -132,7 +139,6 @@
 
       //取消预约操作
       function cancle(id, appointmentFlag) {
-
           var data = {id:id, appointmentFlag:appointmentFlag};
 
           $.ajax({
