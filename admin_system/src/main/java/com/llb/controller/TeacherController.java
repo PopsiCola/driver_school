@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Student;
 import com.llb.entity.Teacher;
+import com.llb.service.IAppointmentService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
@@ -44,9 +45,12 @@ public class TeacherController {
     
     @Autowired
     private IStudentService studentService;
-
+    
     @Autowired
     private MailService mailService;
+    
+    @Autowired
+    private IAppointmentService appointmentService;
 
     /**
      * 展示首页
@@ -113,7 +117,24 @@ public class TeacherController {
     	return me;
     }
     
+    /**
+     * 展示教练的学员预约时间线
+     * @return
+     */
+    @RequestMapping("/appointmentT_Student")
+    public ModelAndView appointmentTimeline(String teaId) {
+       ModelAndView modelAndView = new ModelAndView("teacher/appointmentT_Student");
 
+        //查询学员预约记录
+        List<Map<String, Object>> list = appointmentService.appointment_teaId(teaId);
+
+        System.out.println(list);
+        modelAndView.addObject("appointList", list);
+
+        return modelAndView;
+    }
+    
+    
     /**
      * 展示教练信息
      * @return
