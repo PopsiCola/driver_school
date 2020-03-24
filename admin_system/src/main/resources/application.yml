@@ -23,14 +23,17 @@ spring:
 
 #邮箱
   mail:
-    username: liulebinn@163.com
-    password: llb1998
+#    username: liulebinn@163.com
+    username: 18340013921@163.com
+#    password: llb1998
+    password: IATJLZAGAWJMKMCX
     host: smtp.163.com
     default-encoding: utf-8
 #邮件发件人
 mail:
   fromMail:
-    addr: liulebinn@163.com
+#    addr: liulebinn@163.com
+    addr: 18340013921@163.com
 
 #thymeleaf
   thymeleaf:

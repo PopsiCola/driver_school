@@ -102,7 +102,7 @@ public class MailServiceImpl implements MailService{
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(from);
             helper.setTo(to);
-            helper.setSubject("欢迎使用王者荣耀驾校服务-"+subject);
+            helper.setSubject("欢迎使用驾校预约管理服务-"+subject);
             //true表示发送的是html邮件
             helper.setText(template, true);
 
