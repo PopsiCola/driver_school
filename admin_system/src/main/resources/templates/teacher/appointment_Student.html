@@ -33,8 +33,8 @@
                     <!--<p id="stuStar" hidden="hidden" th:text="${appoint.stu_star} == null ? '暂未评星' : ${appoint.stu_star}"/>-->
                     对我的评分：<div id="stuStar" th:align="rigth"></div>
                     <br/>
-                    我的评论：<tr th:text="${appoint.stu_content} == null ? '暂未评论' : ${appoint.stu_content}"/><br/>
-                    教练评论：<tr th:text="${appoint.tea_content} == null ? '暂未评论' : ${appoint.tea_content}"/><br/>
+                    学员评论：<tr th:text="${appoint.stu_content} == null ? '暂未评论' : ${appoint.stu_content}"/><br/>
+                    我的评论：<tr th:text="${appoint.tea_content} == null ? '暂未评论' : ${appoint.tea_content}"/><br/>
                 </p>
                 <div style="alignment: right" data-toggle="modal" data-target="#stuContext" onclick="getId(this.id)" th:id="${appoint.id}">
                     <i class="layui-icon layui-icon-reply-fill" style="font-size: 20px; color: #1E9FFF;">

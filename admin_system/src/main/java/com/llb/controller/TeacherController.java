@@ -121,9 +121,9 @@ public class TeacherController {
      * 展示教练的学员预约时间线
      * @return
      */
-    @RequestMapping("/appointmentT_Student")
+    @RequestMapping("/appointment_Student")
     public ModelAndView appointmentTimeline(String teaId) {
-       ModelAndView modelAndView = new ModelAndView("teacher/appointmentT_Student");
+       ModelAndView modelAndView = new ModelAndView("teacher/appointment_Student");
 
         //查询学员预约记录
         List<Map<String, Object>> list = appointmentService.appointment_teaId(teaId);
