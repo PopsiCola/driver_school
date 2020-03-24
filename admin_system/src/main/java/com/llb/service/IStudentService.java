@@ -93,4 +93,17 @@ public interface IStudentService extends IService<Student> {
      * @return
      */
     Map<String, Object> verifyPwd(String email, String pwd);
+
+    /**
+     * 查询所有学员（分页）
+     * @param pageParam
+     * @return
+     */
+    IPage<Map<String, Object>> studentList(IPage<Map<String, Object>> pageParam,String stuAccount);
+
+    /**
+     * 根据id删除学员
+     * @param stuId
+     */
+    void deleteStudent(String stuId);
 }

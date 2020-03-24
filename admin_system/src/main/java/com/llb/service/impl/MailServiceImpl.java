@@ -59,7 +59,7 @@ public class MailServiceImpl implements MailService{
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(from);
         message.setTo(to);
-        message.setSubject("欢迎使用王者荣耀驾校服务-"+subject);
+        message.setSubject("欢迎使用驾校预约服务-"+subject);
         message.setText(template);
 
         try {

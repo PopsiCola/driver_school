@@ -29,6 +29,13 @@ public interface StudentMapper extends BaseMapper<Student> {
 
     Student findStuByAccAndMail(@Param("account") String account, @Param("email") String email);
 
+    /**
+     * 分页查询所有学员
+     * @param pageParam
+     * @return
+     */
+    IPage<Map<String,Object>>  studentList(IPage<Map<String, Object>> pageParam, @Param("stuAccount") String stuAccount);
+
     Student findStuByEmail(String stuEmail);
 
     void updateStuPwd(String stuEmail, String stuPwd);
@@ -36,4 +43,10 @@ public interface StudentMapper extends BaseMapper<Student> {
     void saveStudent(Student student);
 
     void editStudent(Student student);
+
+    /**
+     * 根据id删除学员
+     * @param stuId
+     */
+    void deleteStudent(String stuId);
 }

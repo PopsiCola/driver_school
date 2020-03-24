@@ -139,4 +139,23 @@
         </trim>
         WHERE stu_id = #{stuId}
     </update>
+
+    <!--查询所有学员(分页)-->
+    <select id="studentList" resultType="Map" parameterType="String">
+        SELECT s.stu_id, s.stu_account , s.stu_name, s.stu_email, s.stu_pwd, s.stu_sex, DATE_FORMAT(s.stu_birthday,'%Y-%m-%d') as stu_birthday,
+         s.stu_address, s.stu_phone, DATE_FORMAT(s.stu_createdate,'%Y-%m-%d %H:%i:%S') as stu_createDate
+        FROM student s
+        <where>
+            <if test="stuAccount != null">
+                s.stu_account like concat('%',#{stuAccount},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--删除学员-->
+    <select id="deleteStudent" parameterType="String">
+        DELETE
+        FROM student
+        WHERE stu_id = #{stuId}
+    </select>
 </mapper>

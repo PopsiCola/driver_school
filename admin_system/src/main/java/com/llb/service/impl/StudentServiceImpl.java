@@ -152,4 +152,23 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         result.put("msg", "密码正确！");
         return result;
     }
+
+    /**
+     * 查询所有学员（分页）
+     * @param pageParam
+     * @return
+     */
+    @Override
+    public IPage<Map<String, Object>> studentList(IPage<Map<String, Object>> pageParam, String stuAccount) {
+        return studentMapper.studentList(pageParam, stuAccount);
+    }
+
+    /**
+     * 根据id删除学员
+     * @param stuId
+     */
+    @Override
+    public void deleteStudent(String stuId) {
+        studentMapper.deleteStudent(stuId);
+    }
 }

@@ -91,7 +91,7 @@ public class LoginController {
             }
         } else {
             teacher = teacherService.findTeacher(account);
-            if(admin != null && teacher.getTeaPwd().equals(password)) {
+            if(teacher != null && teacher.getTeaPwd().equals(password)) {
                 flag = true;
                 request.getSession().setAttribute("teacher", teacher);
                 System.out.println(teacher);

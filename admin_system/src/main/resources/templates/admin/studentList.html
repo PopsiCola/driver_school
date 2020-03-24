@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>管理员</title>
+    <title>学员</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -40,7 +40,7 @@
       </div>
 
       <!--表格显示-->
-      <table class="layui-hide" id="adminList" lay-filter="adminList"></table>
+      <table class="layui-hide" id="studentList" lay-filter="studentList"></table>
 
       <!--表格上方操作-->
       <script type="text/html" id="complain_toolbar">
@@ -52,13 +52,13 @@
       <!--表格下方操作-->
       <script type="text/html" id="operateTable">
         <!--<a class="layui-btn layui-btn-xs" lay-event="detail" >查看</a>-->
-        <a class="layui-btn layui-btn-xs" lay-event="edit" data-toggle="modal" data-target="#editAdminInfo" >编辑</a>
+        <a class="layui-btn layui-btn-xs" lay-event="showDetail" data-toggle="modal" data-target="#showStuDetailshowStuDetail" >查看详情</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" >删除</a>
       </script>
     </div>
 
     <!-- 编辑管理员信息 -->
-    <div class="modal" id="editAdminInfo" tabindex="-1" role="dialog" aria-labelledby="editAdminInfoModal" aria-hidden="true"
+    <div class="modal" id="editStudentInfo" tabindex="-1" role="dialog" aria-labelledby="showStudentInfoModal" aria-hidden="true"
          data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog " style=" width: 400px">
         <div class="modal-content">
@@ -66,38 +66,74 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title" id="editAdminInfoModal">
+            <h4 class="modal-title" id="showStudentInfoModal">
               修改管理员信息
             </h4>
           </div>
           <div class="modal-body">
-            <input type="text" hidden="hidden" id="adminId"/>
+            <input type="text" hidden="hidden" id="stuId"/>
             <div class="layui-form-item">
               <label class="layui-form-label">账号:</label>
               <div class="layui-input-block">
-                <input id="adminAccount" type="text" name="adminAccount" placeholder="请输入账号" class="layui-input">
+                <input id="stuAccount" type="text" name="stuAccount" placeholder="请输入账号" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">姓名:</label>
+              <div class="layui-input-block">
+                <input id="stuName" type="text" name="stuName" placeholder="请输入姓名" class="layui-input">
               </div>
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">邮箱:</label>
               <div class="layui-input-block">
-                <input id="adminEmail" type="text" name="adminEmail" placeholder="请输入邮箱" class="layui-input">
+                <input id="stuEmail" type="text" name="stuEmail" placeholder="请输入邮箱" class="layui-input">
               </div>
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">密码:</label>
               <div class="layui-input-block">
-                <input id="adminPwd" type="password" name="adminPwd" placeholder="请输入密码" class="layui-input">
+                <input id="stuPwd" type="password" name="stuPwd" placeholder="请输入密码" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">性别:</label>
+              <div class="layui-input-block">
+                <input id="stuSex" type="text" name="stuSex" placeholder="请输入性别" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">生日:</label>
+              <div class="layui-input-block">
+                <input id="stuBirthday" type="text" name="stuBirthday" placeholder="请输入生日" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">地址:</label>
+              <div class="layui-input-block">
+                <input id="stuAddress" type="text" name="stuAddress" placeholder="请输入地址" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">联系电话:</label>
+              <div class="layui-input-block">
+                <input id="stuPhone" type="text" name="stuPhone" placeholder="请输入联系方式" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">创建时间:</label>
+              <div class="layui-input-block">
+                <input id="stuCreateTime" type="text" name="stuCreateTime" class="layui-input">
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button id="editAdmin" type="button" class="layui-btn layui-btn-primary"
-                    data-toggle="stuContentModal" data-dismiss="modal" data-target="#editAdminInfoModal">
-              修改
-            </button>
+            <!--<button id="editStudent" type="button" class="layui-btn layui-btn-primary"
+                    data-toggle="stuContentModal" data-dismiss="modal" data-target="#showStudentInfoModal">
+              确定
+            </button>-->
             <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">
-              取消
+              确定
             </button>
           </div>
         </div>
@@ -113,9 +149,9 @@
 
           //渲染表格
           table.render({
-              elem: '#adminList',
+              elem: '#studentList',
               // where: {stuId: stuId},
-              url: '/admin/findAllAdmin',
+              url: '/admin/findAllStudent',
               limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
               toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
               response: {
@@ -127,19 +163,32 @@
               }
               , cols: [[
                   {type: 'checkbox'},
-                  {field: 'admin_id', title: 'id', hide: true},    //hide:true    隐藏列
-                  {field: 'admin_account', title: '账号'},
-                  {field: 'admin_mail', title: '邮箱'},
-                  {field: 'admin_pwd', title: '密码'},    //TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
-                  {field: 'admin_createdate', title: '创建时间', sort: true},
+                  {field: 'stu_id', title: 'stu_id', hide: true},    //hide:true    隐藏列
+                  {field: 'stu_account', title: '账号'},
+                  {field: 'stu_name', title: '姓名'},
+                  {field: 'stu_email', title: '邮箱'},
+                  {field: 'stu_pwd', title: '密码'},//TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
+                  {field: 'stu_sex', title: '性别'},
+                  {field: 'stu_birthday', title: '生日'},
+                  {field: 'stu_address', title: '家庭地址'},
+                  {field: 'stu_phone', title: '联系电话'},
+                  {field: 'stu_createdate', title: '报名时间'},
                   {fixed: 'right', title: '操作', toolbar: '#operateTable'}
               ]]
               , page: true
+              ,done: function (res, curr, count) {
+              $("[data-field='stu_sex']").children().each(function(){
+                  if($(this).text()=='1'){
+                      $(this).text("男")
+                  }else if($(this).text()=='0'){
+                      $(this).text("女")
+                  }
+              });
+          }
           });
           //搜索按钮事件
           form.on('submit(search)', function (data) {
-
-              table.reload('adminList', {
+              table.reload('studentList', {
                   where: data.field,
                   page: {
                       curr: 1 //重新从第 1 页开始
@@ -148,8 +197,10 @@
           });
 
           //头工具栏事件
-          table.on('toolbar(adminList)', function(obj){
+          table.on('toolbar(studentList)', function(obj){
               var checkStatus = table.checkStatus(obj.config.id);
+              console.log(checkStatus.data);
+
 
               switch(obj.event){
                   case 'delBatchAll':
@@ -157,16 +208,17 @@
                           parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
                           return ;
                       }
+
                       //获得选中的id
-                      var adminIds = "";
+                      var stuIds = "";
                       for(var i=0;i<checkStatus.data.length;i++){
-                          adminIds += checkStatus.data[i].admin_id+",";
+                          stuIds += checkStatus.data[i].stu_id+",";
                       }
                       parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:500});
 
-                      var data={adminIds:adminIds};
+                      var data={stuIds:stuIds};
                       $.ajax({
-                          url: "/admin/deleteBatchAdmin",
+                          url: "/admin/deleteBatchStudent",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -195,22 +247,6 @@
 
                       break;
 
-                  /*case 'getCheckData':
-                      var data = checkStatus.data;
-                      layer.alert(JSON.stringify(data));
-                      break;
-                  case 'getCheckLength':
-                      var data = checkStatus.data;
-                      layer.msg('选中了：'+ data.length + ' 个');
-                      break;
-                  case 'isAll':
-                      layer.msg(checkStatus.isAll ? '全选': '未全选');
-                      break;
-
-                  //自定义头工具栏右侧图标 - 提示
-                  case 'LAYTABLE_TIPS':
-                      layer.alert('这是工具栏右侧自定义的一个图标按钮');
-                      break;*/
               };
           });
 
@@ -223,15 +259,15 @@
               if (obj.event === 'del') {
                   layer.confirm('真的删除该条数据吗？', function (index) {
                       // obj.del();
-                      var adminId = data.admin_id;
+                      var stuId = data.stu_id;
                       //删除行数据
                       $.ajax({
-                          url: "/admin/deleteAdmin",
+                          url: "/admin/deleteStudent",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
                           datatype: "json",
-                          data: adminId,
+                          data: stuId,
                           success: function (result) {
                               if(200==result.code){
                                   layer.alert(result.msg, {icon: 6},function () {
@@ -255,34 +291,53 @@
                       });
                       layer.close(index);
                   });
-              } else if (obj.event === 'edit') {
+              } else if (obj.event === 'showDetail') {
 
                   console.log(data);
 
                   //参数传到模态框
-                  $("#adminId").val(data.admin_id);
-                  $("#adminAccount").val(data.admin_account);
-                  $("#adminEmail").val(data.admin_mail);
-                  $("#adminPwd").val(data.admin_pwd);
+                  $("#stuId").val(data.stu_id);
+                  $("#stuAccount").val(data.stu_account);
+                  $("#stuName").val(data.stu_name);
+                  $("#stuEmail").val(data.stu_email);
+                  $("#stuPwd").val(data.stu_pwd);
+                  $("#stuSex").val(data.stu_sex);
+                  $("#stuBirthday").val(data.stu_birthday);
+                  $("#stuAddress").val(data.stu_address);
+                  $("#stuPhone").val(data.stu_phone);
+                  $("#stuCreateTime").val(data.stu_createdate);
 
               }
           });
 
           //监听提交
-          $("#editAdmin").click(function () {
+          $("#showStudentInfoModal").click(function () {
 
               console.log(111);
 
               //传参补充
-              var adminId = $("#adminId").val();
-              var adminAccount = $("#adminAccount").val();
-              var adminEmail =  $("#adminEmail").val();
-              var adminPwd = $("#adminPwd").val();
+              var stuId = $("#stuId").val();
+              var stuAccount = $("#stuAccount").val();
+              var stuName = $("#stuName").val();
+              var stuEmail = $("#stuEmail").val();
+              var stuPwd = $("#stuPwd").val();
+              var stuSex = $("#stuSex").val();
+              var stuBirthday = $("#stuBirthday").val();
+              var stuAddress = $("#stuAddress").val();
+              var stuPhone = $("#stuPhone").val();
+              var stuCreateDate = $("#stuCreateDate").val();
+
               var data = {
-                  adminId: adminId,
-                  adminAccount: adminAccount,
-                  adminMail: adminEmail,
-                  adminPwd: adminPwd
+                  stuId: stuId,
+                  stuAccount: stuAccount,
+                  stuName: stuName,
+                  stuEmail: stuEmail,
+                  stuPwd: stuPwd,
+                  stuSex: stuSex,
+                  stuBirthday: stuBirthday,
+                  stuAddress: stuAddress,
+                  stuPhone: stuPhone,
+                  stuCreateDate: stuCreateDate
               };
 
               console.log(data);
@@ -311,10 +366,6 @@
                       console.log("出错数据: " + JSON.stringify(response));
                   }
               });
-          });
-
-          $("#test").click(function(){
-              hello("张三");
           });
 
           /*用户-停用*/

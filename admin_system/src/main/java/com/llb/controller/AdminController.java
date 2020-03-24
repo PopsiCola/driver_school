@@ -8,6 +8,7 @@ import com.llb.entity.Admin;
 import com.llb.entity.Student;
 import com.llb.service.IAdminService;
 import com.llb.service.IStudentService;
+import com.llb.service.ITeacherService;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,10 @@ public class AdminController {
 
     @Autowired
     private IAdminService adminService;
+    @Autowired
+    private IStudentService studentService;
+    @Autowired
+    private ITeacherService teacherService;
 
     /**
      * 展示管理员模块首页
@@ -230,7 +235,7 @@ public class AdminController {
 
     /**
      * 批量删除管理员
-     * @param adminIds
+     * @param map
      * @return
      */
     @RequestMapping(value = "/deleteBatchAdmin", method = RequestMethod.POST)
@@ -255,6 +260,99 @@ public class AdminController {
         }
         result.put("code", 200);
         result.put("msg", "批量删除成功！");
+        return result;
+    }
+
+    /**
+     * 展示学员管理页面
+     * @return
+     */
+    @RequestMapping("/studentList")
+    public ModelAndView studentList() {
+        ModelAndView mv = new ModelAndView("admin/studentList");
+        return mv;
+    }
+
+    /**
+     * 查找所有学员
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/findAllStudent")
+    @ResponseBody
+    public Map<String, Object> findAllStudent(String account,
+                                              @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                              @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+        Map<String, Object> result = new HashMap<>();
+
+        //分页操作
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+
+        //查询所有管理员
+        IPage<Map<String, Object>> stuList = studentService.studentList(pageParam, account);
+        if(stuList.getTotal() == 0) {
+            result.put("code", 200);
+            result.put("msg", "没有管理员！");
+            return result;
+        }
+
+        //分页查询数据传递
+        result.put("data", stuList.getRecords());
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", stuList.getTotal());
+        return result;
+    }
+
+    /**
+     * 批量删除学员
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/deleteBatchStudent", method = RequestMethod.POST)
+    public Map<String, Object> deleteBatchStudent(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //取出所有的id
+        String stuIds = map.get("stuIds");
+        String[] ids = stuIds.split(",");
+
+        //遍历删除
+        try {
+            for (int i = 0; i < ids.length; i++) {
+                String stuId = ids[i];
+                studentService.deleteStudent(stuId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "批量删除失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "批量删除成功！");
+        return result;
+    }
+
+    /**
+     * 根据学员id删除学员
+     * @param stuId
+     * @return
+     */
+    @RequestMapping(value = "/deleteStudent", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteStudent(@RequestBody String stuId) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            studentService.deleteStudent(stuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "删除失败！"+ e);
+            return result;
+        }
+
+        result.put("code", 200);
+        result.put("msg", "删除成功！");
         return result;
     }
 
