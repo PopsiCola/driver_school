@@ -30,13 +30,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <!--排除自带的tomcat程序-->
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-tomcat</artifactId>
-        </exclusion>
-      </exclusions>
+<!--       排除自带的tomcat程序 -->
+<!--       <exclusions> -->
+<!--         <exclusion> -->
+<!--           <groupId>org.springframework.boot</groupId> -->
+<!--           <artifactId>spring-boot-starter-tomcat</artifactId> -->
+<!--         </exclusion> -->
+<!--       </exclusions> -->
     </dependency>
     <!--web 支持-->
     <dependency>
