@@ -6,7 +6,7 @@
         SELECT s.stu_id, s.stu_account , s.stu_name, s.stu_email, s.stu_pwd, s.stu_sex, DATE_FORMAT(s.stu_birthday,'%Y-%m-%d') as stu_birthday,
          s.stu_address, s.stu_phone, DATE_FORMAT(s.stu_createdate,'%Y-%m-%d %H:%i:%S') as stu_createDate
         FROM student s
-        WHERE s.stu_account = #{account} OR s.stu_email = #{account}
+        WHERE s.stu_account = #{account} OR s.stu_email = #{email}
     </select>
 
     <!--通过id查找学员-->
