@@ -29,6 +29,31 @@ spring:
     password: IATJLZAGAWJMKMCX
     host: smtp.163.com
     default-encoding: utf-8
+#    配置邮件服务器的端口，默认25端口，但是阿里云和腾讯云服务器为了安全关闭端口
+    port: 465
+
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 25000
+          ssl.enable: true
+          socketFactory.class: javax.net.ssl.SSLSocketFactory
+          starttls.enable: true
+          socketFactory.port: 465　
+          port: 465
+
+#    properties:
+#      mail:
+#        smtp:
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
+#            fallback: false
+##STARTTLS[1]  是对纯文本通信协议的扩展。它提供一种方式将纯文本连接升级为加密连接（TLS或SSL），而不是另外使用一个端口作加密通信。
+#        starttls:
+#          enable: true
+#          required: true
 #邮件发件人
 mail:
   fromMail:
