@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/font.css}">
     <link rel="stylesheet" th:href="@{/css/xadmin.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
     <script type="text/javascript" th:src="@{/js/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
@@ -52,15 +53,15 @@
       <!--表格下方操作-->
       <script type="text/html" id="operateTable">
         <!--<a class="layui-btn layui-btn-xs" lay-event="detail" >查看</a>-->
-        <a class="layui-btn layui-btn-xs" lay-event="showDetail" data-toggle="modal" data-target="#showStuDetailshowStuDetail" >查看详情</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" >删除</a>
+        <a class="layui-btn layui-btn-xs" lay-event="showDetail" data-toggle="modal" data-target="#showStuDetail" >查看详情</a>
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" >删除</a>-->
       </script>
     </div>
 
-    <!-- 编辑管理员信息 -->
-    <div class="modal" id="editStudentInfo" tabindex="-1" role="dialog" aria-labelledby="showStudentInfoModal" aria-hidden="true"
+    <!-- 显示学员详细信息 -->
+    <div class="modal" id="showStuDetail" tabindex="-1" role="dialog" aria-labelledby="showStudentInfoModal" aria-hidden="true"
          data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog " style=" width: 400px">
+      <div class="modal-dialog " style=" width: 450px">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -70,82 +71,85 @@
               修改管理员信息
             </h4>
           </div>
-          <div class="modal-body">
-            <input type="text" hidden="hidden" id="stuId"/>
-            <div class="layui-form-item">
-              <label class="layui-form-label">账号:</label>
-              <div class="layui-input-block">
-                <input id="stuAccount" type="text" name="stuAccount" placeholder="请输入账号" class="layui-input">
+          <div class="modal-body" style=" width: 300px">
+            <form class="layui-form" action="">
+              <input type="text" hidden="hidden" id="stuId"/>
+              <div class="layui-form-item">
+                <label class="layui-form-label">账号:</label>
+                <div class="layui-input-block">
+                  <input id="stuAccount" type="text" name="stuAccount" lay-verify="required" placeholder="请输入账号" class="layui-input" style=" width: 300px">
+                </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">姓名:</label>
-              <div class="layui-input-block">
-                <input id="stuName" type="text" name="stuName" placeholder="请输入姓名" class="layui-input">
+              <div class="layui-form-item">
+                <label class="layui-form-label">姓名:</label>
+                <div class="layui-input-block">
+                  <input id="stuName" type="text" name="stuName" placeholder="请输入姓名" class="layui-input" style=" width: 300px">
+                </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">邮箱:</label>
-              <div class="layui-input-block">
-                <input id="stuEmail" type="text" name="stuEmail" placeholder="请输入邮箱" class="layui-input">
+              <div class="layui-form-item">
+                <label class="layui-form-label">邮箱:</label>
+                <div class="layui-input-block">
+                  <input id="stuEmail" type="text" name="stuEmail" lay-verify="email" placeholder="请输入邮箱" class="layui-input" style=" width: 300px">
+                </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">密码:</label>
-              <div class="layui-input-block">
-                <input id="stuPwd" type="password" name="stuPwd" placeholder="请输入密码" class="layui-input">
+              <div class="layui-form-item">
+                <label class="layui-form-label">密码:</label>
+                <div class="layui-input-block">
+                  <input id="stuPwd" type="password" name="stuPwd" lay-verify="required" placeholder="请输入密码" class="layui-input" style=" width: 300px">
+                </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">性别:</label>
-              <div class="layui-input-block">
-                <input id="stuSex" type="text" name="stuSex" placeholder="请输入性别" class="layui-input">
+              <div class="layui-form-item">
+                <label class="layui-form-label">性别:</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="stuSex" value="1" title="男" checked="">
+                  <input type="radio" name="stuSex" value="0" title="女">
+                </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">生日:</label>
-              <div class="layui-input-block">
-                <input id="stuBirthday" type="text" name="stuBirthday" placeholder="请输入生日" class="layui-input">
+              <div class="layui-form-item">
+                <label class="layui-form-label">生日:</label>
+                <div class="layui-input-block">
+                  <input type="text" class="layui-input" id="stuBirthday" placeholder="yyyy-MM-dd">
+                </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">地址:</label>
-              <div class="layui-input-block">
-                <input id="stuAddress" type="text" name="stuAddress" placeholder="请输入地址" class="layui-input">
+              <div class="layui-form-item">
+                <label class="layui-form-label">地址:</label>
+                <div class="layui-input-block">
+                  <input id="stuAddress" type="text" name="stuAddress" placeholder="请输入地址" class="layui-input" style=" width: 300px">
+                </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">联系电话:</label>
-              <div class="layui-input-block">
-                <input id="stuPhone" type="text" name="stuPhone" placeholder="请输入联系方式" class="layui-input">
+              <div class="layui-form-item">
+                <label class="layui-form-label">联系电话:</label>
+                <div class="layui-input-block">
+                  <input id="stuPhone" type="text" name="stuPhone" placeholder="请输入联系方式" class="layui-input" style=" width: 300px">
+                </div>
               </div>
+              <div class="modal-footer">
+                <button id="editStudent" type="button" class="layui-btn layui-btn-primary"
+                        data-toggle="stuContentModal" data-dismiss="modal" data-target="#showStudentInfoModal" >
+                  确定
+                </button>
+              <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">
+                取消
+              </button>
             </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">创建时间:</label>
-              <div class="layui-input-block">
-                <input id="stuCreateTime" type="text" name="stuCreateTime" class="layui-input">
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <!--<button id="editStudent" type="button" class="layui-btn layui-btn-primary"
-                    data-toggle="stuContentModal" data-dismiss="modal" data-target="#showStudentInfoModal">
-              确定
-            </button>-->
-            <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">
-              确定
-            </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
-
+    </div>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
     <script type="text/javascript" th:inline="none">
       layui.use(['laydate', 'form', 'table'], function() {
-          var form = layui.form,
-              table = layui.table;
+          var form = layui.form;
+          var laydate = layui.laydate;
+          var table = layui.table;
+
+          //常规用法
+          laydate.render({
+              elem: '#stuBirthday',
+              trigger: 'click'
+          });
 
           //渲染表格
           table.render({
@@ -184,7 +188,7 @@
                       $(this).text("女")
                   }
               });
-          }
+            }
           });
           //搜索按钮事件
           form.on('submit(search)', function (data) {
@@ -199,7 +203,7 @@
           //头工具栏事件
           table.on('toolbar(studentList)', function(obj){
               var checkStatus = table.checkStatus(obj.config.id);
-              console.log(checkStatus.data);
+              console.log(checkStatus);
 
 
               switch(obj.event){
@@ -243,18 +247,14 @@
                           }
                       });
                       break;
-                  case 'add':
-
-                      break;
-
               };
           });
 
           //监听工具条
-          table.on('tool(adminList)', function (obj) {
+          table.on('tool(studentList)', function (obj) {
               var data = obj.data;
 
-              // console.log(data);
+              console.log(data);
 
               if (obj.event === 'del') {
                   layer.confirm('真的删除该条数据吗？', function (index) {
@@ -310,39 +310,35 @@
               }
           });
 
-          //监听提交
-          $("#showStudentInfoModal").click(function () {
 
-              console.log(111);
+          //监听提交：提交管理员修改学员信息
+          $("#editStudent").click(function () {
 
               //传参补充
-              var stuId = $("#stuId").val();
-              var stuAccount = $("#stuAccount").val();
-              var stuName = $("#stuName").val();
-              var stuEmail = $("#stuEmail").val();
-              var stuPwd = $("#stuPwd").val();
-              var stuSex = $("#stuSex").val();
-              var stuBirthday = $("#stuBirthday").val();
+              var stuId =  $("#stuId").val();
+              var stuAccount =  $("#stuAccount").val();
+              var stuName =  $("#stuName").val();
+              var stuEmail =  $("#stuEmail").val();
+              var stuPwd =  $("#stuPwd").val();
+              var stuSex =  $("#stuSex").val();
+              var stuBirthday =  $("#stuBirthday").val();
               var stuAddress = $("#stuAddress").val();
-              var stuPhone = $("#stuPhone").val();
-              var stuCreateDate = $("#stuCreateDate").val();
-
+              var stuPhone =  $("#stuPhone").val();
               var data = {
                   stuId: stuId,
                   stuAccount: stuAccount,
                   stuName: stuName,
-                  stuEmail: stuEmail,
                   stuPwd: stuPwd,
+                  stuEmail: stuEmail,
                   stuSex: stuSex,
                   stuBirthday: stuBirthday,
                   stuAddress: stuAddress,
                   stuPhone: stuPhone,
-                  stuCreateDate: stuCreateDate
               };
 
               console.log(data);
               $.ajax({
-                  url: "/admin/editAdmin",
+                  url: "/admin/editStudent",
                   type: "post",
                   cache: false,
                   contentType: "application/json",
@@ -418,12 +414,7 @@
 
 
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
+
   </body>
 
 </html>

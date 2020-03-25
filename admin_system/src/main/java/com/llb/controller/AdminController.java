@@ -356,6 +356,30 @@ public class AdminController {
         return result;
     }
 
+    /**
+     * 管理员修改用户信息。管理员拥有最高权限，不需要验证任何信息！
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/editStudent", method = RequestMethod.POST)
+    public Map<String, Object> editStudent(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //转换成实体类
+        Student student = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
+
+        try {
+            studentService.editStudent(student);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "修改信息失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "修改信息成功！");
+        return result;
+    }
+
     @RequestMapping(value = "/admin-list")
     public ModelAndView admin_list() {
     	ModelAndView modelAndView = new ModelAndView("admin-list");
