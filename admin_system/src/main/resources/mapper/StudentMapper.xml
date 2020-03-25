@@ -56,7 +56,7 @@
     </update>
 
     <!--保存学员信息-->
-    <insert id="saveStudent" parameterType="Admin">
+    <insert id="saveStudent" parameterType="Student">
         INSERT INTO student
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="stuId != null">
@@ -77,8 +77,8 @@
             <if test="stuSex != null">
                 stu_sex,
             </if>
-            <if test="stuAge != null">
-                stu_age,
+            <if test="stuBirthday != null">
+                stu_birthday,
             </if>
             <if test="stuAddress != null">
                 stu_address,
