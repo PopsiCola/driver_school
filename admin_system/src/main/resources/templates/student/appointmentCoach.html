@@ -76,7 +76,7 @@
             <div class="layui-input-inline">
               <select name="teaId" id="teaId" class="form-control1">
                 <option value="">请选择教练</option>
-                <option th:each="teacher,tea:${teacherList}" th:value="${teacher.teaId}" th:text="${teacher.teaName}"></option>
+                <option th:each="teacher,tea:${teacherList}" th:value="${teacher.teaId}" th:text="${teacher.teaAccount}"></option>
               </select>
             </div>
           </div>
