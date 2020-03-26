@@ -78,7 +78,7 @@ public class AppointmentController {
         appointment.setId(UUID.randomUUID().toString().replaceAll("-", "").trim());
         appointment.setAppointmentStart(start);
         appointment.setAppointmentEnd(end);
-        appointment.setCreateDate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"));
+//        appointment.setCreateDate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"));
         //预约提交后，状态应为待同意  1.待同意 2.已拒绝 3.已批准
         appointment.setAppointmentFlag(1);
         //保存预约信息
