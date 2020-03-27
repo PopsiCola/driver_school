@@ -380,6 +380,49 @@ public class AdminController {
         return result;
     }
 
+    /**
+     * 展示预约记录
+     * @return
+     */
+    @RequestMapping("/appointmentRecord")
+    public ModelAndView showAppointRecord() {
+        ModelAndView mv = new ModelAndView("admin/appointmentRecord");
+        return mv;
+    }
+
+    /**
+     * 管理员查询所有预约记录
+     * @return
+     */
+    @RequestMapping(value = "/appointList")
+    @ResponseBody
+    public Map<String, Object> appointList(String start,
+                                           String end,
+                                           String subject,
+                                           String teaName,
+                                           String stuName,
+                                           @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                           @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+        Map<String, Object> result = new HashMap<>();
+
+        //分页操作
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+        //分页查询
+        IPage<Map<String, Object>> allAppoint = null;
+        try {
+            allAppoint = adminService.findAllAppoint(pageParam, start, end, subject, teaName, stuName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "查询失败");
+            return result;
+        }
+        result.put("data", allAppoint.getRecords());
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", allAppoint.getTotal());
+        return result;
+    }
     @RequestMapping(value = "/admin-list")
     public ModelAndView admin_list() {
     	ModelAndView modelAndView = new ModelAndView("admin-list");

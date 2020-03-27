@@ -111,4 +111,49 @@
         FROM admin
         WHERE admin_id = #{adminId}
     </select>
+
+    <!--根据查找所有预约记录(分页查询)-->
+    <select id="findAllAppoint" parameterType="String" resultType="Map">
+        SELECT a.id,
+        t.tea_id,
+        s.stu_name,
+        t.tea_name,
+        a.subject,
+        a.appointment_start,
+        a.appointment_end,
+        a.boarding_time,
+        a.alighting_time,
+        a.stu_star,
+        a.stu_content,
+        a.tea_content,
+        a.appointment_flag,
+        a.create_date
+        FROM appointment a
+          LEFT JOIN teacher t
+          ON a.tea_id = t.tea_id
+          LEFT JOIN student s
+          ON a.stu_id = s.stu_id
+        <where>
+            <if test="appointmentStart!=null and appointmentStart!=''">
+                <![CDATA[
+                    AND	DATE_FORMAT(a.appointment_start, '%Y-%m-%d')>= DATE_FORMAT(#{appointmentStart}, '%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="appointmentEnd!=null and appointmentEnd!=''">
+                <![CDATA[
+                    AND	DATE_FORMAT(a.appointment_end, '%Y-%m-%d')<= DATE_FORMAT(#{appointmentEnd}, '%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="subject!=null and subject!=''">
+                AND a.subject like concat('%',#{subject},'%')
+            </if>
+            <if test="teaName!=null and teaName!=''">
+                AND t.tea_name like concat('%',#{teaName},'%')
+            </if>
+            <if test="stuName!=null and stuName!=''">
+                AND s.stu_name like concat('%',#{stuName},'%')
+            </if>
+        </where>
+        ORDER BY a.create_date DESC
+    </select>
 </mapper>

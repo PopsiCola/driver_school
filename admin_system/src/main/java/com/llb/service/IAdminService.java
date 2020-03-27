@@ -87,4 +87,16 @@ public interface IAdminService extends IService<Admin> {
      * @param adminId
      */
     void deleteAdmin(String adminId);
+
+    /**
+     * 查询所有预约记录(分页)
+     * @param pageParam
+     * @param start 开始时间
+     * @param end 结束时间
+     * @param subject 科目
+     * @param teaName 教练名称
+     * @return
+     */
+    IPage<Map<String, Object>> findAllAppoint(Page<Map<String, Object>> pageParam, String start,
+                                              String end, String subject, String teaName, String stuName);
 }

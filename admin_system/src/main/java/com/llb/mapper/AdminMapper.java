@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
@@ -47,4 +48,17 @@ public interface AdminMapper extends BaseMapper<Admin> {
      * @param adminId
      */
     void deleteAdmin(String adminId);
+
+    /**
+     * 查询所有预约记录(分页)
+     * @param pageParam
+     * @param start 开始时间
+     * @param end 结束时间
+     * @param subject 科目
+     * @param teaName 教练名称
+     * @return
+     */
+    IPage<Map<String, Object>> findAllAppoint(Page<Map<String, Object>> pageParam, @Param("appointmentStart") String start, @Param("appointmentEnd") String end,
+                                              @Param("subject") String subject, @Param("teaName") String teaName,
+                                              @Param("stuName") String stuName);
 }

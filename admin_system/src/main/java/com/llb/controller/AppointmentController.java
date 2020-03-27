@@ -182,11 +182,15 @@ public class AppointmentController {
             result.put("code", 201);
             result.put("msg", "已取消，不能再次取消！");
             return result;
-        }else if ("4".equals(map.get("appointmentFlag"))) {
+        } else if ("4".equals(map.get("appointmentFlag"))) {
         	result.put("code", 201);
             result.put("msg", "已拒绝，不能再次取消！");
             return result;
-		}
+		} else if ("5".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已完成，不能再次取消！");
+            return result;
+        }
         
         appointmentService.editAppointFlag(map.get("id"), 3);
         result.put("code", 200);
