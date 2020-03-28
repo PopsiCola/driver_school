@@ -248,37 +248,46 @@ public class AppointmentController {
 
         //获取id，根据id查询评论信息
         Appointment apponit = appointmentService.findApponitById(map.get("id"));
-
+        System.out.println("/////////");
+        String xypl = map.get("xypl");
+        System.out.println(xypl);
         System.out.println(apponit);
-
-        //判断该评论是否不存在
-        if(apponit == null) {
-            result.put("code", 201);
-            result.put("msg", "该条评论不存在！");
+        System.out.println(apponit.getAppointmentFlag());
+        if (xypl.equals("1")) {
+        	result.put("code", 201);
+            result.put("msg", "学员未评论，无法回复！");
             return result;
-        }
-
-        //进行逻辑判断，当预约状态为3是学员才能进行评星、评价
-        if(3 != apponit.getAppointmentFlag()) {
-            result.put("code", 201);
-            result.put("msg", "练车未结束，不能进行评价！");
-            return result;
-        }
-
-        //当有评星或评价时，不能进行重复评论操作
-        if(apponit.getStuContent() != null || apponit.getStuStar() != null) {
-            result.put("code", 201);
-            result.put("msg", "您已对该次练车进行过评价，不重复评价！");
-            return result;
-        }
-
-        //符合评价操作
-        apponit.setStuStar(Integer.parseInt(map.get("star")));
-        apponit.setStuContent(map.get("stuContent"));
-        appointmentService.editAppoint(apponit);
-
-        result.put("code", 200);
-        result.put("msg", "评论成功！");
+		}else {
+			
+	        //判断该评论是否不存在
+	        if(apponit == null) {
+	            result.put("code", 201);
+	            result.put("msg", "该条评论不存在！");
+	            return result;
+	        }
+	
+	        //进行逻辑判断，当预约状态为3是学员才能进行评星、评价
+	        else if(5 == apponit.getAppointmentFlag()) {
+	        	//符合评价操作
+	            apponit.setStuStar(Integer.parseInt(map.get("star")));
+	            apponit.setStuContent(map.get("stuContent"));
+	            appointmentService.editAppoint(apponit);
+	
+	            result.put("code", 200);
+	            result.put("msg", "评论成功！");
+	        }
+	
+	        //当有评星或评价时，不能进行重复评论操作
+	        else if(apponit.getStuContent() != null || apponit.getStuStar() != null) {
+	            result.put("code", 201);
+	            result.put("msg", "您已对该次练车进行过评价，不重复评价！");
+	            return result;
+	        }else {
+	        	result.put("code", 201);
+	            result.put("msg", "练车未结束，不能进行评价！");
+	            return result;
+			}
+		}
         return result;
     }
 

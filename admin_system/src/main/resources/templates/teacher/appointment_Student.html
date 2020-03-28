@@ -24,22 +24,33 @@
             <i class="layui-icon layui-timeline-axis"></i>
             <div class="layui-timeline-content layui-text">
                 <h3 class="layui-timeline-title" th:text="${appoint.create_date}"></h3>
-                预约状态：<tr id="appointmentFlag" th:text="${appoint.appointment_flag} == 1? '预约中':(appoint.appointment_flag == 2? '预约成功': '已取消')"></tr>
+                预约状态：<tr id="appointmentFlag" th:text="${appoint.appointment_flag} ==1? '预约中':(${appoint.appointment_flag} ==2? '预约中': (${appoint.appointment_flag} ==3? '已取消': (${appoint.appointment_flag} ==4? '教练已拒绝': '已完成')))"></tr>
+                <!--<input th:id="${appoint.id}" th:value="${appoint.id}" hidden="hidden">-->
                 <p>
+                    <!--<input hidden="hidden" id="stuStarVal" th:value="${appoint.stu_star}">-->
                     预约学员：<tr th:text="${appoint.stu_name}"/><br/>
                     预约科目：<tr th:text="${appoint.subject}"/><br/>
                     预约时间段：<tr th:text="${appoint.appointment_start}"/> - <tr th:text="${appoint.appointment_end}"/><br/>
                     练车时间段：<tr th:text="${appoint.boarding_time} == null? '未开始练车' : ${appoint.boarding_time}"/> - <tr th:text="${appoint.alighting_time} == null? '未结束练车' : ${appoint.alighting_time}"/><br/>
-                    <!--<p id="stuStar" hidden="hidden" th:text="${appoint.stu_star} == null ? '暂未评星' : ${appoint.stu_star}"/>-->
-                    对我的评分：<div id="stuStar" th:align="rigth"></div>
-                    <br/>
-                    学员评论：<tr th:text="${appoint.stu_content} == null ? '暂未评论' : ${appoint.stu_content}"/><br/>
-                    我的评论：<tr th:text="${appoint.tea_content} == null ? '暂未评论' : ${appoint.tea_content}"/><br/>
+
+                    <!--我的评分：<div id="stuStar" th:align="rigth" th:text="${appoint.id}"></div>-->
+                    <!--<tr id="stuStar"></tr>-->
+                <div th:if="${appoint.stu_star} eq null">
+                    学员评星：<tr id="stuStar">暂未评星</tr><br>
+                </div>
+                <div th:if="${appoint.stu_star} != null">
+                    学员评星：<div class="star" th:lay-data="${appoint.stu_star}"></div><br/>
+                </div>
+                <input type="text" hidden="hidden" id="xypl"  th:value="${appoint.stu_content} == null ? '1' : '2'"/>
+                学员评论：<tr th:text="${appoint.stu_content} == null ? '暂未评论' : ${appoint.stu_content}"/><br/>
+                教练回复：<tr th:text="${appoint.tea_content} == null ? '暂未评论' : ${appoint.tea_content}"/><br/>
                 </p>
+                <div id="comment">
                 <div style="alignment: right" data-toggle="modal" data-target="#stuContext" onclick="getId(this.id)" th:id="${appoint.id}">
                     <i class="layui-icon layui-icon-reply-fill" style="font-size: 20px; color: #1E9FFF;">
-                        <i style="font-size: 13px; color: #1E9FFF;">评价</i>
+                        <i id="qwe" style="font-size: 13px; color: #1E9FFF;">评价</i>
                     </i>
+                </div>
                 </div>
             </div>
         </li>
@@ -100,6 +111,7 @@
             ,theme: '#FF8000' //自定义主题色
             ,readonly: false
             ,choose: function(value){
+
                 //value就是选中后的星星的值
                 //将value加到id为appointStar的标签上
                 var html = '<span id="star" hidden="hidden">'+ value+'</span>';
@@ -107,28 +119,44 @@
             }
         });
 
+        //评星遍历显示
+        layui.each($('.star'), function (index, elem) {
+
+            var configTemp = $(elem).attr('lay-data');
+            rate.render({
+                elem: elem
+                ,value: configTemp //初始值
+                // ,value: this.id //初始值
+                ,text: true //开启文本
+                ,theme: '#FF8000' //自定义主题色
+                ,readonly: true
+            });
+        });
+
         //显示星级
-        rate.render({
+       /* rate.render({
             elem: '#stuStar'
-            ,value: $("#id").val() //初始值
+            ,value: $("#stuStarVal").val() //初始值
+            ,value: this.text //初始值
+            // ,value: this.id //初始值
             ,text: true //开启文本
             ,theme: '#FF8000' //自定义主题色
             ,readonly: true
-        });
-
+        });*/
         //提交评论
         $("#contentButton").click(function () {
 
             var id = $("#id").val();
             var star = $("#star").text();
             var stuContent = $("#stuContent").val();
-
+            var xypl = $("#xypl").val();
+            
             //如果用户没有进行操作，就提交，则评星默认为0星
             if(star == "") {
                 star = 0;
             }
 
-            var data = {id:id, star:star, stuContent:stuContent};
+            var data = {id:id, star:star, stuContent:stuContent,xypl:xypl};
 
             console.log(data);
 
@@ -137,7 +165,7 @@
                 type:"post",
                 cache:false,
                 contentType:"application/json",
-                datatype:"json",
+                dataType:"json",
                 data:JSON.stringify(data),
                 success:function(result){
                     layer.msg(result.msg, {
@@ -155,7 +183,18 @@
 
     //给隐藏id赋值
     function getId(id) {
+//     	var xypl = $("#xypl").val();
+//     	$('#comment').html();
+//     	alert($("#qwe").val())
+//     	if (xypl = 1) {
+//     	var html = '<div style="alignment: right" data-toggle="moda" data-target="#stuContext" onclick="getId(this.id)" th:id="${appoint.id}"><i class="layui-icon layui-icon-reply-fill" style="font-size: 20px; color: #1E9FFF;"><i style="font-size: 13px; color: #1E9FFF;">评价</i></i></div>';
+//         $('#comment').html(html);
+// 		}else if(xypl = 2){
+//     	var html = '<div style="alignment: right" data-toggle="moda" data-target="#stuContext" onclick="getId(this.id)" th:id="${appoint.id}"><i class="layui-icon layui-icon-reply-fill" style="font-size: 20px; color: #1E9FFF;"><i style="font-size: 13px; color: #1E9FFF;">评价</i></i></div>';
+//         $('#comment').html(html);
+// 		}
         $("#id").val(id);
+
     }
 
 </script>

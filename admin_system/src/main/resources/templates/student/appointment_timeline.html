@@ -24,7 +24,7 @@
             <i class="layui-icon layui-timeline-axis"></i>
             <div class="layui-timeline-content layui-text">
                 <h3 class="layui-timeline-title" th:text="${appoint.create_date}"></h3>
-                预约状态：<tr id="appointmentFlag" th:text="${appoint.appointment_flag} == 1? '预约中':(appoint.appointment_flag == 2? '预约成功': '已取消')"></tr>
+                预约状态：<tr id="appointmentFlag" th:text="${appoint.appointment_flag} ==1? '预约中':(${appoint.appointment_flag} ==2? '预约中': (${appoint.appointment_flag} ==3? '已取消': (${appoint.appointment_flag} ==4? '教练已拒绝': '已完成')))"></tr>
                 <!--<input th:id="${appoint.id}" th:value="${appoint.id}" hidden="hidden">-->
                 <p>
                     <!--<input hidden="hidden" id="stuStarVal" th:value="${appoint.stu_star}">-->
