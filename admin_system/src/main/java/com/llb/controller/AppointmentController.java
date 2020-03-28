@@ -219,6 +219,10 @@ public class AppointmentController {
 	    	result.put("code", 201);
 	    	result.put("msg", "已同意预约！");
 	    	return result;
+		}else if ("5".equals(map.get("appointmentFlag"))) {
+	    	result.put("code", 201);
+	    	result.put("msg", "练车已完成，不可修改状态！");
+	    	return result;
 		}else if ("同   意 ".equals(map.get("appointmentFlag"))) {
 		appointmentService.editAppointFlag(map.get("id"), 2);
     	result.put("code", 200);
