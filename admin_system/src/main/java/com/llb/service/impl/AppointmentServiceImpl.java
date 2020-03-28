@@ -24,7 +24,7 @@ import java.util.Map;
  * @since 2020-03-17
  */
 @Service
-public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appointment> implements IAppointmentService {
+public class AppointmentServiceImpl  implements IAppointmentService {
 
     @Autowired
     private AppointmentMapper appointmentMapper;

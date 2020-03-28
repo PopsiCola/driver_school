@@ -17,7 +17,7 @@ import java.util.Map;
  * @author llb
  * @since 2020-03-17
  */
-public interface AppointmentMapper extends BaseMapper<Appointment> {
+public interface AppointmentMapper {
 
     void saveAppointMent(Appointment appointment);
 

@@ -95,7 +95,7 @@ public class TeacherController {
     @ResponseBody
     public Message student_two_id(String teaId,String stu_name,String bm_date,
     		@RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
-            @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+            @RequestParam(defaultValue = "5", required = false, value = "size") Integer size) {
     	System.out.println("sdgsghsh");
     	String start_time=null;
     	String End_time = null;
@@ -106,7 +106,7 @@ public class TeacherController {
     		System.out.println(bm_date.substring(13,23));
     		End_time = bm_date.substring(13,23);
 		}
-    	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+    	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, size);
     	IPage<Map<String, Object>> student_map = studentService.findTeaTwoById(pageParam,teaId,stu_name,start_time,End_time);
     	System.out.println(student_map.getRecords());
     	Message me= new Message();

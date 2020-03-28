@@ -18,7 +18,7 @@ import java.util.Map;
  * @author llb
  * @since 2020-03-17
  */
-public interface IAppointmentService extends IService<Appointment> {
+public interface IAppointmentService{
 
     /**
      * 保存预约记录
