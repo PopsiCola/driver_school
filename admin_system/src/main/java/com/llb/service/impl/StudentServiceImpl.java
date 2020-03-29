@@ -6,6 +6,7 @@ import com.llb.service.IStudentService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -25,6 +26,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     /**
      * 根据学员名或邮箱查询学员
@@ -142,7 +145,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         //邮箱号唯一，可以根据邮箱号查找学员的密码
         Student student = studentMapper.findStudentById(id);
         //对比密码是否正确
-        if(!pwd.equals(student.getStuPwd())) {
+        if(!encoder.matches(pwd, student.getStuPwd())) {
             result.put("code", 201);
             result.put("msg", "密码错误，请重新输入！");
             return result;

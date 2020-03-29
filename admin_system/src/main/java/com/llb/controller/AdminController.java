@@ -11,6 +11,7 @@ import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -37,6 +38,9 @@ public class AdminController {
     private IStudentService studentService;
     @Autowired
     private ITeacherService teacherService;
+    // 密码加密
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     /**
      * 展示管理员模块首页
@@ -79,13 +83,13 @@ public class AdminController {
         }
 
         //判断密码是否正确，正确则修改密码
-        if(!map.get("oldPwd").equals(admin.getAdminPwd())) {
+        if(!encoder.matches(map.get("oldPwd"), admin.getAdminPwd())) {
             result.put("code", 201);
             result.put("msg", "密码错误！");
             return result;
         }
 
-        adminService.editAdminPwd(admin.getAdminMail(), map.get("newPwd"));
+        adminService.editAdminPwd(admin.getAdminMail(), encoder.encode(map.get("newPwd")));
         result.put("code", 200);
         result.put("msg", "修改成功！");
         return result;
@@ -113,7 +117,7 @@ public class AdminController {
         }
 
         //判断密码是否正确，正确则修改密码
-        if(!map.get("adminPwd").equals(admin.getAdminPwd())) {
+        if(!encoder.matches(map.get("adminPwd"), admin.getAdminPwd())) {
             result.put("code", 201);
             result.put("msg", "密码错误！");
             return result;
@@ -188,9 +192,9 @@ public class AdminController {
         //将用户传来的表单数据转换成实体类
         Admin admin = JSONObject.parseObject(JSONObject.toJSONString(map), Admin.class);
 
-
+        //密码加密
+        admin.setAdminPwd(encoder.encode(map.get("adminPwd")));
         String adminId = admin.getAdminId();
-
         //根据id查找管理员信息
         Admin adminById = adminService.findAdminById(adminId);
 
@@ -367,6 +371,8 @@ public class AdminController {
         //转换成实体类
         Student student = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
 
+        //密码加密
+        student.setStuPwd(encoder.encode(map.get("stuPwd")));
         try {
             studentService.editStudent(student);
         } catch (Exception e) {

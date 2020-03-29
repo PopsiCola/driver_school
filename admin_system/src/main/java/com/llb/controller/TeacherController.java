@@ -13,6 +13,7 @@ import com.llb.service.MailService;
 import com.llb.web.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -51,6 +52,10 @@ public class TeacherController {
     
     @Autowired
     private IAppointmentService appointmentService;
+
+    //密码加密
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     /**
      * 展示首页
@@ -158,6 +163,9 @@ public class TeacherController {
         //将用户传来的表单数据转换成实体类
         Teacher newTeacher = JSONObject.parseObject(JSONObject.toJSONString(map), Teacher.class);
 
+        //密码加密
+        newTeacher.setTeaPwd(encoder.encode(map.get("teaPwd")));
+
         //TODO:通过账号和邮箱查询，判断是否存在，如果存在，则该账号已被注册
         Teacher teacher1 = teacherService.findTeacher(newTeacher.getTeaAccount());
         Teacher teacher2 = teacherService.findTeacher(newTeacher.getTeaEmail());
@@ -188,7 +196,7 @@ public class TeacherController {
         }
 
         //判断学员密码是否正确
-        if(!newTeacher.getTeaPwd().equals(teacher.getTeaPwd())) {
+        if(!encoder.matches(map.get("teaPwd"), teacher.getTeaPwd())) {
             result.put("code", 201);
             result.put("msg", "密码错误！");
             return result;
@@ -216,7 +224,10 @@ public class TeacherController {
         Map<String, Object> result = new HashMap<>();
         //将用户传来的表单数据转换成实体类
         Teacher newTeacher = JSONObject.parseObject(JSONObject.toJSONString(map), Teacher.class);
-        String teaNewPwd = map.get("teaNewPwd");
+        //密码加密
+        newTeacher.setTeaPwd(encoder.encode(map.get("teaNewPwd")));
+
+        String teaNewPwd = newTeacher.getTeaPwd();
 
         Teacher teacher = teacherService.findTeacherById(map.get("teaId"));
         //既然能够给到teaId，那么用户就是存在的
@@ -226,7 +237,7 @@ public class TeacherController {
             return result;
         }
         //判断学员密码是否正确
-        if(!newTeacher.getTeaPwd().equals(teacher.getTeaPwd())) {
+        if(!encoder.matches(map.get("teaPwd"), teacher.getTeaPwd())) {
             result.put("code", 201);
             result.put("msg", "密码错误！");
             return result;
@@ -323,6 +334,9 @@ public class TeacherController {
 
         //将用户传来的表单数据转换成实体类
         Teacher teacher = JSONObject.parseObject(JSONObject.toJSONString(map), Teacher.class);
+        //密码加密
+        teacher.setTeaPwd(encoder.encode(map.get("teaPwd")));
+
         //获取用户验证码
         String verifyCode = map.get("verifyCode");
 

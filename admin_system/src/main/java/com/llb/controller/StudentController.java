@@ -11,6 +11,7 @@ import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -41,6 +42,8 @@ public class StudentController {
     private MailService mailService;
     @Autowired
     private IAppointmentService appointmentService;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     /**
      * 展示学员首页
@@ -88,9 +91,10 @@ public class StudentController {
         String stuEmail = stuInfo.get("stuEmail");
         String stuId = stuInfo.get("stuId");
         //验证密码是否正确
-        result = studentService.verifyPwd(stuId, stuInfo.get("stuPwd"));
+        result = studentService.verifyPwd(stuId, student.getStuPwd());
         //密码正确
         if("200".equals(result.get("code").toString())) {
+            student.setStuPwd(encoder.encode(stuInfo.get("stuPwd")));
             //修改学员信息
             studentService.editStudent(student);
             //将student重新缓存到session
@@ -116,7 +120,8 @@ public class StudentController {
         Map<String, Object> result = new HashMap<>();
         //将用户传来的表单数据转换成实体类
         Student newUser = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
-        String stuNewPwd = map.get("stuNewPwd");
+
+        String stuNewPwd = newUser.getStuPwd();
         Student student = studentService.findStuById(newUser.getStuId());
         //既然能够给到stuId，那么用户就是存在的
         if(student == null) {
@@ -124,14 +129,15 @@ public class StudentController {
             result.put("msg", "用户不存在！");
             return result;
         }
+
         //判断学员密码是否正确
-        if(!newUser.getStuPwd().equals(student.getStuPwd())) {
+        if(!encoder.matches(stuNewPwd, student.getStuPwd())) {
             result.put("code", 201);
             result.put("msg", "密码错误！");
             return result;
         }
-        //修改密码
-        newUser.setStuPwd(stuNewPwd);
+        //密码加密
+        newUser.setStuPwd(encoder.encode(map.get("stuNewPwd")));
         studentService.editStudent(newUser);
 
         result.put("code", 200);

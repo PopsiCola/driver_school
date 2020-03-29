@@ -10,6 +10,7 @@ import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
 import com.llb.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,6 +38,9 @@ public class LoginController {
     private IAdminService adminService;
     @Autowired
     private MailService mailService;
+    //密码加密
+    @Autowired
+    private BCryptPasswordEncoder encoder;
     /**
      * 显示登录页
      * @return
@@ -70,7 +74,7 @@ public class LoginController {
 
         if("1".equals(role)) {
             student = studentService.findStudent(account);
-            if(student != null && student.getStuPwd().equals(password)) {
+            if(student != null && encoder.matches(password, student.getStuPwd())) {
                 flag = true;
                 request.getSession().setAttribute("student", student);
             } else if(student == null){
@@ -80,7 +84,7 @@ public class LoginController {
             }
         } else if("2".equals(role)) {
             admin = adminService.findAdmin(account);
-            if(admin != null && admin.getAdminPwd().equals(password)) {
+            if(admin != null && encoder.matches(password, admin.getAdminPwd())) {
                 flag = true;
                 request.getSession().setAttribute("admin", admin);
                 System.out.println(admin);
@@ -91,7 +95,7 @@ public class LoginController {
             }
         } else {
             teacher = teacherService.findTeacher(account);
-            if(teacher != null && teacher.getTeaPwd().equals(password)) {
+            if(teacher != null && encoder.matches(password, teacher.getTeaPwd())) {
                 flag = true;
                 request.getSession().setAttribute("teacher", teacher);
                 System.out.println(teacher);
@@ -125,7 +129,7 @@ public class LoginController {
 
         //封装返回结果
         String account = map.get("account");
-        String password = map.get("password");
+        String password = encoder.encode(map.get("password"));
         String role = map.get("role");
         String email = map.get("email");
 
@@ -229,7 +233,7 @@ public class LoginController {
 
 //        String account
         String email = map.get("email");
-        String password = map.get("password");
+        String password = encoder.encode(map.get("password"));
         //判断是哪个角色，重置密码
         if("1".equals(role)) {
 

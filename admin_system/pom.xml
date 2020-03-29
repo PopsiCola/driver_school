@@ -30,7 +30,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-<!--       排除自带的tomcat程序 -->
+<!--       排除自带se的tomcat程序 -->
 <!--       <exclusions> -->
 <!--         <exclusion> -->
 <!--           <groupId>org.springframework.boot</groupId> -->
@@ -55,6 +55,11 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <!--SpringBoot密码加密-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
     <!--邮箱-->
     <dependency>
