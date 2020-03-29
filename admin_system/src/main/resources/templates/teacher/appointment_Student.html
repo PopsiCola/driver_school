@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap-theme.min.css}">
     <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}"  media="all">
 </head>
-<body>
+<body id="allBody">
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
     <legend>预约记录时间线</legend>
 </fieldset>
@@ -41,12 +41,13 @@
                 <div th:if="${appoint.stu_star} != null">
                     学员评星：<div class="star" th:lay-data="${appoint.stu_star}"></div><br/>
                 </div>
-                <input type="text" hidden="hidden" id="xypl"  th:value="${appoint.stu_content} == null ? '1' : '2'"/>
+                <input type="text" id="xypl1" th:text="${appoint.stu_content} == null ? '暂未评论' : ${appoint.stu_content}"  th:value="${appoint.stu_content}"/>
+                <input type="text" hidden="hidden" id="xypl" th:text="${appoint.stu_content} ==null? '1' : '2'" th:value="${appoint.stu_content}==null?'1':'2'"/>
                 学员评论：<tr th:text="${appoint.stu_content} == null ? '暂未评论' : ${appoint.stu_content}"/><br/>
                 教练回复：<tr th:text="${appoint.tea_content} == null ? '暂未评论' : ${appoint.tea_content}"/><br/>
                 </p>
                 <div id="comment">
-                <div style="alignment: right" data-toggle="modal" data-target="#stuContext" onclick="getId(this.id)" th:id="${appoint.id}">
+                <div style="alignment: right" data-toggle="modal" data-target="#teaContext" onclick="getId(this.id)" th:id="${appoint.id}">
                     <i class="layui-icon layui-icon-reply-fill" style="font-size: 20px; color: #1E9FFF;">
                         <i id="qwe" style="font-size: 13px; color: #1E9FFF;">评价</i>
                     </i>
@@ -58,7 +59,7 @@
 </ul>
 
 <!-- 用户评论 -->
-<div class="modal" id="stuContext" tabindex="-1" role="dialog" aria-labelledby="stuContentModal" aria-hidden="true"
+<div class="modal" id="teaContext" tabindex="-1" role="dialog" aria-labelledby="stuContentModal" aria-hidden="true"
      data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog " style=" width: 400px">
         <div class="modal-content">
@@ -68,21 +69,21 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="stuContentModal">
-                    用户评价
+                    教练回复
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">评分:</label>
-                    <div class="layui-input-block">
-                        <div id="appointStar"></div>
-                        <div id="starValue"></div>
-                    </div>
-                </div>
+<!--                 <div class="layui-form-item"> -->
+<!--                     <label class="layui-form-label">评分:</label> -->
+<!--                     <div class="layui-input-block"> -->
+<!--                         <div id="appointStar"></div> -->
+<!--                         <div id="starValue"></div> -->
+<!--                     </div> -->
+<!--                 </div> -->
                 <div class="layui-form-item">
                     <label class="layui-form-label">评论:</label>
                     <div class="layui-input-block">
-                        <textarea name="stuContent" id="stuContent" placeholder="请输入内容" class="layui-textarea"></textarea>
+                        <textarea name="stuContent" id="teaContent" placeholder="请输入内容" class="layui-textarea"></textarea>
                     </div>
                 </div>
             </div>
@@ -121,7 +122,6 @@
 
         //评星遍历显示
         layui.each($('.star'), function (index, elem) {
-
             var configTemp = $(elem).attr('lay-data');
             rate.render({
                 elem: elem
@@ -148,22 +148,21 @@
 
             var id = $("#id").val();
             var star = $("#star").text();
-            var stuContent = $("#stuContent").val();
+            var teaContent = $("#teaContent").val();
             var xypl = $("#xypl").val();
-            
+alert($("#xypl1").val())
+        alert($("#xypl").val())
             //如果用户没有进行操作，就提交，则评星默认为0星
             if(star == "") {
                 star = 0;
             }
 
-            var data = {id:id, star:star, stuContent:stuContent,xypl:xypl};
+            var data = {id:id,teaContent:teaContent,xypl:xypl};
 
             console.log(data);
-
             $.ajax({
                 url:"/appointment/stuContent",
                 type:"post",
-                cache:false,
                 contentType:"application/json",
                 dataType:"json",
                 data:JSON.stringify(data),
