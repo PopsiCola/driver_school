@@ -179,8 +179,6 @@
 				var star = $("#star").text();
 				var teaContent = $("#teaContent").val();
 				var xypl = $("#xypl").val();
-				alert($("#xypl1").val() + "::::::")
-				alert($("#xypl").val())
 				//如果用户没有进行操作，就提交，则评星默认为0星
 				if (star == "") {
 					star = 0;
@@ -200,9 +198,16 @@
 					dataType : "json",
 					data : JSON.stringify(data),
 					success : function(result) {
-						layer.msg(result.msg, {
-							time : 2000, //2s后自动关闭
-						});
+                        if(200==result.code){
+                            layer.alert(result.msg, {icon: 6},function () {
+                                //重新加载页面
+                                location.reload();
+                            });
+                        }else{
+                            layer.msg(result.msg, {
+                                time: 2000, //2s后自动关闭
+                            });
+                        }
 					},
 					error : function(response) {
 						console.log("出错返回: " + response);
