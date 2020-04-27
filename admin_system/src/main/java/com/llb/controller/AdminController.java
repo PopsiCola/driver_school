@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
 import com.llb.entity.Student;
+import com.llb.entity.Teacher;
 import com.llb.service.IAdminService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
@@ -277,6 +278,17 @@ public class AdminController {
         return mv;
     }
 
+
+    /**
+     * 展示教练管理页面
+     * @return
+     */
+    @RequestMapping("/teacherList")
+    public ModelAndView teacherList() {
+        ModelAndView mv = new ModelAndView("admin/teacherList");
+        return mv;
+    }
+
     /**
      * 查找所有学员
      * @param
@@ -309,6 +321,36 @@ public class AdminController {
     }
 
     /**
+     * 查找所有教练
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/findAllTeacher")
+    @ResponseBody
+    public Map<String, Object> findAllTeacher(String account,
+                                              @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                              @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+        Map<String, Object> result = new HashMap<>();
+
+        //分页操作
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+
+        //查询所有管理员
+        IPage<Map<String, Object>> teaList = teacherService.teacherList(pageParam, account);
+        if(teaList.getTotal() == 0) {
+            result.put("code", 200);
+            result.put("msg", "没有教练！");
+            return result;
+        }
+
+        //分页查询数据传递
+        result.put("data", teaList.getRecords());
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", teaList.getTotal());
+        return result;
+    }
+    /**
      * 批量删除学员
      * @param map
      * @return
@@ -325,6 +367,35 @@ public class AdminController {
             for (int i = 0; i < ids.length; i++) {
                 String stuId = ids[i];
                 studentService.deleteStudent(stuId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "批量删除失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "批量删除成功！");
+        return result;
+    }
+
+    /**
+     * 批量删除教练
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/deleteBatchTeacher", method = RequestMethod.POST)
+    public Map<String, Object> deleteBatchTeacher(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //取出所有的id
+        String stuIds = map.get("teaIds");
+        String[] ids = stuIds.split(",");
+
+        //遍历删除
+        try {
+            for (int i = 0; i < ids.length; i++) {
+                String teaId = ids[i];
+                teacherService.deleteTeacher(teaId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -357,6 +428,55 @@ public class AdminController {
 
         result.put("code", 200);
         result.put("msg", "删除成功！");
+        return result;
+    }
+
+    /**
+     * 根据学员id删除教练
+     * @param teaId
+     * @return
+     */
+    @RequestMapping(value = "/deleteTeacher", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteTeacher(@RequestBody String teaId) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            teacherService.deleteTeacher(teaId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "删除失败！"+ e);
+            return result;
+        }
+
+        result.put("code", 200);
+        result.put("msg", "删除成功！");
+        return result;
+    }
+
+    /**
+     * 管理员修改教练信息。管理员拥有最高权限，不需要验证任何信息！
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/editTeacher", method = RequestMethod.POST)
+    public Map<String, Object> editTeacher(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //转换成实体类
+        Teacher teacher = JSONObject.parseObject(JSONObject.toJSONString(map), Teacher.class);
+
+        //密码加密
+        teacher.setTeaPwd(encoder.encode(map.get("teaPwd")));
+        try {
+            teacherService.editTeacher(teacher);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "修改信息失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "修改信息成功！");
         return result;
     }
 

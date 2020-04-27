@@ -1,10 +1,12 @@
 package com.llb.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.llb.entity.Teacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -33,4 +35,8 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
     void updateTeaPwd(String teaEmail, String teacherPwd);
 
     void saveTeacher(Teacher teacher);
+
+    IPage<Map<String, Object>> teacherList(IPage<Map<String, Object>> pageParam,@Param("teaAccount") String account);
+
+    void deleteTeacher(String teaId);
 }

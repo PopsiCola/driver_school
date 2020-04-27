@@ -53,14 +53,14 @@
     <update id="editTeacher" parameterType="Teacher">
         UPDATE teacher
         <trim prefix="set" suffixOverrides=",">
-            <if test="teaAccount!=null">tea_account=#{teaAccount},</if>
-            <if test="teaName!=null">tea_name=#{teaName},</if>
-            <if test="teaEmail!=null">tea_email=#{teaEmail},</if>
-            <if test="teaPwd!=null">tea_pwd=#{teaPwd},</if>
-            <if test="teaSex!=null">tea_sex=#{teaSex},</if>
-            <if test="teaBirthday!=null">tea_birthday=#{teaBirthday},</if>
-            <if test="teaAddress!=null">tea_address=#{teaAddress},</if>
-            <if test="teaPhone!=null">tea_phone=#{teaPhone},</if>
+            <if test="teaAccount!=null and teaAccount != ''">tea_account=#{teaAccount},</if>
+            <if test="teaName!=null and teaName != ''">tea_name=#{teaName},</if>
+            <if test="teaEmail!=null and teaEmail != ''">tea_email=#{teaEmail},</if>
+            <if test="teaPwd!=null and teaPwd != ''">tea_pwd=#{teaPwd},</if>
+            <if test="teaSex!=null and teaSex != ''">tea_sex=#{teaSex},</if>
+            <if test="teaBirthday!=null and teaBirthday != ''">tea_birthday=#{teaBirthday},</if>
+            <if test="teaAddress!=null and teaAddress != ''">tea_address=#{teaAddress},</if>
+            <if test="teaPhone!=null and teaPhone != ''">tea_phone=#{teaPhone}</if>
         </trim>
         WHERE tea_id = #{teaId}
     </update>
@@ -133,4 +133,25 @@
             </if>
         </trim>
     </insert>
+
+    <!--查询所有教练分页)-->
+    <select id="teacherList" resultType="Map" parameterType="String">
+        SELECT t.tea_id,
+        t.tea_account , t.tea_name, t.tea_email, t.tea_pwd, t.tea_sex, DATE_FORMAT(t.tea_birthday,'%Y-%m-%d') as tea_birthday,
+        t.tea_address, t.tea_phone, DATE_FORMAT(t.tea_createdate,'%Y-%m-%d %H:%i:%S') as tea_createdate, t.tea_Subject
+        FROM teacher t
+        <where>
+            <if test="teaAccount != null">
+                t.tea_account like concat('%',#{teaAccount},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--删除教练-->
+    <select id="deleteTeacher" parameterType="String">
+        DELETE
+        FROM teacher
+        WHERE tea_id = #{teaId}
+    </select>
+
 </mapper>

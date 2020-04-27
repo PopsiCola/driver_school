@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>学员</title>
+    <title>教练</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -155,7 +155,7 @@
           table.render({
               elem: '#studentList',
               // where: {stuId: stuId},
-              url: '/admin/findAllStudent',
+              url: '/admin/findAllTeacher',
               limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
               toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
               response: {
@@ -167,21 +167,21 @@
               }
               , cols: [[
                   {type: 'checkbox'},
-                  {field: 'stu_id', title: 'stu_id', hide: true},    //hide:true    隐藏列
-                  {field: 'stu_account', title: '账号'},
-                  {field: 'stu_name', title: '姓名'},
-                  {field: 'stu_email', title: '邮箱'},
-                  {field: 'stu_pwd', title: '密码'},//TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
-                  {field: 'stu_sex', title: '性别'},
-                  {field: 'stu_birthday', title: '生日'},
-                  {field: 'stu_address', title: '家庭地址'},
-                  {field: 'stu_phone', title: '联系电话'},
-                  {field: 'stu_createdate', title: '报名时间'},
+                  {field: 'tea_id', title: 'tea_id', hide: true},    //hide:true    隐藏列
+                  {field: 'tea_account', title: '账号'},
+                  {field: 'tea_name', title: '姓名'},
+                  {field: 'tea_email', title: '邮箱'},
+                  {field: 'tea_pwd', title: '密码'},//TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
+                  {field: 'tea_sex', title: '性别'},
+                  {field: 'tea_birthday', title: '生日'},
+                  {field: 'tea_address', title: '家庭地址'},
+                  {field: 'tea_phone', title: '联系电话'},
+                  {field: 'tea_createdate', title: '报名时间'},
                   {fixed: 'right', title: '操作', toolbar: '#operateTable'}
               ]]
               , page: true
               ,done: function (res, curr, count) {
-              $("[data-field='stu_sex']").children().each(function(){
+              $("[data-field='tea_sex']").children().each(function(){
                   if($(this).text()=='1'){
                       $(this).text("男")
                   }else if($(this).text()=='0'){
@@ -203,7 +203,7 @@
           //头工具栏事件
           table.on('toolbar(studentList)', function(obj){
               var checkStatus = table.checkStatus(obj.config.id);
-              console.log(checkStatus);
+              console.log(obj.event);
 
 
               switch(obj.event){
@@ -214,15 +214,15 @@
                       }
 
                       //获得选中的id
-                      var stuIds = "";
+                      var teaIds = "";
                       for(var i=0;i<checkStatus.data.length;i++){
-                          stuIds += checkStatus.data[i].stu_id+",";
+                        teaIds += checkStatus.data[i].tea_id+",";
                       }
                       parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:500});
 
-                      var data={stuIds:stuIds};
+                      var data={teaIds:teaIds};
                       $.ajax({
-                          url: "/admin/deleteBatchStudent",
+                          url: "/admin/deleteBatchTeacher",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -253,21 +253,19 @@
           //监听工具条
           table.on('tool(studentList)', function (obj) {
               var data = obj.data;
-
-              console.log(data);
-
+              console.log(obj.event);
               if (obj.event === 'del') {
                   layer.confirm('真的删除该条数据吗？', function (index) {
                       // obj.del();
-                      var stuId = data.stu_id;
+                      var teaId = data.tea_id;
                       //删除行数据
                       $.ajax({
-                          url: "/admin/deleteStudent",
+                          url: "/admin/deleteTeacher",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
                           datatype: "json",
-                          data: stuId,
+                          data: teaId,
                           success: function (result) {
                               if(200==result.code){
                                   layer.alert(result.msg, {icon: 6},function () {
@@ -292,20 +290,18 @@
                       layer.close(index);
                   });
               } else if (obj.event === 'showDetail') {
-
                   console.log(data);
-
                   //参数传到模态框
-                  $("#stuId").val(data.stu_id);
-                  $("#stuAccount").val(data.stu_account);
-                  $("#stuName").val(data.stu_name);
-                  $("#stuEmail").val(data.stu_email);
-                  $("#stuPwd").val(data.stu_pwd);
-                  $("#stuSex").val(data.stu_sex);
-                  $("#stuBirthday").val(data.stu_birthday);
-                  $("#stuAddress").val(data.stu_address);
-                  $("#stuPhone").val(data.stu_phone);
-                  $("#stuCreateTime").val(data.stu_createdate);
+                  $("#stuId").val(data.tea_id);
+                  $("#stuAccount").val(data.tea_account);
+                  $("#stuName").val(data.tea_name);
+                  $("#stuEmail").val(data.tea_email);
+                  $("#stuPwd").val(data.tea_pwd);
+                  $("#stuSex").val(data.tea_sex);
+                  $("#stuBirthday").val(data.tea_birthday);
+                  $("#stuAddress").val(data.tea_address);
+                  $("#stuPhone").val(data.tea_phone);
+                  $("#stuCreateTime").val(data.tea_createdate);
 
               }
           });
@@ -315,30 +311,29 @@
           $("#editStudent").click(function () {
 
               //传参补充
-              var stuId =  $("#stuId").val();
-              var stuAccount =  $("#stuAccount").val();
-              var stuName =  $("#stuName").val();
-              var stuEmail =  $("#stuEmail").val();
-              var stuPwd =  $("#stuPwd").val();
-              var stuSex =  $("#stuSex").val();
-              var stuBirthday =  $("#stuBirthday").val();
-              var stuAddress = $("#stuAddress").val();
-              var stuPhone =  $("#stuPhone").val();
+              var teaId =  $("#stuId").val();
+              var teaAccount =  $("#stuAccount").val();
+              var teaName =  $("#stuName").val();
+              var teaEmail =  $("#stuEmail").val();
+              var teaPwd =  $("#stuPwd").val();
+              var teaSex =  $("#stuSex").val();
+              var teaBirthday =  $("#stuBirthday").val();
+              var teaAddress = $("#stuAddress").val();
+              var teaPhone =  $("#stuPhone").val();
               var data = {
-                  stuId: stuId,
-                  stuAccount: stuAccount,
-                  stuName: stuName,
-                  stuPwd: stuPwd,
-                  stuEmail: stuEmail,
-                  stuSex: stuSex,
-                  stuBirthday: stuBirthday,
-                  stuAddress: stuAddress,
-                  stuPhone: stuPhone,
+                  teaId: teaId,
+                  teaAccount: teaAccount,
+                  teaName: teaName,
+                  teaPwd: teaPwd,
+                  teaEmail: teaEmail,
+                  teaSex: teaSex,
+                  teaBirthday: teaBirthday,
+                  teaAddress: teaAddress,
+                  teaPhone: teaPhone
               };
 
-              console.log(data);
               $.ajax({
-                  url: "/admin/editStudent",
+                  url: "/admin/editTeacher",
                   type: "post",
                   cache: false,
                   contentType: "application/json",

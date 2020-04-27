@@ -1,7 +1,9 @@
 package com.llb.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.llb.entity.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -77,4 +79,16 @@ public interface ITeacherService extends IService<Teacher> {
      * @param teacher
      */
     void saveTeacher(Teacher teacher);
+
+    /**
+     * 分页查询教练列表
+     * @return
+     */
+    IPage<Map<String, Object>> teacherList(IPage<Map<String, Object>> pageParam, String account);
+
+    /**
+     * 删除教练信息
+     * @param teaId
+     */
+    void deleteTeacher(String teaId);
 }

@@ -1,5 +1,6 @@
 package com.llb.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.llb.entity.Teacher;
 import com.llb.mapper.TeacherMapper;
 import com.llb.service.ITeacherService;
@@ -126,5 +127,23 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     @Override
     public void saveTeacher(Teacher teacher) {
         teacherMapper.saveTeacher(teacher);
+    }
+
+    /**
+     * 分页查询教练列表
+     * @return
+     */
+    @Override
+    public IPage<Map<String, Object>> teacherList(IPage<Map<String, Object>> pageParam, String account) {
+        return teacherMapper.teacherList(pageParam, account);
+    }
+
+    /**
+     * 删除教练信息
+     * @param teaId
+     */
+    @Override
+    public void deleteTeacher(String teaId) {
+        teacherMapper.deleteTeacher(teaId);
     }
 }
