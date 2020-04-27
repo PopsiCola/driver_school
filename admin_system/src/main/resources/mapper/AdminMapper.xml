@@ -96,7 +96,7 @@
 
     <!--查询所有管理员-->
     <select id="findAllAdmin" parameterType="String" resultType="Map">
-        SELECT *
+        SELECT admin_id, admin_account, admin_mail, admin_pwd, DATE_FORMAT(admin_createdate,'%Y-%m-%d %H:%i:%s') as admin_createdate
         FROM admin
         <where>
             <if test="account != null">
@@ -119,15 +119,15 @@
         s.stu_name,
         t.tea_name,
         a.subject,
-        a.appointment_start,
-        a.appointment_end,
-        a.boarding_time,
-        a.alighting_time,
+        DATE_FORMAT(a.appointment_start,'%Y-%m-%d %H:%i:%s') as appointment_start,
+        DATE_FORMAT(a.appointment_end,'%Y-%m-%d %H:%i:%s') as appointment_end,
+        DATE_FORMAT(a.boarding_time,'%Y-%m-%d %H:%i::%s') as boarding_time,
+        DATE_FORMAT(a.alighting_time,'%Y-%m-%d %H:%i:%s') as alighting_time,
         a.stu_star,
         a.stu_content,
         a.tea_content,
         a.appointment_flag,
-        a.create_date
+        DATE_FORMAT(a.create_date,'%Y-%m-%d %H:%i:%s') as create_date
         FROM appointment a
           LEFT JOIN teacher t
           ON a.tea_id = t.tea_id
