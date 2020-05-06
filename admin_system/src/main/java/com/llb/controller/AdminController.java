@@ -5,9 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
+import com.llb.entity.Cars;
 import com.llb.entity.Student;
 import com.llb.entity.Teacher;
 import com.llb.service.IAdminService;
+import com.llb.service.ICarsService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import org.apache.velocity.runtime.directive.Foreach;
@@ -39,6 +41,8 @@ public class AdminController {
     private IStudentService studentService;
     @Autowired
     private ITeacherService teacherService;
+    @Autowired
+    private ICarsService carsService;
     // 密码加密
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -278,6 +282,16 @@ public class AdminController {
         return mv;
     }
 
+    /**
+     * 展示车辆管理页面
+     * @return
+     */
+    @RequestMapping("/carList")
+    public ModelAndView carList() {
+        ModelAndView mv = new ModelAndView("admin/carList");
+        return mv;
+    }
+
 
     /**
      * 展示教练管理页面
@@ -317,6 +331,37 @@ public class AdminController {
         result.put("code", 200);
         result.put("msg", "查询成功");
         result.put("count", stuList.getTotal());
+        return result;
+    }
+
+    /**
+     * 查找所有车辆
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/findAllCar")
+    @ResponseBody
+    public Map<String, Object> findAllCar(String account,
+                                              @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                              @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+        Map<String, Object> result = new HashMap<>();
+
+        //分页操作
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+
+        //查询所有管理员
+        IPage<Map<String, Object>> carList = carsService.carList(pageParam, account);
+        if(carList.getTotal() == 0) {
+            result.put("code", 200);
+            result.put("msg", "没有车辆信息！");
+            return result;
+        }
+
+        //分页查询数据传递
+        result.put("data", carList.getRecords());
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", carList.getTotal());
         return result;
     }
 
@@ -380,6 +425,35 @@ public class AdminController {
     }
 
     /**
+     * 批量删除车辆信息
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/deleteBatchCars", method = RequestMethod.POST)
+    public Map<String, Object> deleteBatchCars(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //取出所有的id
+        String stuIds = map.get("carIds");
+        String[] ids = stuIds.split(",");
+
+        //遍历删除
+        try {
+            for (int i = 0; i < ids.length; i++) {
+                String carId = ids[i];
+                carsService.deleteCar(carId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "批量删除失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "批量删除成功！");
+        return result;
+    }
+
+    /**
      * 批量删除教练
      * @param map
      * @return
@@ -419,6 +493,29 @@ public class AdminController {
         Map<String, Object> result = new HashMap<>();
         try {
             studentService.deleteStudent(stuId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "删除失败！"+ e);
+            return result;
+        }
+
+        result.put("code", 200);
+        result.put("msg", "删除成功！");
+        return result;
+    }
+
+    /**
+     * 根据车辆id删除车辆
+     * @param carId
+     * @return
+     */
+    @RequestMapping(value = "/deleteCar", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteCar(@RequestBody String carId) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            carsService.deleteCar(carId);
         } catch (Exception e) {
             e.printStackTrace();
             result.put("code", 201);
@@ -495,6 +592,29 @@ public class AdminController {
         student.setStuPwd(encoder.encode(map.get("stuPwd")));
         try {
             studentService.editStudent(student);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 201);
+            result.put("msg", "修改信息失败！");
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "修改信息成功！");
+        return result;
+    }
+
+    /**
+     * 管理员修改用户信息。管理员拥有最高权限，不需要验证任何信息！
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/editCar", method = RequestMethod.POST)
+    public Map<String, Object> editCar(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        //转换成实体类
+        Cars car = JSONObject.parseObject(JSONObject.toJSONString(map), Cars.class);
+        try {
+            carsService.editCar(car);
         } catch (Exception e) {
             e.printStackTrace();
             result.put("code", 201);

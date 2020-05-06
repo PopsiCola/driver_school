@@ -12,7 +12,7 @@
     <body>
     <div class="x-body">
         <blockquote class="layui-elem-quote">欢迎管理员：
-            <span class="x-red">test</span>！当前时间:2018-04-25 20:50:53  <a onclick="parent.x_admin_add_to_tab('在tab打开','https://www.163.com',true)" style="color: red" href="javascript:;">在tab打开</a>
+            <span class="x-red">[[${session.admin.adminAccount}]]</span>！当前时间:Date()  <a onclick="parent.x_admin_add_to_tab('在tab打开','https://www.163.com',true)" style="color: red" href="javascript:;">在tab打开</a>
         </blockquote>
         <fieldset class="layui-elem-field">
             <legend>数据统计</legend>
@@ -145,7 +145,6 @@
                 </table>
             </div>
         </fieldset>
-        <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote>
     </div>
         <script>
         var _hmt = _hmt || [];
