@@ -197,10 +197,8 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/driversystem/common/mailCode.js}"></script>
     <script th:src="@{/js/driversystem/common/verifyInput.js}"></script>
-    <script th:inline="javascript">
-        var ctx = [[@{/}]];
-    </script>
-    <script>
+    <script th:inline="javascript">var ctx = [[@{/}]]</script>
+    <script
         $(function  () {
             layui.use('form', function(){
               var form = layui.form;
