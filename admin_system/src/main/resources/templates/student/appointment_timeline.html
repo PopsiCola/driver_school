@@ -97,6 +97,9 @@
 </div>
 
 <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript">
+    var ctx = [[@{/}]];
+</script>
 <script>
     layui.use(['rate','form','layer'], function(){
         var rate = layui.rate;
@@ -157,7 +160,7 @@
             console.log(data);
 
             $.ajax({
-                url:"/appointment/stuContent",
+                url: ctx + "appointment/stuContent",
                 type:"post",
                 cache:false,
                 contentType:"application/json",

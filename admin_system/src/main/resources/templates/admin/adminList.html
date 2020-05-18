@@ -106,6 +106,9 @@
 
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script th:inline="javascript">
+      var ctx = [[@{/}]];
+    </script>
     <script type="text/javascript" th:inline="none">
       layui.use(['laydate', 'form', 'table'], function() {
           var form = layui.form,
@@ -115,7 +118,7 @@
           table.render({
               elem: '#adminList',
               // where: {stuId: stuId},
-              url: '/admin/findAllAdmin',
+              url: ctx + 'admin/findAllAdmin',
               limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
               toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
               response: {
@@ -166,7 +169,7 @@
 
                       var data={adminIds:adminIds};
                       $.ajax({
-                          url: "/admin/deleteBatchAdmin",
+                          url: ctx + "admin/deleteBatchAdmin",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -226,7 +229,7 @@
                       var adminId = data.admin_id;
                       //删除行数据
                       $.ajax({
-                          url: "/admin/deleteAdmin",
+                          url: ctx + "admin/deleteAdmin",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -285,9 +288,8 @@
                   adminPwd: adminPwd
               };
 
-              console.log(data);
               $.ajax({
-                  url: "/admin/editAdmin",
+                  url: ctx + "admin/editAdmin",
                   type: "post",
                   cache: false,
                   contentType: "application/json",
@@ -367,12 +369,6 @@
 
 
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>

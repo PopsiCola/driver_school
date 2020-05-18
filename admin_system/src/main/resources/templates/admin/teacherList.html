@@ -139,6 +139,9 @@
     </div>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script th:inline="javascript">
+      var ctx = [[@{/}]];
+    </script>
     <script type="text/javascript" th:inline="none">
       layui.use(['laydate', 'form', 'table'], function() {
           var form = layui.form;
@@ -155,7 +158,7 @@
           table.render({
               elem: '#studentList',
               // where: {stuId: stuId},
-              url: '/admin/findAllTeacher',
+              url: ctx + 'admin/findAllTeacher',
               limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
               toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
               response: {
@@ -222,7 +225,7 @@
 
                       var data={teaIds:teaIds};
                       $.ajax({
-                          url: "/admin/deleteBatchTeacher",
+                          url: ctx + "admin/deleteBatchTeacher",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -260,7 +263,7 @@
                       var teaId = data.tea_id;
                       //删除行数据
                       $.ajax({
-                          url: "/admin/deleteTeacher",
+                          url: ctx + "admin/deleteTeacher",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -333,7 +336,7 @@
               };
 
               $.ajax({
-                  url: "/admin/editTeacher",
+                  url: ctx + "admin/editTeacher",
                   type: "post",
                   cache: false,
                   contentType: "application/json",
@@ -406,10 +409,6 @@
           }
 
       })
-
-
     </script>
-
   </body>
-
 </html>

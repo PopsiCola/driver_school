@@ -32,7 +32,7 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a href="static/index">X-admin v2.1</a></div>
+    <div class="logo"><a th:href="@{/static/index}">X-admin v2.1</a></div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
@@ -53,7 +53,7 @@
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','/teacher/teacherInfo')">个人信息</a></dd>
                 <dd><a onclick="x_admin_show('修改密码','/teacher/editPassword')">修改密码</a></dd>
-                <dd><a href="/login/loginOut?role=3" onclick="Close()">退出</a></dd>
+                <dd><a th:href="@{/login/loginOut?role=3}" onclick="Close()">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index"><a href="">前台首页</a></li>
@@ -125,15 +125,6 @@
 <!-- 底部开始 -->
 
 <!-- 底部结束 -->
-<script>
-    //百度统计可去掉
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script>
+
 </body>
 </html>

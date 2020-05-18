@@ -115,6 +115,9 @@
     </div>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script th:inline="javascript">
+      var ctx = [[@{/}]];
+    </script>
     <script type="text/javascript" th:inline="none">
       layui.use(['laydate', 'form', 'table'], function() {
           var form = layui.form;
@@ -130,7 +133,7 @@
           //渲染表格
           table.render({
               elem: '#carList',
-              url: '/admin/findAllCar',
+              url: ctx + 'admin/findAllCar',
               limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
               toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
               response: {
@@ -195,7 +198,7 @@
 
                       var data={carIds:carIds};
                       $.ajax({
-                          url: "/admin/deleteBatchCars",
+                          url: ctx + "admin/deleteBatchCars",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -233,7 +236,7 @@
                       var carId = data.car_id;
                       //删除行数据
                       $.ajax({
-                          url: "/admin/deleteCar",
+                          url: ctx + "admin/deleteCar",
                           type: "post",
                           cache: false,
                           contentType: "application/json",
@@ -294,7 +297,7 @@
 
               console.log(data);
               $.ajax({
-                  url: "/admin/editCar",
+                  url: ctx + "admin/editCar",
                   type: "post",
                   cache: false,
                   contentType: "application/json",

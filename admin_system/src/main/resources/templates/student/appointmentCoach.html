@@ -91,6 +91,9 @@
       </div>
     </div>
   </div>
+    <script th:inline="javascript">
+      var ctx = [[@{/}]];
+    </script>
     <script>
       layui.use('laydate', function(){
         var laydate = layui.laydate;
@@ -118,7 +121,7 @@
 
           $.ajax({
               type: "POST",
-              url: "/appointment/appointTeacher",
+              url: ctx + "appointment/appointTeacher",
               data: JSON.stringify(data),
               // data: data,
               dataType: "json",
@@ -141,12 +144,6 @@
       })
 
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>
