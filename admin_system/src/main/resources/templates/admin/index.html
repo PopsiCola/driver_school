@@ -2,7 +2,7 @@
 <html class="x-admin-sm" lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>驾校预约管理系统</title>
+	<title>驾校预约练车管理系统</title>
 	<meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -32,7 +32,7 @@
 <body>
     <!-- 顶部开始 -->
     <div class="container">
-        <div class="logo"><a href="static/index">后台管理系统</a></div>
+        <div class="logo"><a th:href="@{/static/index}">后台管理系统</a></div>
         <div class="left_open">
             <i title="展开左侧栏" class="iconfont">&#xe699;</i>
         </div>
@@ -40,8 +40,8 @@
           <li class="layui-nav-item">
             <a href="javascript:;"><span th:text="${session.admin.adminAccount}"></span></a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('个人信息','/admin/admin-info')">个人信息</a></dd>
-              <dd><a onclick="x_admin_show('切换帐号','/admin/showEditPwd')">修改密码</a></dd>
+              <dd><a onclick="x_admin_show('个人信息','/admin_system/admin/admin-info')">个人信息</a></dd>
+              <dd><a onclick="x_admin_show('切换帐号','/admin_system/admin/showEditPwd')">修改密码</a></dd>
               <dd><a th:href="@{/login/loginOut?role=2}" onclick="Close()">退出</a></dd>
             </dl>
           </li>
@@ -56,37 +56,37 @@
       <div id="side-nav">
         <ul id="nav">
             <li>
-                <a th:_href="@{/adminList}">
+                <a th:_href="@{/admin/adminList}">
                     <i class="iconfont">&#xe70b;</i>
                     <cite>管理员管理</cite>
                 </a>
             </li>
             <li>
-                <a th:_href="@{/studentList}">
+                <a th:_href="@{/admin/studentList}">
                     <i class="iconfont">&#xe70b;</i>
                     <cite>学员管理</cite>
                 </a>
             </li>
             <li>
-                <a th:_href="@{/teacherList}">
+                <a th:_href="@{/admin/teacherList}">
                     <i class="iconfont">&#xe70b;</i>
                     <cite>教练管理</cite>
                 </a>
             </li>
             <li>
-                <a th:_href="@{/carList}">
+                <a th:_href="@{/admin/carList}">
                     <i class="iconfont">&#xe70b;</i>
                     <cite>车辆信息管理</cite>
                 </a>
             </li>
             <li>
-                <a th:_href="@{/appointmentRecord}">
+                <a th:_href="@{/admin/appointmentRecord}">
                     <i class="iconfont">&#xe70b;</i>
                     <cite>学员预约记录</cite>
                 </a>
             </li>
             <li>
-                <a th:_href="@{/studentList}">
+                <a th:_href="@{/admin/studentList}">
                     <i class="iconfont">&#xe70b;</i>
                     <cite>评价管理</cite>
                 </a>
@@ -111,7 +111,7 @@
           </div>
           <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='/static/welcome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                <iframe th:src='@{/static/welcome}' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
             </div>
           </div>
           <div id="tab_show"></div>
