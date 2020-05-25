@@ -235,11 +235,11 @@
                                   btn: ['返回']
                               });
                               if(result.role == 1) {
-                                  window.location.href= ctx + "student/index"
+                                  window.location.href=ctx + "student/index"
                               } else if(result.role == 2) {
-                                  window.location.href= ctx + "admin/index"
+                                  window.location.href=ctx +"admin/index"
                               } else {
-                                  window.location.href= ctx + "teacher/index"
+                                  window.location.href=ctx +"teacher/index"
                               }
                           }else{
                               // alert("账户或密码不正确！");
@@ -441,7 +441,7 @@
             function getCode(data){
                 console.log(data);
                 $.ajax({
-                    url: ctx+ "login/getCode",
+                    url:"/login/getCode",
                     type:"post",
                     cache:false,
                     contentType:"application/json",
@@ -507,7 +507,7 @@
 
                 // console.log(json);
                 $.ajax({
-                    url: ctx + "login/regist",
+                    url: ctx + "/login/regist",
                     type:"post",
                     cache:false,
                     contentType:"application/json",

@@ -87,7 +87,7 @@
             <if test="teaSex != null">
                 tea_sex,
             </if>
-            <if test="teaBirthday != null">
+            <if test="teaBirthday != null and teaBirthday != '' ">
                 tea_birthday,
             </if>
             <if test="teaAddress != null">
@@ -119,7 +119,7 @@
             <if test="teaSex != null">
                 #{teaSex},
             </if>
-            <if test="teaBirthday != null">
+            <if test="teaBirthday != null and teaBirthday != '' ">
                 #{teaBirthday},
             </if>
             <if test="teaAddress != null">
@@ -129,7 +129,7 @@
                 #{teaPhone},
             </if>
             <if test="teaCreatedate != null">
-                #{teaCreatedate},
+                STR_TO_DATE(#{teaCreatedate},'%Y-%m-%d %H:%i:%s'),
             </if>
         </trim>
     </insert>

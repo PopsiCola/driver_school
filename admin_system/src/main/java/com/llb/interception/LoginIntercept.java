@@ -1,5 +1,11 @@
 package com.llb.interception;
 
+import com.llb.entity.RedisConn;
+import com.llb.utils.RedisUtils;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,6 +22,8 @@ import java.io.IOException;
  */
 public class LoginIntercept implements HandlerInterceptor{
 
+//    @Autowired
+//    private RedisUtils redisUtils;
     /**
      * 逻辑判断，通过获取session来判断用户是否登录，如果登录放行，如果没有登录则拦截
      * @param request
@@ -24,23 +32,26 @@ public class LoginIntercept implements HandlerInterceptor{
      * @return
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
         HttpSession session = request.getSession();
+//        手动注入bean
+        BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+        RedisUtils redisUtils = (RedisUtils) factory.getBean("redisUtils");
 
         //获取session
-        Object student = session.getAttribute("student");
+        /*Object student = session.getAttribute("student");*/
         Object admin = session.getAttribute("admin");
         Object teacher = session.getAttribute("teacher");
 
+        Object student = redisUtils.get("student");
+//        System.out.println("student"+student);
 
-        try {
             if(student == null && admin == null && teacher == null) {
+//                System.out.println("重定向");
+                System.out.println(request.getContextPath()+"/login.html");
                 request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
                 return false;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return true;
     }
 

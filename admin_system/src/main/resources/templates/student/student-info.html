@@ -23,13 +23,13 @@
   </head>
   <body>
     <div class="x-body" style="width: 650px; position: relative; left:25%;">
-        <input type="text" hidden="hidden" id="stuId" th:value="${session.student.stuId}"/>
+        <input type="text" hidden="hidden" id="stuId" th:value="${student.stuId}"/>
         <form class="layui-form" th:align="center">
           <div class="layui-form-item">
               <label for="account" class="layui-form-label">用户名
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="account" name="account" th:value="${session.student.stuAccount}" class="layui-input">
+                  <input type="text" id="account" name="account" th:value="${student.stuAccount}" class="layui-input">
               </div>
               <div class="layui-form-mid layui-word-aux">
                   <span class="x-red">*</span>可以成为您的登入名
@@ -40,7 +40,7 @@
                   <span class="x-red">*</span>姓名
               </label>
               <div class="layui-input-inline">
-                  <input type="text" th:value="${session.student.stuName}" id="username" name="username" lay-verify="required"
+                  <input type="text" th:value="${student.stuName}" id="username" name="username" lay-verify="required"
                   class="layui-input">
               </div>
               <div class="layui-form-mid layui-word-aux">
@@ -52,7 +52,7 @@
                   <span class="x-red">*</span>邮箱
               </label>
               <div class="layui-input-inline">
-                  <input type="text" th:value="${session.student.stuEmail}" id="L_email" name="email"
+                  <input type="text" th:value="${student.stuEmail}" id="L_email" name="email"
                   autocomplete="off" class="layui-input">
               </div>
               <div class="layui-form-mid layui-word-aux">
@@ -79,7 +79,7 @@
                   手机号
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="stuPhone" name="phone" lay-verify="stuPhone" th:value="${session.student.stuPhone}" class="layui-input">
+                  <input type="text" id="stuPhone" name="phone" lay-verify="stuPhone" th:value="${student.stuPhone}" class="layui-input">
               </div>
               <!--<div class="layui-form-mid layui-word-aux">
                   <span class="x-red">*</span>
@@ -91,9 +91,9 @@
               </label>
               <p ></p>
               <div align="left">
-                  <input type="radio"  name="sex" value="1" title="男" th:checked="${(session.student.stuSex == 1)}? 'true' : 'false'">
-                  <input type="radio" name="sex" value="0" title="女" th:checked="${(session.student.stuSex == 0)}? 'true' : 'false'">
-                  <input type="radio" name="sex" value="2" title="未知" th:checked="${(session.student.stuSex != 1 && session.student.stuSex != 0)}? 'true' : 'false'">
+                  <input type="radio"  name="sex" value="1" title="男" th:checked="${(student.stuSex == 1)}? 'true' : 'false'">
+                  <input type="radio" name="sex" value="0" title="女" th:checked="${(student.stuSex == 0)}? 'true' : 'false'">
+                  <input type="radio" name="sex" value="2" title="未知" th:checked="${(student.stuSex != 1 && student.stuSex != 0)}? 'true' : 'false'">
               </div>
           </div>
           <div class="layui-form-item">
@@ -101,7 +101,7 @@
                   生日
               </label>
               <div class="layui-input-inline">
-                  <input type="text" class="layui-input" id="birthday" th:value="${session.student.stuBirthday}"  >
+                  <input type="text" class="layui-input" id="birthday" th:value="${student.stuBirthday}"  >
               </div>
           </div>
           <div class="layui-form-item">
@@ -109,7 +109,7 @@
                   地址
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="address" name="address" th:value="${session.student.stuAddress}"  class="layui-input">
+                  <input type="text" id="address" name="address" th:value="${student.stuAddress}"  class="layui-input">
               </div>
           </div>
           <div class="layui-form-item">

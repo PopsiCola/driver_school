@@ -7,6 +7,7 @@ import com.llb.mapper.AdminMapper;
 import com.llb.service.IAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -25,6 +26,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private StringRedisTemplate template;
 
     /**
      * 根据管理员名称或邮箱查询管理员

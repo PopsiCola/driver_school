@@ -12,6 +12,7 @@ import com.llb.service.IAdminService;
 import com.llb.service.ICarsService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
+import com.llb.utils.DateUtil;
 import org.apache.velocity.runtime.directive.Foreach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -212,6 +214,51 @@ public class AdminController {
 
         //修改信息
         adminService.updateAdmin(admin);
+
+        result.put("code", 200);
+        result.put("msg", "修改成功！");
+        return result;
+    }
+
+    /**
+     * 添加管理员信息
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addAdmin(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        System.out.println(map);
+        //将用户传来的表单数据转换成实体类
+        Admin admin = JSONObject.parseObject(JSONObject.toJSONString(map), Admin.class);
+
+        //密码加密
+        admin.setAdminPwd(encoder.encode(map.get("adminPwd")));
+        String adminId = admin.getAdminAccount();
+        String adminMail = admin.getAdminMail();
+        //根据id查找管理员信息
+        Admin adminById = adminService.findAdminById(adminId);
+        Admin adminByMail = adminService.findAdminByEmail(adminMail);
+
+        //判断是否有该管理员信息
+        if(adminById != null) {
+            result.put("code", 201);
+            result.put("msg", "用户名已存在！");
+            return result;
+        }
+
+        if(adminByMail != null) {
+            result.put("code", 201);
+            result.put("msg", "邮箱已注册！");
+            return result;
+        }
+        Date date = new Date();
+        //添加
+        admin.setAdminId(adminId);
+        admin.setAdminCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
+        System.out.println(admin.toString());
+        adminService.saveAdmin(admin);
 
         result.put("code", 200);
         result.put("msg", "修改成功！");

@@ -44,9 +44,9 @@
 
       <!--表格上方操作-->
       <script type="text/html" id="complain_toolbar">
-        <div class="layui-btn-container">
+        <div class="layui-btn-container" id="layerDemo">
           <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delBatchAll"><i class="layui-icon"></i>批量删除</button>
-          <!--<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>-->
+          <button class="layui-btn layui-btn-sm" data-method="notice" lay-event="add"><i class="layui-icon"></i>添加</button>
         </div>
       </script>
       <!--表格下方操作-->
@@ -106,13 +106,92 @@
 
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/js/driversystem/common/verifyInput.js}"></script>
     <script th:inline="javascript">
       var ctx = [[@{/}]]
     </script>
     <script type="text/javascript" th:inline="none">
-      layui.use(['laydate', 'form', 'table'], function() {
+      layui.use(['laydate', 'form', 'table','layer'], function() {
           var form = layui.form,
-              table = layui.table;
+              table = layui.table,
+              layer = layui.layer;
+
+        var active = {
+          notice: function() {
+            //示范一个公告层
+           var index = layer.open({
+              type: 1//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
+              ,title: "添加管理员信息" //不显示标题栏
+              ,closeBtn: false
+              ,area: ['500px','450px']//定义宽高
+              ,shade: 0.8//遮幕
+              ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+              ,btn: ['保存', '取消']
+              ,btnAlign: 'c'//按钮排列：居中对齐
+              ,moveType: 1 //拖拽模式，0或者1
+              ,content: "<div class=\"modal-body\">\n" +
+                      "            <div class=\"layui-form-item\">\n" +
+                      "              <label class=\"layui-form-label\">账号:</label>\n" +
+                      "              <div class=\"layui-input-block\">\n" +
+                      "                <input id=\"adminAccount1\" type=\"text\" name=\"addAccount\" placeholder=\"请输入账号\" class=\"layui-input\" autocomplete=\"off\">\n" +
+                      "              </div>\n" +
+                      "            </div>\n" +
+                      "            <div class=\"layui-form-item\">\n" +
+                      "              <label class=\"layui-form-label\">邮箱:</label>\n" +
+                      "              <div class=\"layui-input-block\">\n" +
+                      "                <input id=\"adminEmail1\" type=\"text\" name=\"addAdminEmail\" placeholder=\"请输入邮箱\" class=\"layui-input\" autocomplete=\"off\">\n" +
+                      "              </div>\n" +
+                      "            </div>\n" +
+                      "            <div class=\"layui-form-item\">\n" +
+                      "              <label class=\"layui-form-label\">密码:</label>\n" +
+                      "              <div class=\"layui-input-block\">\n" +
+                      "                <input id=\"adminPwd1\" type=\"password\" name=\"addAdminPwd\" placeholder=\"请输入密码\" class=\"layui-input\" autocomplete=\"off\">\n" +
+                      "              </div>\n" +
+                      "            </div>\n" +
+                      "          </div>"
+              ,
+              yes: function (index, layero) {
+                console.log('yes');
+               var adminAccount = $("#adminAccount1").val();
+               var adminEmail = $("#adminEmail1").val();
+               var adminPwd = $("#adminPwd1").val();
+               var data = {adminAccount:adminAccount,adminMail:adminEmail,adminPwd:adminPwd};
+                console.log(data)
+                var flag = checkEmail(adminEmail);
+                if (!flag){
+                  layer.close(index);
+                  layer.msg('邮箱格式不正确', {
+                    time: 2000,
+                    btn: ['返回']
+                  });
+                }else{
+                $.ajax({
+                  type: "post",
+                  url: ctx + "admin/addAdmin",
+                  data:JSON.stringify(data),
+                  dataType: "json",
+                  contentType:"application/json",
+                  success: function (result) {
+                    layer.msg(result.msg, {
+                      time: 2000,
+                      btn: ['返回']
+                    });
+                  },
+                  error: function (response) {
+                    console.log("出错返回: " + response);
+                    console.log("出错数据: " + JSON.stringify(response));
+                  }
+                })
+                layer.close(index);
+                //重新加载页面
+                location.reload();
+                }
+              },
+              btn2: function (index, layero) {
+                console.log('btn2');
+              }
+            })
+          }}
 
           //渲染表格
           table.render({
@@ -133,7 +212,14 @@
                   {field: 'admin_id', title: 'id', hide: true},    //hide:true    隐藏列
                   {field: 'admin_account', title: '账号'},
                   {field: 'admin_mail', title: '邮箱'},
-                  {field: 'admin_pwd', title: '密码'},    //TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
+                  {field: 'admin_pwd', title: '密码', templet:function(d)
+                    {
+                      if (d.admin_pwd.length == 0) {
+                      } else {
+                        return '******';
+                      }
+                    }
+                    },    //TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
                   {field: 'admin_createdate', title: '创建时间', sort: true},
                   {fixed: 'right', title: '操作', toolbar: '#operateTable'}
               ]]
@@ -364,7 +450,10 @@
                   $(".layui-form-checked").not('.header').parents('tr').remove();
               });
           }
-
+        $('#layerDemo .layui-btn').on('click', function(){
+          var othis = $(this), method = othis.data('method');
+          active[method] ? active[method].call(this, othis) : '';
+        });
       })
 
 

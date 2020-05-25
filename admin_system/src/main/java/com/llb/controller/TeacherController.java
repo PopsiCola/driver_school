@@ -10,6 +10,7 @@ import com.llb.service.IAppointmentService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
+import com.llb.utils.DateUtil;
 import com.llb.web.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,7 @@ import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * <p>
@@ -359,6 +356,42 @@ public class TeacherController {
         return result;
     }
 
+    /**
+     * 添加管理员信息
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/addtea", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addStudent(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        System.out.println(map);
+        //将用户传来的表单数据转换成实体类
+        Teacher teacher = JSONObject.parseObject(JSONObject.toJSONString(map), Teacher.class);
 
+        //密码加密
+        teacher.setTeaPwd(encoder.encode(map.get("teaPwd")));
+        String studentMail = teacher.getTeaEmail();
+        //根据id查找管理员信息
+        Teacher adminByMail = teacherService.findTeacherByEamil(studentMail);
+
+        //判断是否有该管理员信息
+        if(adminByMail != null) {
+            result.put("code", 201);
+            result.put("msg", "邮箱已注册！");
+            return result;
+        }
+        Date date = new Date();
+        //添加
+        teacher.setTeaId(UUID.randomUUID().toString().replace("-",""));
+        teacher.setTeaCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
+        System.out.println(teacher.toString());
+
+        teacherService.saveTeacher(teacher);
+
+        result.put("code", 200);
+        result.put("msg", "添加成功！");
+        return result;
+    }
 }
 

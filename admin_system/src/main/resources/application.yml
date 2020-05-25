@@ -1,13 +1,25 @@
+#自定义参数
+myprops:
+  clientId: CKI4ep3SxiG8HuiYi1CbnbVE
+  clientSecret: 2ekjAwcVZougT6zAqdFEpyLBjMyGKXxc
 server:
   port: 8102
+  #servlet:
+   # context-path: /admin_system
 spring:
+
+  #profiles: stage
   application:
       name: admin_system
+  redis:
+      host: 39.99.177.49
+      port: 6379
+      timeout: 60000
   datasource:
     druid:
-      url: jdbc:mysql://www.liulebin.cn/driver_school?characterEncoding=utf-8
+      url: jdbc:mysql://39.99.177.49/admin_system?characterEncoding=utf-8
       username: root
-      password: nevergiveup?
+      password: root
       initial-size: 1
       min-idle: 1
       max-active: 20

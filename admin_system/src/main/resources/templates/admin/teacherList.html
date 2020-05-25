@@ -45,9 +45,9 @@
 
       <!--表格上方操作-->
       <script type="text/html" id="complain_toolbar">
-        <div class="layui-btn-container">
+        <div class="layui-btn-container" id="layerDemo">
           <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delBatchAll"><i class="layui-icon"></i>批量删除</button>
-          <!--<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>-->
+          <button class="layui-btn layui-btn-sm" data-method="notice" lay-event="add"><i class="layui-icon"></i>添加</button>
         </div>
       </script>
       <!--表格下方操作-->
@@ -101,8 +101,8 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">性别:</label>
                 <div class="layui-input-block">
-                  <input type="radio" name="stuSex" value="1" title="男" checked="">
-                  <input type="radio" name="stuSex" value="0" title="女">
+                  <input type="radio" name="stuSex" id="stuSex" value="0" title="女">
+                  <input type="radio" name="stuSex" value="1" title="男">
                 </div>
               </div>
               <div class="layui-form-item">
@@ -139,14 +139,240 @@
     </div>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script th:src="@{/js/driversystem/common/verifyInput.js}"></script>
     <script th:inline="javascript">
       var ctx = [[@{/}]]
     </script>
     <script type="text/javascript" th:inline="none">
-      layui.use(['laydate', 'form', 'table'], function() {
+      layui.use(['laydate', 'form', 'table','layer'], function() {
           var form = layui.form;
           var laydate = layui.laydate;
           var table = layui.table;
+          var layer = layui.layer;
+
+        var active = {
+          notice: function() {
+            //示范一个公告层
+            var index = layer.open({
+              type: 1//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
+              ,title: "添加管理员信息" //不显示标题栏
+              ,closeBtn: false
+              ,area: ['500px','450px']//定义宽高
+              ,shade: 0.8//遮幕
+              ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+              ,btn: ['保存', '取消']
+              ,btnAlign: 'c'//按钮排列：居中对齐
+              ,moveType: 1 //拖拽模式，0或者1
+              ,content: "           <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">账号:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"stuAccount1\" type=\"text\" name=\"stuAccount\" lay-verify=\"required\" placeholder=\"请输入账号\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">姓名:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"stuName1\" type=\"text\" name=\"stuName\" placeholder=\"请输入姓名\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">邮箱:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"stuEmail1\" type=\"text\" name=\"stuEmail\" lay-verify=\"email\" placeholder=\"请输入邮箱\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">密码:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"stuPwd1\" type=\"password\" name=\"stuPwd\" lay-verify=\"required\" placeholder=\"请输入密码\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">性别:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input type=\"radio\" name=\"stuSex1\" value=\"1\" title=\"男\">\n" +
+                      "&nbsp;&nbsp;&nbsp;男&nbsp;&nbsp;&nbsp;" +
+                      "                  <input type=\"radio\" name=\"stuSex1\" value=\"0\" title=\"女\">\n" +
+                      "                   &nbsp;&nbsp;&nbsp;女" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">生日:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input type=\"text\" class=\"layui-input\" id=\"stuBirthday1\" placeholder=\"yyyy-MM-dd\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">地址:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"stuAddress1\" type=\"text\" name=\"stuAddress\" placeholder=\"请输入地址\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">联系电话:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"stuPhone1\" type=\"text\" name=\"stuPhone\" placeholder=\"请输入联系方式\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>"
+              ,
+              yes: function (index, layero) {
+                console.log('yes');
+                var stuAccount = $("#stuAccount1").val();
+                var stuName = $("#stuName1").val();
+                var stuEmail = $("#stuEmail1").val();
+                var stuPwd = $("#stuPwd1").val();
+                var stuSex = $("input[type='radio'][name='stuSex1']:checked").val();
+                var stuBirthday = $("#stuBirthday1").val();
+                var stuAddress = $("#stuAddress1").val();
+                var stuPhone = $("#stuPhone1").val();
+                var data = {teaAccount:stuAccount,teaName:stuName,teaEmail:stuEmail,teaPwd:stuPwd,teaSex:stuSex,teaBirthday:stuBirthday,teaAddress:stuAddress,teaPhone:stuPhone};
+                console.log(data)
+                var flag = checkEmail(stuEmail);
+                if (!flag){
+                  layer.close(index);
+                  layer.msg('邮箱格式不正确', {
+                    time: 2000,
+                    btn: ['返回']
+                  });
+                }else{
+                  $.ajax({
+                    type: "post",
+                    url: ctx + "teacher/addtea",
+                    data:JSON.stringify(data),
+                    dataType: "json",
+                    contentType:"application/json",
+                    success: function (result) {
+                      layer.msg(result.msg, {
+                        time: 2000,
+                        btn: ['返回']
+                      });
+                    },
+                    error: function (response) {
+                      console.log("出错返回: " + response);
+                      console.log("出错数据: " + JSON.stringify(response));
+                    }
+                  })
+                  layer.close(index);
+                  //重新加载页面
+                  location.reload();
+                }
+              },
+              btn2: function (index, layero) {
+                console.log('btn2');
+              }
+            })
+          }}
+
+        //常规用法
+        laydate.render({
+          elem: '#stuBirthday',
+          trigger: 'click'
+        });
+
+        //渲染表格
+        table.render({
+          elem: '#studentList',
+          // where: {stuId: stuId},
+          url: ctx + 'admin/findAllStudent',
+          limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+          toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
+          response: {
+            statusCode: 200, //成功的状态码，默认：0
+            statusName: 'code',// 对应 code
+            msgName: 'msg', // 对应 msg
+            countName: 'count', // 对应 count
+            dataName: 'data'  // 对应 data
+          }
+          , cols: [[
+            {type: 'checkbox'},
+            {field: 'stu_id', title: 'stu_id', hide: true},    //hide:true    隐藏列
+            {field: 'stu_account', title: '账号'},
+            {field: 'stu_name', title: '姓名'},
+            {field: 'stu_email', title: '邮箱'},
+            {field: 'stu_pwd', title: '密码', templet:function(d)
+              {
+                if (d.stu_pwd.length == 0) {
+                } else {
+                  return '******';
+                }
+              }},//TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
+            {field: 'stu_sex', title: '性别'},
+            {field: 'stu_birthday', title: '生日'},
+            {field: 'stu_address', title: '家庭地址'},
+            {field: 'stu_phone', title: '联系电话'},
+            {field: 'stu_createdate', title: '报名时间'},
+            {fixed: 'right', title: '操作', toolbar: '#operateTable'}
+          ]]
+          , page: true
+          ,done: function (res, curr, count) {
+            $("[data-field='stu_sex']").children().each(function(){
+              if($(this).text()=='1'){
+                $(this).text("男")
+              }else if($(this).text()=='0'){
+                $(this).text("女")
+              }
+            });
+          }
+        });
+        //搜索按钮事件
+        form.on('submit(search)', function (data) {
+          table.reload('studentList', {
+            where: data.field,
+            page: {
+              curr: 1 //重新从第 1 页开始
+            }
+          });
+        });
+
+        //头工具栏事件
+        table.on('toolbar(studentList)', function(obj){
+          var checkStatus = table.checkStatus(obj.config.id);
+          console.log(checkStatus);
+
+
+          switch(obj.event){
+            case 'delBatchAll':
+              if(checkStatus.data.length==0){
+                parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
+                return ;
+              }
+
+              //获得选中的id
+              var stuIds = "";
+              for(var i=0;i<checkStatus.data.length;i++){
+                stuIds += checkStatus.data[i].stu_id+",";
+              }
+              parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:500});
+
+              var data={stuIds:stuIds};
+              $.ajax({
+                url: ctx + "admin/deleteBatchStudent",
+                type: "post",
+                cache: false,
+                contentType: "application/json",
+                datatype: "json",
+                data: JSON.stringify(data),
+                success: function (result) {
+                  if(200==result.code){
+                    layer.alert(result.msg, {icon: 6},function () {
+                      //重新加载页面
+                      location.reload();
+                    });
+                  }else{
+                    layer.msg(result.msg, {
+                      time: 2000,
+                      btn: ['返回']
+                    });
+                  }
+                },
+                error: function (response) {
+                  console.log("出错返回: " + response);
+                  console.log("出错数据: " + JSON.stringify(response));
+                }
+              });
+              break;
+          };
+        });
 
           //常规用法
           laydate.render({
@@ -174,7 +400,13 @@
                   {field: 'tea_account', title: '账号'},
                   {field: 'tea_name', title: '姓名'},
                   {field: 'tea_email', title: '邮箱'},
-                  {field: 'tea_pwd', title: '密码'},//TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
+                  {field: 'tea_pwd', title: '密码', templet:function(d)
+                    {
+                      if (d.tea_pwd.length == 0) {
+                      } else {
+                        return '******'
+                      }
+                      }},//TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
                   {field: 'tea_sex', title: '性别'},
                   {field: 'tea_birthday', title: '生日'},
                   {field: 'tea_address', title: '家庭地址'},
@@ -300,7 +532,11 @@
                   $("#stuName").val(data.tea_name);
                   $("#stuEmail").val(data.tea_email);
                   $("#stuPwd").val(data.tea_pwd);
-                  $("#stuSex").val(data.tea_sex);
+                  // $('input:radio[name=stuSex]')[0].checked = true;
+                  // $("input:radio[name='stuSex'][value="+data.tea_sex+"]").prop("checked",false);
+                  // $('input[name=stuSex]:eq(1)').prop('checked', true);
+                  $('#stuSex').prop('checked',true);
+                  console.log(data.tea_sex)
                   $("#stuBirthday").val(data.tea_birthday);
                   $("#stuAddress").val(data.tea_address);
                   $("#stuPhone").val(data.tea_phone);
@@ -319,7 +555,7 @@
               var teaName =  $("#stuName").val();
               var teaEmail =  $("#stuEmail").val();
               var teaPwd =  $("#stuPwd").val();
-              var teaSex =  $("#stuSex").val();
+              var teaSex =  $("input[name='stuSex'][checked]").val();
               var teaBirthday =  $("#stuBirthday").val();
               var teaAddress = $("#stuAddress").val();
               var teaPhone =  $("#stuPhone").val();
@@ -407,7 +643,10 @@
                   $(".layui-form-checked").not('.header').parents('tr').remove();
               });
           }
-
+        $('#layerDemo .layui-btn').on('click', function(){
+          var othis = $(this), method = othis.data('method');
+          active[method] ? active[method].call(this, othis) : '';
+        });
       })
     </script>
   </body>

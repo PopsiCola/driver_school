@@ -45,9 +45,9 @@
 
       <!--表格上方操作-->
       <script type="text/html" id="complain_toolbar">
-        <div class="layui-btn-container">
+        <div class="layui-btn-container" id="layerDemo">
           <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delBatchAll"><i class="layui-icon"></i>批量删除</button>
-          <!--<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon"></i>添加</button>-->
+          <button class="layui-btn layui-btn-sm" data-method="notice" lay-event="add"><i class="layui-icon"></i>添加</button>
         </div>
       </script>
       <!--表格下方操作-->
@@ -119,11 +119,173 @@
       var ctx = [[@{/}]]
     </script>
     <script type="text/javascript" th:inline="none">
+      function cardRuleId(){
+        $.ajax({
+          type: "post",
+          url: ctx + "cars/find",
+          dataType: "json",
+          contentType:"application/json",
+          success: function (datas) {
+            console.log("**********************");
+            console.log(datas);
+
+            if(datas.length>0){
+              var table = document.getElementById('cardRuleId');
+              var html = "";
+              console.log($("#cardRuleId").val());
+              for (var i = 0; i < item.length; i++) {
+                var item=datas[i];
+                //拼接表格
+                console.log(item.teaName);
+                html += '<option value='+item.teaId+'>'+item.teaName+'</option>'
+              }
+              // html += '</select>';
+              $("#cardRuleId").empty();
+              table.innerHTML = '';
+              table.innerHTML = html;
+            }else {
+              $("#cardRuleId").empty();//清空下拉框
+              $("#cardRuleId").append("<option value=''>--请新建规则--</option>");
+            }
+            // form.render();//注意渲染页面表单，否则不显示数据
+            // layui.form.render("select");
+          },
+          error: function (response) {
+            console.log("出错返回: " + response);
+            console.log("出错数据: " + JSON.stringify(response));
+          }
+        })
+      }
       layui.use(['laydate', 'form', 'table'], function() {
           var form = layui.form;
           var laydate = layui.laydate;
           var table = layui.table;
 
+        var active = {
+
+          notice: function() {
+            //示范一个公告层
+            var index = layer.open({
+              type: 1//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
+              ,title: "添加管理员信息" //不显示标题栏
+              ,closeBtn: false
+              ,area: ['500px','450px']//定义宽高
+              ,shade: 0.8//遮幕
+              ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+              ,btn: ['保存', '取消']
+              ,btnAlign: 'c'//按钮排列：居中对齐
+              ,moveType: 1 //拖拽模式，0或者1
+              ,content:"<div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">教练:</label>\n" +
+                      "                <div onclick='cardRuleId()' class=\"layui-input-block\">\n" +
+                      "                  <select id=cardRuleId\">\n" +
+                      "                  </select>"+
+                      // "                  <input id=\"carAccount1\" type=\"text\" name=\"carAccount\" lay-verify=\"required\" placeholder=\"请输入教练id\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">车牌:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"carNumber1\" type=\"text\" name=\"carNumber\" placeholder=\"请输入车牌号\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">车辆类型:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input id=\"carType1\" type=\"text\" name=\"carType\" lay-verify=\"required\" placeholder=\"请输入车辆类型\" class=\"layui-input\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>\n" +
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">练车日期:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input type=\"text\" class=\"layui-input\" id=\"startTime1\" placeholder=\"yyyy-MM-dd\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>"+
+                      "              <div class=\"layui-form-item\">\n" +
+                      "                <label class=\"layui-form-label\">车辆生产日期:</label>\n" +
+                      "                <div class=\"layui-input-block\">\n" +
+                      "                  <input type=\"text\" class=\"layui-input\" id=\"car_productDate1\" placeholder=\"yyyy-MM-dd\" style=\" width: 300px\">\n" +
+                      "                </div>\n" +
+                      "              </div>"
+              ,
+              success: function(layero, index){
+                // console.log(layero, index);
+                // form.render('select');
+                /*$.ajax({
+                  type: "post",
+                  url: ctx + "cars/find",
+                  dataType: "json",
+                  contentType:"application/json",
+                  success: function (datas) {
+                    console.log("**********************");
+                    console.log(datas);
+                    if(datas.length>0){
+                      $("#cardRuleId").empty();//清空下拉框
+                      $("#cardRuleId").append("<option value=''>--请选择--</option>");
+                      for(var i=0;i<datas.length;i++){
+                        var item=datas[i];
+                        console.log(item.teaName);
+                        $("#cardRuleId").append("<option value="+item.teaId+">"+item.teaName+"</option>");
+                      }
+                    }else {
+                      $("#cardRuleId").empty();//清空下拉框
+                      $("#cardRuleId").append("<option value=''>--请新建规则--</option>");
+                    }
+                    //form.render();//注意渲染页面表单，否则不显示数据
+                    form.render("select");
+                  },
+                  error: function (response) {
+                    console.log("出错返回: " + response);
+                    console.log("出错数据: " + JSON.stringify(response));
+                  }
+                })*/
+              },
+              yes: function (index, layero) {
+                console.log('yes');
+                var carAccount = $("#carAccount1").val();
+                var carNumber = $("#carNumber1").val();
+                var carType = $("#carType1").val();
+                var startTime = $("#startTime1").val();
+                var car_productDate = $("#car_productDate1").val();
+                var data = {carAccount:carAccount,carNumber:carNumber,carType:carType,startTime:startTime,car_productDate:car_productDate};
+                console.log(data)
+                var flag = checkEmail(stuEmail);
+                if (!flag){
+                  layer.close(index);
+                  layer.msg('邮箱格式不正确', {
+                    time: 2000,
+                    btn: ['返回']
+                  });
+                }else{
+                  $.ajax({
+                    type: "post",
+                    url: ctx + "teacher/addtea",
+                    data:JSON.stringify(data),
+                    dataType: "json",
+                    contentType:"application/json",
+                    success: function (result) {
+                      layer.msg(result.msg, {
+                        time: 2000,
+                        btn: ['返回']
+                      });
+                    },
+                    error: function (response) {
+                      console.log("出错返回: " + response);
+                      console.log("出错数据: " + JSON.stringify(response));
+                    }
+                  })
+                  layer.close(index);
+                  //重新加载页面
+                  location.reload();
+                }
+              },
+              btn2: function (index, layero) {
+                console.log('btn2');
+              }
+            })
+          }}
+
+        // cardRuleId();
           //常规用法
           laydate.render({
               elem: '#startTime',
@@ -368,7 +530,10 @@
                   $(".layui-form-checked").not('.header').parents('tr').remove();
               });
           }
-
+        $('#layerDemo .layui-btn').on('click', function(){
+          var othis = $(this), method = othis.data('method');
+          active[method] ? active[method].call(this, othis) : '';
+        });
       })
 
 

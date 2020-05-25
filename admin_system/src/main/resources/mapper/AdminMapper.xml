@@ -66,19 +66,19 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="adminId != null">
-                #{admin_id},
+                #{adminId},
             </if>
             <if test="adminAccount != null">
-                #{admin_account},
+                #{adminAccount},
             </if>
             <if test="adminPwd != null">
-                #{admin_pwd},
+                #{adminPwd},
             </if>
             <if test="adminMail != null">
-                #{admin_mail},
+                #{adminMail},
             </if>
             <if test="adminCreatedate != null">
-                #{admin_createdate},
+                #{adminCreatedate},
             </if>
         </trim>
     </insert>

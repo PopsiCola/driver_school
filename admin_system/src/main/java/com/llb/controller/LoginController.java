@@ -1,21 +1,23 @@
 package com.llb.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.llb.entity.Admin;
-import com.llb.entity.Student;
-import com.llb.entity.Teacher;
+import com.llb.entity.*;
 import com.llb.service.IAdminService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
 import com.llb.utils.DateUtil;
+import com.llb.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -41,6 +43,12 @@ public class LoginController {
     //密码加密
     @Autowired
     private BCryptPasswordEncoder encoder;
+    @Autowired
+    private RedisUtils redisUtil;
+    @Autowired
+    private RedisConn redisConn;
+    @Autowired
+    private Myprops myprops;
     /**
      * 显示登录页
      * @return
@@ -76,7 +84,10 @@ public class LoginController {
             student = studentService.findStudent(account);
             if(student != null && encoder.matches(password, student.getStuPwd())) {
                 flag = true;
-                request.getSession().setAttribute("student", student);
+                redisUtil.set("student",student, (long) 10);
+                System.out.println(student);
+//                request.getSession().setAttribute("student", student);
+                result.put("student",student);
             } else if(student == null){
                 result.put("msg", "用户名或账户不存在！");
             } else {
@@ -366,5 +377,15 @@ public class LoginController {
         result.put("msg", "验证码已发送至邮箱，注意查收！");
 
         return result;
+    }
+    @RequestMapping("/test")
+    @ResponseBody
+    public String getSessionId() {
+        redisUtil.set("123", "测试", (long) 10);
+        System.out.println("进入了方法");
+//        System.out.println(redisConn.toString());
+//        System.out.println(myprops.toString());
+        String string = redisUtil.get("123").toString();
+        return string;
     }
 }

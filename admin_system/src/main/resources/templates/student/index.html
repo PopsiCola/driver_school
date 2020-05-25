@@ -31,7 +31,7 @@
     </script>
 </head>
 <body>
-    <input type="text" hidden="ture" id="stuId" th:value="${session.student.stuId}"/>
+    <input type="text" hidden="ture" id="stuId" th:value="${student.stuId}"/>
     <!-- 顶部开始 -->
     <div class="container">
         <div class="logo"><a href="">学员预约</a></div>
@@ -40,7 +40,7 @@
         </div>
         <ul class="layui-nav right" lay-filter="">
           <li class="layui-nav-item">
-              <a href="javascript:;"><span th:text="${session.student.stuAccount} eq null?${session.student.stuAccount}:${session.student.stuEmail}"></span></a>
+              <a href="javascript:;"><span th:text="${student.stuAccount} eq null?${student.stuAccount}:${student.stuEmail}"></span></a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="x_admin_show('个人信息','/admin_system/student/student-info')">个人信息</a></dd>
                 <dd><a onclick="x_admin_show('修改密码','/admin_system/student/showStuEditPwd')">修改密码</a></dd>

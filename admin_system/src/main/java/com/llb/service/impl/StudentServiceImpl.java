@@ -1,14 +1,17 @@
 package com.llb.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.llb.entity.Student;
 import com.llb.mapper.StudentMapper;
 import com.llb.service.IStudentService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +31,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     private StudentMapper studentMapper;
     @Autowired
     private BCryptPasswordEncoder encoder;
-
+    @Autowired
+    private StringRedisTemplate template;
     /**
      * 根据学员名或邮箱查询学员
      * @param account
