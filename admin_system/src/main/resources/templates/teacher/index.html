@@ -32,27 +32,18 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a th:href="@{/static/index}">X-admin v2.1</a></div>
+    <div class="logo"><a th:href="@{/static/index}">驾校预约练车管理系统.教练端</a></div>
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
-<!--    <ul class="layui-nav left fast-add" lay-filter="">-->
-<!--        <li class="layui-nav-item">-->
-<!--            <a href="javascript:;">+新增</a>-->
-<!--            <dl class="layui-nav-child"> &lt;!&ndash; 二级菜单 &ndash;&gt;-->
-<!--                <dd><a onclick="x_admin_show('资讯','https://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>-->
-<!--                <dd><a onclick="x_admin_show('图片','https://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>-->
-<!--                <dd><a onclick="x_admin_show('用户 最大化','https://www.baidu.com','','',true)"><i class="iconfont">&#xe6b8;</i>用户最大化</a></dd>-->
-<!--                <dd><a onclick="x_admin_add_to_tab('在tab打开','https://www.baidu.com',true)"><i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>-->
-<!--            </dl>-->
-<!--        </li>-->
-<!--    </ul>-->
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
             <a href="javascript:;"><span th:text="${session.teacher.teaAccount}"></span></a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a onclick="x_admin_show('个人信息','/admin_system/teacher/teacherInfo')">个人信息</a></dd>
-                <dd><a onclick="x_admin_show('修改密码','/admin_system/teacher/editPassword')">修改密码</a></dd>
+<!--                <dd><a onclick="x_admin_show('个人信息','/admin_system/teacher/teacherInfo')">个人信息</a></dd>-->
+<!--                <dd><a onclick="x_admin_show('修改密码','/admin_system/teacher/editPassword')">修改密码</a></dd>-->
+                <dd><a onclick="x_admin_show('个人信息','/teacher/teacherInfo')">个人信息</a></dd>
+                <dd><a onclick="x_admin_show('修改密码','/teacher/editPassword')">修改密码</a></dd>
                 <dd><a th:href="@{/login/loginOut?role=3}" onclick="Close()">退出</a></dd>
             </dl>
         </li>
@@ -82,7 +73,7 @@
             <li>
                 <a th:_href="@{/teacher/appointment_Student(teaId=${session.teacher.teaId})}">
                     <i class="iconfont">&#xe6b4;</i>
-                    <cite>其它页面</cite>
+                    <cite>评价学员</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
             </li>

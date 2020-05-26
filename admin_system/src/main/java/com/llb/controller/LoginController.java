@@ -47,8 +47,8 @@ public class LoginController {
     private RedisUtils redisUtil;
     @Autowired
     private RedisConn redisConn;
-    @Autowired
-    private Myprops myprops;
+//    @Autowired
+//    private Myprops myprops;
     /**
      * 显示登录页
      * @return
