@@ -126,14 +126,14 @@
           dataType: "json",
           contentType:"application/json",
           success: function (datas) {
-            console.log("**********************");
-            console.log(datas);
-
+            // console.log("教练信息");
+            // console.log(datas);
             if(datas.length>0){
               var table = document.getElementById('cardRuleId');
               var html = "";
-              console.log($("#cardRuleId").val());
-              for (var i = 0; i < item.length; i++) {
+              // console.log(table);
+              // console.log($("#cardRuleId").val());
+              for (var i = 0; i < datas.length; i++) {
                 var item=datas[i];
                 //拼接表格
                 console.log(item.teaName);
@@ -178,7 +178,7 @@
               ,content:"<div class=\"layui-form-item\">\n" +
                       "                <label class=\"layui-form-label\">教练:</label>\n" +
                       "                <div onclick='cardRuleId()' class=\"layui-input-block\">\n" +
-                      "                  <select id=cardRuleId\">\n" +
+                      "                  <select id=\"cardRuleId\">\n" +
                       "                  </select>"+
                       // "                  <input id=\"carAccount1\" type=\"text\" name=\"carAccount\" lay-verify=\"required\" placeholder=\"请输入教练id\" class=\"layui-input\" style=\" width: 300px\">\n" +
                       "                </div>\n" +
@@ -242,24 +242,19 @@
               },
               yes: function (index, layero) {
                 console.log('yes');
-                var carAccount = $("#carAccount1").val();
+                var options = $("#cardRuleId option:selected");
+                var teaId = options.val();
+                // var carAccount = $("#carAccount1").val();
                 var carNumber = $("#carNumber1").val();
                 var carType = $("#carType1").val();
                 var startTime = $("#startTime1").val();
                 var car_productDate = $("#car_productDate1").val();
-                var data = {carAccount:carAccount,carNumber:carNumber,carType:carType,startTime:startTime,car_productDate:car_productDate};
-                console.log(data)
-                var flag = checkEmail(stuEmail);
-                if (!flag){
-                  layer.close(index);
-                  layer.msg('邮箱格式不正确', {
-                    time: 2000,
-                    btn: ['返回']
-                  });
-                }else{
+                var data = {teaId:teaId,carNumber:carNumber,carType:carType,startTime:startTime,car_productDate:car_productDate};
+                // console.log(data)
+
                   $.ajax({
                     type: "post",
-                    url: ctx + "teacher/addtea",
+                    url: ctx + "cars/addCar",
                     data:JSON.stringify(data),
                     dataType: "json",
                     contentType:"application/json",
@@ -277,10 +272,10 @@
                   layer.close(index);
                   //重新加载页面
                   location.reload();
-                }
+                // }
               },
               btn2: function (index, layero) {
-                console.log('btn2');
+                // console.log('btn2');
               }
             })
           }}
@@ -341,7 +336,7 @@
           //头工具栏事件
           table.on('toolbar(carList)', function(obj){
               var checkStatus = table.checkStatus(obj.config.id);
-              console.log(checkStatus);
+              // console.log(checkStatus);
 
 
               switch(obj.event){
@@ -457,7 +452,7 @@
                 startTime: startTime
               };
 
-              console.log(data);
+              // console.log(data);
               $.ajax({
                   url: ctx + "admin/editCar",
                   type: "post",
@@ -523,7 +518,7 @@
               var data = tableCheck.getData();
 
               var checkStatus=table.checkStatus('idTest');
-              console.log(checkStatus);
+              // console.log(checkStatus);
               layer.confirm('确认要删除吗？' + data, function (index) {
                   //捉到所有被选中的，发异步进行删除
                   layer.msg('删除成功', {icon: 1});

@@ -29,7 +29,9 @@
         SELECT
         (select b.stu_name from student b where a.stu_id=b.stu_id) as xsmc,
         (select b.tea_name from teacher b where a.tea_id=b.tea_id) as jlmc,
-        a.`subject`,a.appointment_start,a.appointment_end ,a.stu_star,a.stu_content,a.tea_content
+        a.`subject`,
+        DATE_FORMAT(a.appointment_start,'%Y-%m-%d %H:%i:%s') as appointment_start,
+        DATE_FORMAT(a.appointment_end,'%Y-%m-%d %H:%i:%s') as appointment_end ,a.stu_star,a.stu_content,a.tea_content
         FROM appointment a<where>a.stu_star is not null
         and a.
         appointment_flag = '5'

@@ -49,7 +49,7 @@ public class Cars implements Serializable {
      * 车辆出厂时间
      */
     @TableField("car_productDate")
-    private LocalDate carProductDate;
+    private String carProductDate;
 
     /**
      * 车子的类型
@@ -61,7 +61,7 @@ public class Cars implements Serializable {
      * 开始练车时间
      */
     @TableField("start_time")
-    private LocalDateTime startTime;
+    private String startTime;
 
 
 }

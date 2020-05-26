@@ -32,4 +32,49 @@
         </trim>
         WHERE car_id = #{carId}
     </update>
+
+    <!--保存车辆信息-->
+    <insert id="saveCar" parameterType="Cars">
+        INSERT INTO cars
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carId != null and carId != ''">
+                car_id,
+            </if>
+            <if test="teaId != null and teaId != ''">
+                tea_id,
+            </if>
+            <if test="carNumber != null and carNumber != ''">
+                car_number,
+            </if>
+            <if test="carProductDate != null and carProductDate != ''">
+                car_productDate,
+            </if>
+            <if test="carType != null and carType != ''">
+                car_type,
+            </if>
+            <if test="startTime != null and startTime != ''">
+                start_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="carId != null and carId != ''">
+                #{carId},
+            </if>
+            <if test="teaId != null and teaId != ''">
+                #{teaId},
+            </if>
+            <if test="carNumber != null and carNumber != ''">
+                #{carNumber},
+            </if>
+            <if test="carProductDate != null and carProductDate != ''">
+                #{carProductDate},
+            </if>
+            <if test="carType != null and carType != ''">
+                #{carType},
+            </if>
+            <if test="startTime != null and startTime != ''">
+                #{startTime},
+            </if>
+        </trim>
+    </insert>
 </mapper>

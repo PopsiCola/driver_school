@@ -50,4 +50,13 @@ public class CarsServiceImpl extends ServiceImpl<CarsMapper, Cars> implements IC
     public void editCar(Cars cars) {
         carsMapper.editCar(cars);
     }
+
+    /**
+     * 保存车辆信息
+     * @param car
+     */
+    @Override
+    public void saveCar(Cars car) {
+        carsMapper.saveCar(car);
+    }
 }

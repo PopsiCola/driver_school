@@ -35,4 +35,10 @@ public interface ICarsService extends IService<Cars> {
      */
     void editCar(Cars cars);
 
+    /**
+     * 保存车辆信息
+     * @param car
+     */
+    void saveCar(Cars car);
+
 }

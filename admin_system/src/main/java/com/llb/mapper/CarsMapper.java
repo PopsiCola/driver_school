@@ -23,4 +23,6 @@ public interface CarsMapper extends BaseMapper<Cars> {
 
     void editCar(Cars cars);
 
+    void saveCar(Cars car);
+
 }
