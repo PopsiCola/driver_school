@@ -4,7 +4,6 @@ package com.llb.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.llb.entity.Student;
 import com.llb.entity.Teacher;
 import com.llb.service.IAppointmentService;
 import com.llb.service.IStudentService;
@@ -67,11 +66,10 @@ public class TeacherController {
     /**
      * 教练查看学员列表
      * @param teaId
-     * @param stu_name
      * @return
      */
     @RequestMapping(value = "/student_administer")
-    public ModelAndView student_administer(String teaId,String stu_name) {
+    public ModelAndView student_administer(String teaId) {
         ModelAndView modelAndView = new ModelAndView("teacher/student_administer");
         modelAndView.addObject("teaId", teaId);
 //        modelAndView.addObject("student_list", studentService.findTeaTwoById(teaId,stu_name));
@@ -254,6 +252,43 @@ public class TeacherController {
     public ModelAndView foundPassword() {
         ModelAndView modelAndView = new ModelAndView("teacher/found_password");
         return modelAndView;
+    }
+
+    /**
+     * 上下车记录
+     * @return
+     */
+    @RequestMapping("/SXCJL")
+    public ModelAndView appointmentAXC(String teaId) {
+        ModelAndView modelAndView = new ModelAndView("teacher/appointmentAXCList");
+        modelAndView.addObject("teaId", teaId);
+        return modelAndView;
+    }
+
+    /**
+     * 模糊查询上下车记录
+     * @return
+     */
+    @RequestMapping("/SXCJLList")
+    public Map<String,Object> appointmentAXCList(String xsmc,String jlmc,String teaId,
+                                                 @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                                 @RequestParam(defaultValue = "5", required = false, value = "size") Integer size) {
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, size);
+        if ("".equals(xsmc)){
+            xsmc = null;
+        }
+        System.out.println(jlmc);
+        if ("".equals(jlmc)){
+            jlmc = null;
+        }
+        System.out.println(xsmc+"*"+jlmc+teaId);
+        IPage<Map<String, Object>> mapIPage = teacherService.findAppointmentSXCJL(pageParam,xsmc,jlmc,teaId);
+        Message me= new Message();
+        me.put("data", mapIPage.getRecords()) ;
+        me.put("code", 200);
+        me.put("msg", "查询成功");
+        me.put("count",mapIPage.getTotal());
+        return me;
     }
 
     /**

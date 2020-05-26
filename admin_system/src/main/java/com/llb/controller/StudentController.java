@@ -269,6 +269,7 @@ public class StudentController {
     @RequestMapping("/appointmentRecord")
     public ModelAndView appointmentRecord() {
         ModelAndView modelAndView = new ModelAndView("student/appointmentRecord");
+        modelAndView.addObject("student", redisUtils.get("student"));
         return modelAndView;
     }
 

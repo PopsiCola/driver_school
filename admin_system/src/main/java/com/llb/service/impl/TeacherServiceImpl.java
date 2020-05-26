@@ -26,6 +26,17 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     @Autowired
     private TeacherMapper teacherMapper;
 
+    /**
+     * 查询上下车记录
+     * @param pageParam
+     * @param xsmc
+     * @param jlmc
+     * @return
+     */
+    @Override
+    public IPage<Map<String, Object>> findAppointmentSXCJL(IPage<Map<String, Object>> pageParam, String xsmc, String jlmc,String teaId) {
+        return teacherMapper.findAppointmentSXCJL(pageParam,xsmc,jlmc,teaId);
+    }
 
     /**
      * 查找所有的教练

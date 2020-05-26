@@ -7,7 +7,33 @@
         FROM teacher
     </select>
 
-    <!--通过姓名查找教练-->
+    <!--上下车记录-->
+    <select id="findAppointmentSXCJL" resultType="map" parameterType="String">
+         select * from (
+         SELECT
+        (select b.stu_name from student b where a.stu_id=b.stu_id) as xsmc,
+        (select b.tea_name from teacher b where a.tea_id=b.tea_id) as jlmc,
+        a.subject,a.boarding_time,a.alighting_time
+        FROM appointment a
+        <where>
+         a.stu_star is not null
+        and a.appointment_flag = '5'
+        <if test="teaId != null">
+          and  a.tea_id=#{teaId}
+        </if>
+        </where>) a
+        <where>
+            0 = 0
+            <if test="xsmc != null">
+                and a.xsmc =#{xsmc}
+            </if>
+            <if test="jlmc != null">
+                and a.jlmc =#{jlmc}
+            </if>
+        </where>
+    </select>
+
+    <!--查询上下车记录-->
     <select id="findTeacher" resultType="com.llb.entity.Teacher" parameterType="String">
         SELECT *
         FROM teacher

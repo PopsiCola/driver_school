@@ -23,6 +23,28 @@
         WHERE admin_id = #{adminId}
     </select>
 
+    <!--查询评价-->
+    <select id="findAppointmentById" resultType="map" parameterType="String">
+        select * from (
+        SELECT
+        (select b.stu_name from student b where a.stu_id=b.stu_id) as xsmc,
+        (select b.tea_name from teacher b where a.tea_id=b.tea_id) as jlmc,
+        a.`subject`,a.appointment_start,a.appointment_end ,a.stu_star,a.stu_content,a.tea_content
+        FROM appointment a<where>a.stu_star is not null
+        and a.
+        appointment_flag = '5'
+    </where>) a
+    <where>
+    0=0
+        <if test="xsmc != null">
+            and a.xsmc =#{xsmc}
+        </if>
+        <if test="jlmc != null">
+            and a.jlmc =#{jlmc}
+        </if>
+    </where>
+    </select>
+
     <!--通过用户名和邮箱查找管理员-->
     <select id="findAdminByAccAndMail" resultType="com.llb.entity.Admin" parameterType="String">
         SELECT *

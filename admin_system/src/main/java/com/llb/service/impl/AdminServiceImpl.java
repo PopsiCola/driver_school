@@ -3,14 +3,17 @@ package com.llb.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
+import com.llb.entity.Appointment;
 import com.llb.mapper.AdminMapper;
 import com.llb.service.IAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +31,11 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminMapper adminMapper;
     @Autowired
     private StringRedisTemplate template;
+
+    @Override
+    public IPage<Map<String,Object>>  findAppointmentById(Page<List<Appointment>> pageParam,String xsmc,String jlmc) {
+        return adminMapper.findAppointmentById(pageParam,xsmc,jlmc);
+    }
 
     /**
      * 根据管理员名称或邮箱查询管理员

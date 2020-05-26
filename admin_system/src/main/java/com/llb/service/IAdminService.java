@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.llb.entity.Appointment;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +19,11 @@ import java.util.Map;
  * @since 2020-03-06
  */
 public interface IAdminService extends IService<Admin> {
+    /**
+     * 查询评论
+     * @return
+     */
+    IPage<Map<String,Object>>  findAppointmentById(Page<List<Appointment>> pageParam, String xsmc,String jlmc);
 
     /**
      * 根据管理员名称或邮箱查询管理员

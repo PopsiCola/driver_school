@@ -38,5 +38,7 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
 
     IPage<Map<String, Object>> teacherList(IPage<Map<String, Object>> pageParam,@Param("teaAccount") String account);
 
+    IPage<Map<String, Object>>findAppointmentSXCJL(IPage<Map<String, Object>> pageParam, @Param("xsmc") String xsmc, @Param("jlmc") String jlmc,@Param("teaId") String teaId);
+
     void deleteTeacher(String teaId);
 }

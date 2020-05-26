@@ -4,10 +4,7 @@ package com.llb.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.llb.entity.Admin;
-import com.llb.entity.Cars;
-import com.llb.entity.Student;
-import com.llb.entity.Teacher;
+import com.llb.entity.*;
 import com.llb.service.IAdminService;
 import com.llb.service.ICarsService;
 import com.llb.service.IStudentService;
@@ -21,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -57,6 +52,41 @@ public class AdminController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("admin/index");
         return modelAndView;
+    }
+
+    /**
+     * 评论管理页面
+     * @return
+     */
+    @RequestMapping(value = "/appointmentList")
+    public ModelAndView Appointment() {
+        ModelAndView modelAndView = new ModelAndView("admin/appointmentList");
+        return modelAndView;
+    }
+
+    /**
+     * 评论管理页面
+     * @return
+     */
+    @RequestMapping(value = "/appointmentById")
+    @ResponseBody
+    public Map<String,Object> AppointmentById(String xsmc,String jlmc,
+                                              @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                              @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit ) {
+        Map<String,Object> result = new HashMap<>();
+        if ("".equals(xsmc)){
+            xsmc = null;
+        }
+        if ("".equals(jlmc)){
+            jlmc = null;
+        }
+        Page<List<Appointment>> pageParam = new Page<List<Appointment>>(page,limit);
+        IPage<Map<String,Object>> map =  adminService.findAppointmentById(pageParam,xsmc,jlmc);
+        result.put("data", map.getRecords());
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", map.getTotal());
+        return result;
     }
 
     /**

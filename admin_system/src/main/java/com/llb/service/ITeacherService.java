@@ -19,6 +19,15 @@ import java.util.Map;
 public interface ITeacherService extends IService<Teacher> {
 
     /**
+     * 上下车记录
+     * @param pageParam
+     * @param xsmc
+     * @param jlmc
+     * @return
+     */
+    IPage<Map<String, Object>>findAppointmentSXCJL(IPage<Map<String, Object>> pageParam, String xsmc,String jlmc,String teaId);
+
+    /**
      * 查找所有的教练
      * @return
      */

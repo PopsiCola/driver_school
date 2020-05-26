@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.llb.entity.Appointment;
+import com.sun.corba.se.spi.ior.ObjectKey;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +37,8 @@ public interface AdminMapper extends BaseMapper<Admin> {
     Admin findAdminById(String adminId);
 
     void updateAdmin(Admin admin);
+
+    IPage<Map<String,Object>> findAppointmentById(Page<List<Appointment>> pageParam, @Param("xsmc") String xsmc, @Param("jlmc") String jlmc);
 
     /**
      * 查询所有管理员

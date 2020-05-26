@@ -35,8 +35,9 @@
       <!--<input type="text" hidden="hidden" id="stuId" th:value="${session.student.stuId}"/>-->
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so" action="javascript:;">
-            <input type="text" name="account" id="account" placeholder="请输入账号" autocomplete="off" class="layui-input">
-            <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+            <input type="text" name="xsmc" id="xsmc" placeholder="请输入学员姓名" autocomplete="off" class="layui-input">
+            <input type="text" name="jlmc" id="jlmc" placeholder="请输入教练姓名" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
 
@@ -47,7 +48,7 @@
       <script type="text/html" id="complain_toolbar">
         <div class="layui-btn-container" id="layerDemo">
           <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delBatchAll"><i class="layui-icon"></i>批量删除</button>
-          <button class="layui-btn layui-btn-sm" data-method="notice" lay-event="add"><i class="layui-icon"></i>添加</button>
+<!--          <button class="layui-btn layui-btn-sm" data-method="notice" lay-event="add"><i class="layui-icon"></i>添加</button>-->
         </div>
       </script>
       <!--表格下方操作-->
@@ -148,134 +149,26 @@
           var form = layui.form;
           var laydate = layui.laydate;
           var table = layui.table;
-          var layer = layui.layer;
-
-        var active = {
-          notice: function() {
-            //示范一个公告层
-            var index = layer.open({
-              type: 1//0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层)
-              ,title: "添加管理员信息" //不显示标题栏
-              ,closeBtn: false
-              ,area: ['500px','450px']//定义宽高
-              ,shade: 0.8//遮幕
-              ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-              ,btn: ['保存', '取消']
-              ,btnAlign: 'c'//按钮排列：居中对齐
-              ,moveType: 1 //拖拽模式，0或者1
-              ,content:
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">账号:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input id=\"stuAccount1\" type=\"text\" name=\"stuAccount\" lay-verify=\"required\" placeholder=\"请输入账号\" class=\"layui-input\" style=\" width: 300px\">\n" +
-                      "                </div>\n" +
-                      "              </div>\n" +
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">姓名:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input id=\"stuName1\" type=\"text\" name=\"stuName\" placeholder=\"请输入姓名\" class=\"layui-input\" style=\" width: 300px\">\n" +
-                      "                </div>\n" +
-                      "              </div>\n" +
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">邮箱:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input id=\"stuEmail1\" type=\"text\" name=\"stuEmail\" lay-verify=\"email\" placeholder=\"请输入邮箱\" class=\"layui-input\" style=\" width: 300px\">\n" +
-                      "                </div>\n" +
-                      "              </div>\n" +
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">密码:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input id=\"stuPwd1\" type=\"password\" name=\"stuPwd\" lay-verify=\"required\" placeholder=\"请输入密码\" class=\"layui-input\" style=\" width: 300px\">\n" +
-                      "                </div>\n" +
-                      "              </div>\n" +
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">性别:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input type=\"radio\" name=\"stuSex1\" value=\"1\" title=\"男\">\n" +
-                      "                  &nbsp;&nbsp;&nbsp;男&nbsp;&nbsp;&nbsp;" +
-                      "                  <input type=\"radio\" name=\"stuSex1\" value=\"0\" title=\"女\">\n " +
-                      "                   &nbsp;&nbsp;&nbsp;女" +
-                      "                </div>\n" +
-                      "              </div>\n" +
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">生日:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input type=\"text\" class=\"layui-input\" id=\"stuBirthday1\" placeholder=\"yyyy-MM-dd\">\n" +
-                      "                </div>\n" +
-                      "              </div>\n" +
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">地址:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input id=\"stuAddress1\" type=\"text\" name=\"stuAddress\" placeholder=\"请输入地址\" class=\"layui-input\" style=\" width: 300px\">\n" +
-                      "                </div>\n" +
-                      "              </div>\n" +
-                      "              <div class=\"layui-form-item\">\n" +
-                      "                <label class=\"layui-form-label\">联系电话:</label>\n" +
-                      "                <div class=\"layui-input-block\">\n" +
-                      "                  <input id=\"stuPhone1\" type=\"text\" name=\"stuPhone\" placeholder=\"请输入联系方式\" class=\"layui-input\" style=\" width: 300px\">\n" +
-                      "                </div>\n" +
-                      "              </div>"
-              ,
-              yes: function (index, layero) {
-                console.log('yes');
-                var stuAccount = $("#stuAccount1").val();
-                var stuName = $("#stuName1").val();
-                var stuEmail = $("#stuEmail1").val();
-                var stuPwd = $("#stuPwd1").val();
-                var stuSex = $("input[type='radio'][name='stuSex1']:checked").val();
-                var stuBirthday = $("#stuBirthday1").val();
-                var stuAddress = $("#stuAddress1").val();
-                var stuPhone = $("#stuPhone1").val();
-                var data = {stuAccount:stuAccount,stuName:stuName,stuEmail:stuEmail,stuPwd:stuPwd,stuSex:stuSex,stuBirthday:stuBirthday,stuAddress:stuAddress,stuPhone:stuPhone};
-                console.log(data)
-                var flag = checkEmail(stuEmail);
-                if (!flag){
-                  layer.msg('邮箱格式不正确', {
-                    time: 2000,
-                    btn: ['返回']
-                  });
-                }else{
-                  $.ajax({
-                    type: "post",
-                    url: ctx + "student/addStu",
-                    data:JSON.stringify(data),
-                    dataType: "json",
-                    contentType:"application/json",
-                    success: function (result) {
-                      layer.msg(result.msg, {
-                        time: 2000,
-                        btn: ['返回']
-                      });
-                    },
-                    error: function (response) {
-                      console.log("出错返回: " + response);
-                      console.log("出错数据: " + JSON.stringify(response));
-                    }
-                  })
-                  layer.close(index);
-                  //重新加载页面
-                  location.reload();
-                }
-              },
-              btn2: function (index, layero) {
-                console.log('btn2');
-              }
-            })
-          }}
 
           //常规用法
           laydate.render({
               elem: '#stuBirthday',
               trigger: 'click'
           });
-
+          var xsmc = null;
+          var jlmc = null;
           //渲染表格
+        onclick_ById();
+        function onclick_ById(){
+          var xsmc = $("#xcmc").val();
+          var jlmc = $("#jlmc").val();
           table.render({
               elem: '#studentList',
               // where: {stuId: stuId},
-              url: ctx + 'admin/findAllStudent',
+              url: ctx + 'admin/appointmentById',
               limits: [5, 10, 20, 30, 40, 50, 60, 70, 80, 90],
               toolbar: '#complain_toolbar', //开启头部工具栏，并为其绑定左侧模板
+              where:{xsmc:xsmc,jlmc:jlmc},
               response: {
                   statusCode: 200, //成功的状态码，默认：0
                   statusName: 'code',// 对应 code
@@ -285,22 +178,14 @@
               }
               , cols: [[
                   {type: 'checkbox'},
-                  {field: 'stu_id', title: 'stu_id', hide: true},    //hide:true    隐藏列
-                  {field: 'stu_account', title: '账号'},
-                  {field: 'stu_name', title: '姓名'},
-                  {field: 'stu_email', title: '邮箱'},
-                  {field: 'stu_pwd', title: '密码', templet:function(d)
-                    {
-                      if (d.stu_pwd.length == 0) {
-                      } else {
-                        return '******';
-                      }
-                    }},//TODO：密码列后期会使用md5进行加密，所以此列暂时暴露
-                  {field: 'stu_sex', title: '性别'},
-                  {field: 'stu_birthday', title: '生日'},
-                  {field: 'stu_address', title: '家庭地址'},
-                  {field: 'stu_phone', title: '联系电话'},
-                  {field: 'stu_createdate', title: '报名时间'},
+                  {field: 'xsmc', title: '学员姓名'},
+                  {field: 'jlmc', title: '教练姓名'},
+                  {field: 'subject', title: '训练科目'},
+                  {field: 'appointment_start', title: '预约开始时间'},
+                  {field: 'appointment_end', title: '预约结束时间'},
+                  {field: 'stu_star', title: '学员评星'},
+                  {field: 'stu_content', title: '学员评论'},
+                  {field: 'tea_content', title: '教练回复'},
                   {fixed: 'right', title: '操作', toolbar: '#operateTable'}
               ]]
               , page: true
@@ -314,9 +199,11 @@
               });
             }
           });
+        }
           //搜索按钮事件
           form.on('submit(search)', function (data) {
             console.log(data.field)
+            console.log(data)
               table.reload('studentList', {
                   where: data.field,
                   page: {
