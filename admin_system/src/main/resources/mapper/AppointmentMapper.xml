@@ -42,9 +42,7 @@
             <if test="appointmentFlag != null">
                 appointment_flag,
             </if>
-            <if test="createDate != null">
                 create_date,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
