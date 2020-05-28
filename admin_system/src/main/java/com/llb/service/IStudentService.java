@@ -37,7 +37,7 @@ public interface IStudentService extends IService<Student> {
      * @param stuId
      * @return
      */
-    IPage<Map<String, Object>> findTeaTwoById(IPage<Map<String, Object>> pageParam,String teaId,String stu_name,String start_time,String End_time);
+    IPage<Map<String, Object>> findTeaTwoById(Page<Map<String, Object>> pageParam,String teaId,String stu_name,String start_time,String End_time);
 
     /**
      * 根据学员名和邮箱查询学员

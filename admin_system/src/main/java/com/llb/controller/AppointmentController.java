@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Appointment;
+import com.llb.entity.Student;
 import com.llb.service.IAppointmentService;
 import com.llb.service.IStudentService;
 import com.llb.service.ITeacherService;
@@ -225,7 +226,12 @@ public class AppointmentController {
 	    	return result;
 		}else if ("同   意 ".equals(map.get("appointmentFlag"))) {
 		appointmentService.editAppointFlag(map.get("id"), 2);
-    	result.put("code", 200);
+        Appointment appointment = appointmentService.findApponitById(map.get("id"));
+        Student student = new Student();
+        student.setStuId(appointment.getStuId());
+        student.setStuTwo(appointment.getTeaId());
+        studentService.editStudent(student);
+        result.put("code", 200);
     	result.put("msg", "同意预约！");
     	return result;
 		}

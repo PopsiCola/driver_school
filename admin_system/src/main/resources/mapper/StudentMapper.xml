@@ -135,7 +135,8 @@
           <if test="stuSex!=null">stu_sex=#{stuSex},</if>
           <if test="stuBirthday!=null">stu_birthday=#{stuBirthday},</if>
           <if test="stuAddress!=null">stu_address=#{stuAddress},</if>
-          <if test="stuPhone!=null">stu_phone=#{stuPhone},</if>
+          <if test="stuTwo!=null">stu_two=#{stuTwo},</if>
+          <if test="stuThree!=null">stu_three=#{stuThree},</if>
         </trim>
         WHERE stu_id = #{stuId}
     </update>
