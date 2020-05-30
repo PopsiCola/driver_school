@@ -67,7 +67,7 @@
 	  	    elem: '#test',
 	  	    method:'post',
 	  	    id:'allAttTable',
-   	        url: ctx + 'appointment/appointment_teaId', //请求数据的地址
+   	        url: ctx + 'teacher/appointment_teaId', //请求数据的地址
   	        dataType: "json", //返回数据形式为json
 //   	        data:{'teaId':teaId,'stu_name':stu_name},
 			where: {'teaId':teaId,'stu_name':stu_name,'bm_date':bm_date},
@@ -202,7 +202,7 @@
 
           $.ajax({
               type: "POST",
-              url: ctx + "appointment/teaCancle",
+              url: ctx + "teacher/teaCancle",
               data: JSON.stringify(data),
               dataType: "json",
               contentType:"application/json",
@@ -228,7 +228,7 @@
 
             $.ajax({
                 type: "POST",
-                url: ctx + "appointment/teaCancle",
+                url: ctx + "teacher/teaCancle",
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType:"application/json",

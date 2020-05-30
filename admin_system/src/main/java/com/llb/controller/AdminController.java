@@ -766,6 +766,117 @@ public class AdminController {
         return modelAndView;
     }
 
+    /**
+     * 添加教练信息
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/addtea", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addTeacher(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        System.out.println(map);
+        //将用户传来的表单数据转换成实体类
+        Teacher teacher = JSONObject.parseObject(JSONObject.toJSONString(map), Teacher.class);
+
+        //密码加密
+        teacher.setTeaPwd(encoder.encode(map.get("teaPwd")));
+        String studentMail = teacher.getTeaEmail();
+        //根据id查找管理员信息
+        Teacher adminByMail = teacherService.findTeacherByEamil(studentMail);
+
+        //判断是否有该管理员信息
+        if(adminByMail != null) {
+            result.put("code", 201);
+            result.put("msg", "邮箱已注册！");
+            return result;
+        }
+        Date date = new Date();
+        //添加
+        teacher.setTeaId(UUID.randomUUID().toString().replace("-",""));
+        teacher.setTeaCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
+        System.out.println(teacher.toString());
+
+        teacherService.saveTeacher(teacher);
+
+        result.put("code", 200);
+        result.put("msg", "添加成功！");
+        return result;
+    }
+
+
+    /**
+     * 添加学员信息
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/addStu", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addStudent(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        System.out.println(map);
+        //将用户传来的表单数据转换成实体类
+        Student student = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
+
+        //密码加密
+        student.setStuPwd(encoder.encode(map.get("stuPwd")));
+        String studentMail = student.getStuEmail();
+        //根据id查找管理员信息
+        Student adminByMail = studentService.findStuByEmail(studentMail);
+
+        //判断是否有该管理员信息
+        if(adminByMail != null) {
+            result.put("code", 201);
+            result.put("msg", "邮箱已注册！");
+            return result;
+        }
+        Date date = new Date();
+        //添加
+        student.setStuId(UUID.randomUUID().toString().replace("-",""));
+        student.setStuCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
+
+        studentService.saveStudent(student);
+
+        result.put("code", 200);
+        result.put("msg", "添加成功！");
+        return result;
+    }
+
+
+    /**
+     * 查询所有教练信息
+     * @return
+     */
+    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Teacher> editPwdByMail() {
+        List<Teacher> teachers = teacherService.findAllTeacher();
+        return teachers;
+    }
+
+
+    /**
+     * 添加车辆信息
+     * @return
+     */
+    @RequestMapping("/addCar")
+    @ResponseBody
+    public Map<String, Object> addCar(@RequestBody Map<String, Object> map) {
+        Map<String, Object> result = new HashMap<>();
+        Cars car = JSONObject.parseObject(JSONObject.toJSONString(map), Cars.class);
+        car.setCarId(UUID.randomUUID().toString().replace("-", ""));
+        try {
+            carsService.saveCar(car);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 500);
+            result.put("msg", e);
+            return result;
+        }
+        result.put("code", 200);
+        result.put("msg", "成功添加车辆信息");
+        return result;
+    }
 
 }
 

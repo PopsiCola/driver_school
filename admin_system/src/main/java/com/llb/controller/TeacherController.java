@@ -4,6 +4,8 @@ package com.llb.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.llb.entity.Appointment;
+import com.llb.entity.Student;
 import com.llb.entity.Teacher;
 import com.llb.service.IAppointmentService;
 import com.llb.service.IStudentService;
@@ -393,41 +395,163 @@ public class TeacherController {
     }
 
     /**
-     * 添加管理员信息
+     * 根据教练id查询预约记录
+     */
+
+    @RequestMapping(value = "/appointment_teaId")
+    @ResponseBody
+    public Message student_order(String teaId, String bm_date,
+                                 @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                 @RequestParam(defaultValue = "5", required = false, value = "size") Integer size) {
+        String start_time=null;
+        String End_time = null;
+        if (bm_date == null || bm_date == "") {
+            bm_date = null;
+        }else {
+            start_time=bm_date.substring(0,10);
+            End_time = bm_date.substring(13,23);
+        }
+        //    	if (bm_date != "") {
+        //    		System.out.println("sdgsghsh");
+        //    		System.out.println(bm_date.substring(0,10));
+        //    		start_time=bm_date.substring(0,10);
+        //    		System.out.println(bm_date.substring(13,23));
+        //    		End_time = bm_date.substring(13,23);
+        //    	}
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, size);
+        IPage<Map<String, Object>> student_map = appointmentService.appointment_teaId(pageParam, teaId, start_time, End_time);
+        Message me= new Message();
+        me.put("data", student_map.getRecords()) ;
+        me.put("code", 200);
+        me.put("msg", "查询成功");
+        me.put("count",student_map.getTotal());
+        return me;
+    }
+
+    /**
+     * 学员评价(评星，评论)
      * @param map
      * @return
      */
-    @RequestMapping(value = "/addtea", method = RequestMethod.POST)
+    @RequestMapping(value = "/stuContent", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> addStudent(@RequestBody Map<String, String> map) {
+    public Map<String, Object> stuContent(@RequestBody Map<String, String> map) {
         Map<String, Object> result = new HashMap<>();
-        System.out.println(map);
-        //将用户传来的表单数据转换成实体类
-        Teacher teacher = JSONObject.parseObject(JSONObject.toJSONString(map), Teacher.class);
-
-        //密码加密
-        teacher.setTeaPwd(encoder.encode(map.get("teaPwd")));
-        String studentMail = teacher.getTeaEmail();
-        //根据id查找管理员信息
-        Teacher adminByMail = teacherService.findTeacherByEamil(studentMail);
-
-        //判断是否有该管理员信息
-        if(adminByMail != null) {
-            result.put("code", 201);
-            result.put("msg", "邮箱已注册！");
-            return result;
+        //获取id，根据id查询评论信息
+        Appointment apponit = appointmentService.findApponitById(map.get("id"));
+        String xypl = map.get("xypl");
+        if (xypl== null) {
+            xypl = "";
         }
-        Date date = new Date();
-        //添加
-        teacher.setTeaId(UUID.randomUUID().toString().replace("-",""));
-        teacher.setTeaCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
-        System.out.println(teacher.toString());
+        if (xypl.equals("1")) {
+            result.put("code", 201);
+            result.put("msg", "学员未评论，无法回复！");
+            return result;
+        }else if(xypl.equals("2")){
 
-        teacherService.saveTeacher(teacher);
+            //判断该评论是否不存在
+            if(apponit == null) {
+                result.put("code", 201);
+                result.put("msg", "该条评论不存在！");
+                return result;
+            }
 
-        result.put("code", 200);
-        result.put("msg", "添加成功！");
+            //进行逻辑判断，当预约状态为3是学员才能进行评星、评价
+            else if(5 == apponit.getAppointmentFlag()) {
+                //符合评价操作
+                apponit.setTeaContent(map.get("teaContent"));
+                appointmentService.editAppoint(apponit);
+
+                result.put("code", 200);
+                result.put("msg", "评论成功！");
+            }
+
+            //当有评星或评价时，不能进行重复评论操作
+            else if(apponit.getStuContent() != null || apponit.getStuStar() != null) {
+                result.put("code", 201);
+                result.put("msg", "您已对该次练车进行过评价，不重复评价！");
+                return result;
+            }else {
+                result.put("code", 201);
+                result.put("msg", "练车未结束，不能进行评价！");
+                return result;
+            }
+        }else {
+
+            //判断该评论是否不存在
+            if(apponit == null) {
+                result.put("code", 201);
+                result.put("msg", "该条评论不存在！");
+                return result;
+            }
+
+            //进行逻辑判断，当预约状态为3是学员才能进行评星、评价
+            else if(5 == apponit.getAppointmentFlag()) {
+                //符合评价操作
+                apponit.setStuStar(Integer.parseInt(map.get("star")));
+                apponit.setStuContent(map.get("stuContent"));
+                appointmentService.editAppoint(apponit);
+
+                result.put("code", 200);
+                result.put("msg", "评论成功！");
+            }
+
+            //当有评星或评价时，不能进行重复评论操作
+            else if(apponit.getStuContent() != null || apponit.getStuStar() != null) {
+                result.put("code", 201);
+                result.put("msg", "您已对该次练车进行过评价，不重复评价！");
+                return result;
+            }else {
+                result.put("code", 201);
+                result.put("msg", "练车未结束，不能进行评价！");
+                return result;
+            }
+        }
         return result;
     }
+
+    /**
+     * 教练拒绝预约
+     * @return
+     */
+    @RequestMapping("/teaCancle")
+    @ResponseBody
+    public Map<String, Object> cancleTeaCancleAppoint(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+        if("3".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已取消，不能再次取消！");
+            return result;
+        }else if ("4".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已拒绝，不能再次拒绝！");
+            return result;
+        }else if ("2".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已同意预约！");
+            return result;
+        }else if ("5".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "练车已完成，不可修改状态！");
+            return result;
+        }else if ("同   意 ".equals(map.get("appointmentFlag"))) {
+            appointmentService.editAppointFlag(map.get("id"), 2);
+            Appointment appointment = appointmentService.findApponitById(map.get("id"));
+            Student student = new Student();
+            student.setStuId(appointment.getStuId());
+            student.setStuTwo(appointment.getTeaId());
+            studentService.editStudent(student);
+            result.put("code", 200);
+            result.put("msg", "同意预约！");
+            return result;
+        }
+
+        appointmentService.editAppointFlag(map.get("id"), 4);
+        result.put("code", 200);
+        result.put("msg", "拒绝预约成功！");
+        return result;
+    }
+
+
 }
 

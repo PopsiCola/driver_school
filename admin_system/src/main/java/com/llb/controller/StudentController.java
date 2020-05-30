@@ -2,6 +2,7 @@ package com.llb.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.llb.entity.Admin;
 import com.llb.entity.Appointment;
@@ -13,6 +14,7 @@ import com.llb.service.ITeacherService;
 import com.llb.service.MailService;
 import com.llb.utils.DateUtil;
 import com.llb.utils.RedisUtils;
+import com.llb.web.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -291,41 +293,210 @@ public class StudentController {
     }
 
     /**
-     * 添加学员信息
+     * 学员评价(评星，评论)
      * @param map
      * @return
      */
-    @RequestMapping(value = "/addStu", method = RequestMethod.POST)
+    @RequestMapping(value = "/stuContent", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> addStudent(@RequestBody Map<String, String> map) {
+    public Map<String, Object> stuContent(@RequestBody Map<String, String> map) {
         Map<String, Object> result = new HashMap<>();
-        System.out.println(map);
-        //将用户传来的表单数据转换成实体类
-        Student student = JSONObject.parseObject(JSONObject.toJSONString(map), Student.class);
-
-        //密码加密
-        student.setStuPwd(encoder.encode(map.get("stuPwd")));
-        String studentMail = student.getStuEmail();
-        //根据id查找管理员信息
-        Student adminByMail = studentService.findStuByEmail(studentMail);
-
-        //判断是否有该管理员信息
-        if(adminByMail != null) {
-            result.put("code", 201);
-            result.put("msg", "邮箱已注册！");
-            return result;
+        //获取id，根据id查询评论信息
+        Appointment apponit = appointmentService.findApponitById(map.get("id"));
+        String xypl = map.get("xypl");
+        if (xypl== null) {
+            xypl = "";
         }
-        Date date = new Date();
-        //添加
-        student.setStuId(UUID.randomUUID().toString().replace("-",""));
-        student.setStuCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
+        if (xypl.equals("1")) {
+            result.put("code", 201);
+            result.put("msg", "学员未评论，无法回复！");
+            return result;
+        }else if(xypl.equals("2")){
 
-        studentService.saveStudent(student);
+            //判断该评论是否不存在
+            if(apponit == null) {
+                result.put("code", 201);
+                result.put("msg", "该条评论不存在！");
+                return result;
+            }
 
-        result.put("code", 200);
-        result.put("msg", "添加成功！");
+            //进行逻辑判断，当预约状态为3是学员才能进行评星、评价
+            else if(5 == apponit.getAppointmentFlag()) {
+                //符合评价操作
+                apponit.setTeaContent(map.get("teaContent"));
+                appointmentService.editAppoint(apponit);
+
+                result.put("code", 200);
+                result.put("msg", "评论成功！");
+            }
+
+            //当有评星或评价时，不能进行重复评论操作
+            else if(apponit.getStuContent() != null || apponit.getStuStar() != null) {
+                result.put("code", 201);
+                result.put("msg", "您已对该次练车进行过评价，不重复评价！");
+                return result;
+            }else {
+                result.put("code", 201);
+                result.put("msg", "练车未结束，不能进行评价！");
+                return result;
+            }
+        }else {
+
+            //判断该评论是否不存在
+            if(apponit == null) {
+                result.put("code", 201);
+                result.put("msg", "该条评论不存在！");
+                return result;
+            }
+
+            //进行逻辑判断，当预约状态为3是学员才能进行评星、评价
+            else if(5 == apponit.getAppointmentFlag()) {
+                //符合评价操作
+                apponit.setStuStar(Integer.parseInt(map.get("star")));
+                apponit.setStuContent(map.get("stuContent"));
+                appointmentService.editAppoint(apponit);
+
+                result.put("code", 200);
+                result.put("msg", "评论成功！");
+            }
+
+            //当有评星或评价时，不能进行重复评论操作
+            else if(apponit.getStuContent() != null || apponit.getStuStar() != null) {
+                result.put("code", 201);
+                result.put("msg", "您已对该次练车进行过评价，不重复评价！");
+                return result;
+            }else {
+                result.put("code", 201);
+                result.put("msg", "练车未结束，不能进行评价！");
+                return result;
+            }
+        }
         return result;
     }
+
+
+    /**
+     * 根据stuid查询预约记录
+     * @param stuId
+     * @return
+     */
+    @RequestMapping("/recordListById")
+    @ResponseBody
+    public Map<String, Object> recordListById(@RequestParam(required = true) String stuId,
+                                              String start,
+                                              String end,
+                                              String subject,
+                                              String teaName,
+                                              @RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
+                                              @RequestParam(defaultValue = "5", required = false, value = "limit") Integer limit) {
+        Map<String, Object> result = new HashMap<>();
+
+        //分页操作
+        Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, limit);
+
+        //查询学员预约记录
+        IPage<Map<String, Object>> appoints = appointmentService.findAppointByStuId(pageParam, stuId, start, end, subject, teaName);
+        if(appoints.getTotal() == 0) {
+            result.put("code", 201);
+            result.put("msg", "没有预约记录！");
+            return result;
+        }
+
+        result.put("data", appoints.getRecords());
+        result.put("code", 200);
+        result.put("msg", "查询成功");
+        result.put("count", appoints.getTotal());
+        return result;
+    }
+
+    /**
+     * 学员取消预约
+     * @return
+     */
+    @RequestMapping("/cancle")
+    @ResponseBody
+    public Map<String, Object> cancleAppoint(@RequestBody Map<String, String> map) {
+        Map<String, Object> result = new HashMap<>();
+
+        if("3".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已取消，不能再次取消！");
+            return result;
+        } else if ("4".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已拒绝，不能再次取消！");
+            return result;
+        } else if ("5".equals(map.get("appointmentFlag"))) {
+            result.put("code", 201);
+            result.put("msg", "已完成，不能再次取消！");
+            return result;
+        }
+
+        appointmentService.editAppointFlag(map.get("id"), 3);
+        result.put("code", 200);
+        result.put("msg", "取消预约成功！");
+        return result;
+    }
+
+    /**
+     * 学员预约教练
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/appointTeacher", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> appointTeacher(@RequestBody Map<String, String> map,
+                                              HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<>();
+
+        String dateRange = map.get("dateRange");
+        String subject = map.get("subject");
+        String teaId = map.get("teaId");
+        //不为空
+        if("".equals(dateRange)) {
+            result.put("code", 201);
+            result.put("msg", "请选择预约时间！");
+            return result;
+        }
+        if("".equals(subject)) {
+            result.put("code", 201);
+            result.put("msg", "请选择预约科目！");
+            return result;
+        }
+        if("".equals(teaId)) {
+            result.put("code", 201);
+            result.put("msg", "请选择预约教练！");
+            return result;
+        }
+
+        //将用户传来的表单数据转换成实体类
+        Appointment appointment = JSONObject.parseObject(JSONObject.toJSONString(map), Appointment.class);
+        //截取预约开始、结束时间
+        //截取开始和结束时间
+        String start = dateRange.substring(0, dateRange.length()/2-1);
+        String end = dateRange.substring(dateRange.length()/2+2, dateRange.length());
+        //补全字段
+        appointment.setId(UUID.randomUUID().toString().replaceAll("-", "").trim());
+        appointment.setAppointmentStart(start);
+        appointment.setAppointmentEnd(end);
+        //        appointment.setCreateDate(new DateUtil().formatDate(new Date(), "yyyy-MM-dd hh:mm:ss"));
+        //预约提交后，状态应为待同意  1.待同意 2.已拒绝 3.已批准
+        appointment.setAppointmentFlag(1);
+        //保存预约信息
+        try {
+            appointmentService.saveAppointMent(appointment);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code", 200);
+            result.put("msg", "预约信息已经发送！");
+            return result;
+        }
+
+        result.put("code", 200);
+        result.put("msg", "预约信息已经发送！");
+        return result;
+    }
+
 
 }
 

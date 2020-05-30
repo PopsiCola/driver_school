@@ -44,14 +44,26 @@ public class LoginIntercept implements HandlerInterceptor{
         Object teacher = session.getAttribute("teacher");
 
         Object student = redisUtils.get("student");
-//        System.out.println("student"+student);
-
-            if(student == null && admin == null && teacher == null) {
-//                System.out.println("重定向");
-                System.out.println(request.getContextPath()+"/login.html");
+        //获取请求路径，根据请求路径来区分登录角色
+        String servletPath = request.getServletPath();
+        if(servletPath.contains("student")) {
+            if(student == null) {
                 request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
                 return false;
             }
+        }
+        if(servletPath.contains("admin")) {
+            if(admin == null) {
+                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+                return false;
+            }
+        }
+        if(servletPath.contains("teacher")) {
+            if(teacher == null) {
+                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+                return false;
+            }
+        }
         return true;
     }
 

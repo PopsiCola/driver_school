@@ -42,10 +42,10 @@
           <li class="layui-nav-item">
               <a href="javascript:;"><span th:text="${student.stuAccount} eq null?${student.stuAccount}:${student.stuEmail}"></span></a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a onclick="x_admin_show('个人信息','/admin_system/student/student-info')">个人信息</a></dd>
-                <dd><a onclick="x_admin_show('修改密码','/admin_system/student/showStuEditPwd')">修改密码</a></dd>
-<!--                <dd><a onclick="x_admin_show('个人信息','/student/student-info')">个人信息</a></dd>-->
-<!--                <dd><a onclick="x_admin_show('修改密码','/student/showStuEditPwd')">修改密码</a></dd>-->
+<!--                <dd><a onclick="x_admin_show('个人信息','/admin_system/student/student-info')">个人信息</a></dd>-->
+<!--                <dd><a onclick="x_admin_show('修改密码','/admin_system/student/showStuEditPwd')">修改密码</a></dd>-->
+                <dd><a onclick="x_admin_show('个人信息','/student/student-info')">个人信息</a></dd>
+                <dd><a onclick="x_admin_show('修改密码','/student/showStuEditPwd')">修改密码</a></dd>
               <dd><a th:href="@{/login/loginOut?role=1}" onclick="Close()">退出</a></dd>
             </dl>
           </li>

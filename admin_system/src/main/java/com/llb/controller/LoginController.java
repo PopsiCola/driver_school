@@ -84,6 +84,7 @@ public class LoginController {
             student = studentService.findStudent(account);
             if(student != null && encoder.matches(password, student.getStuPwd())) {
                 flag = true;
+                //TODO:redis的key不能设置为固定值
                 redisUtil.set("student",student, (long) 10);
 //                request.getSession().setAttribute("student", student);
                 result.put("student",student);
@@ -202,6 +203,7 @@ public class LoginController {
         //判断是哪个角色，注销登录
         if("1".equals(role)) {
             request.getSession().removeAttribute("student");
+            redisUtil.remove("student");
         } else if("2".equals(role)) {
             request.getSession().removeAttribute("admin");
         } else {

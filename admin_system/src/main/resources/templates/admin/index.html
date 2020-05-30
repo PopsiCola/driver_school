@@ -40,10 +40,10 @@
           <li class="layui-nav-item">
             <a href="javascript:;"><span th:text="${session.admin.adminAccount}"></span></a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-<!--              <dd><a onclick="x_admin_show('个人信息','/admin/admin-info')">个人信息</a></dd>-->
-<!--              <dd><a onclick="x_admin_show('切换帐号','/admin/showEditPwd')">修改密码</a></dd>-->
-              <dd><a onclick="x_admin_show('个人信息','/admin_system/admin/admin-info')">个人信息</a></dd>
-              <dd><a onclick="x_admin_show('切换帐号','/admin_system/admin/showEditPwd')">修改密码</a></dd>
+              <dd><a onclick="x_admin_show('个人信息','/admin/admin-info')">个人信息</a></dd>
+              <dd><a onclick="x_admin_show('切换帐号','/admin/showEditPwd')">修改密码</a></dd>
+<!--              <dd><a onclick="x_admin_show('个人信息','/admin_system/admin/admin-info')">个人信息</a></dd>-->
+<!--              <dd><a onclick="x_admin_show('切换帐号','/admin_system/admin/showEditPwd')">修改密码</a></dd>-->
               <dd><a th:href="@{/login/loginOut?role=2}" onclick="Close()">退出</a></dd>
             </dl>
           </li>

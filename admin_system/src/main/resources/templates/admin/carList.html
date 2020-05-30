@@ -122,7 +122,7 @@
       function cardRuleId(){
         $.ajax({
           type: "post",
-          url: ctx + "cars/find",
+          url: ctx + "admin/find",
           dataType: "json",
           contentType:"application/json",
           success: function (datas) {
@@ -254,7 +254,7 @@
 
                   $.ajax({
                     type: "post",
-                    url: ctx + "cars/addCar",
+                    url: ctx + "admin/addCar",
                     data:JSON.stringify(data),
                     dataType: "json",
                     contentType:"application/json",
