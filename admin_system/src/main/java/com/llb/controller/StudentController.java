@@ -107,7 +107,6 @@ public class StudentController {
             studentService.editStudent(student);
             //将student重新缓存到session
             student = studentService.findStuByEmail(stuEmail);
-            System.out.println(student);
             redisUtils.set("student",student, (long) 10);
             result.put("code", 200);
             result.put("msg", "修改成功");
@@ -320,7 +319,6 @@ public class StudentController {
         //添加
         student.setStuId(UUID.randomUUID().toString().replace("-",""));
         student.setStuCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
-        System.out.println(student.toString());
 
         studentService.saveStudent(student);
 
