@@ -85,7 +85,6 @@ public class LoginController {
             if(student != null && encoder.matches(password, student.getStuPwd())) {
                 flag = true;
                 redisUtil.set("student",student, (long) 10);
-                System.out.println(student);
 //                request.getSession().setAttribute("student", student);
                 result.put("student",student);
             } else if(student == null){
@@ -98,7 +97,6 @@ public class LoginController {
             if(admin != null && encoder.matches(password, admin.getAdminPwd())) {
                 flag = true;
                 request.getSession().setAttribute("admin", admin);
-                System.out.println(admin);
             } else if(admin == null){
                 result.put("msg", "用户名或账户不存在！");
             } else {
@@ -109,7 +107,6 @@ public class LoginController {
             if(teacher != null && encoder.matches(password, teacher.getTeaPwd())) {
                 flag = true;
                 request.getSession().setAttribute("teacher", teacher);
-                System.out.println(teacher);
             } else if(teacher == null){
                 result.put("msg", "用户名或账户不存在！");
             } else {

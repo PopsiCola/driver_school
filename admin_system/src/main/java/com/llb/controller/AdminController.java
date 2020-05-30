@@ -259,7 +259,6 @@ public class AdminController {
     @ResponseBody
     public Map<String, Object> addAdmin(@RequestBody Map<String, String> map) {
         Map<String, Object> result = new HashMap<>();
-        System.out.println(map);
         //将用户传来的表单数据转换成实体类
         Admin admin = JSONObject.parseObject(JSONObject.toJSONString(map), Admin.class);
 
@@ -287,7 +286,6 @@ public class AdminController {
         //添加
         admin.setAdminId(adminId);
         admin.setAdminCreatedate(new DateUtil().formatDate(date, "yyyy-MM-dd HH:mm:ss"));
-        System.out.println(admin.toString());
         adminService.saveAdmin(admin);
 
         result.put("code", 200);

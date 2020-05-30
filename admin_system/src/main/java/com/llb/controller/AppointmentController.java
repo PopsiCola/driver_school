@@ -140,16 +140,12 @@ public class AppointmentController {
     public Message student_order(String teaId,String bm_date,
     		@RequestParam(defaultValue = "1", required = false, value = "page") Integer page,
             @RequestParam(defaultValue = "5", required = false, value = "size") Integer size) {
-    	System.out.println(teaId);
     	String start_time=null;
     	String End_time = null;
     	if (bm_date == null || bm_date == "") {
     		bm_date = null;
     	}else {
-    		System.out.println("sdgsghsh");
-    		System.out.println(bm_date.substring(0,10));
     		start_time=bm_date.substring(0,10);
-    		System.out.println(bm_date.substring(13,23));
     		End_time = bm_date.substring(13,23);
 		}
 //    	if (bm_date != "") {
@@ -161,7 +157,6 @@ public class AppointmentController {
 //    	}
     	Page<Map<String, Object>> pageParam = new Page<Map<String, Object>>(page, size);
     	IPage<Map<String, Object>> student_map = appointmentService.appointment_teaId(pageParam, teaId, start_time, End_time);
-    	System.out.println(student_map.getRecords());
     	Message me= new Message();
     	me.put("data", student_map.getRecords()) ;
     	me.put("code", 200);
@@ -207,7 +202,6 @@ public class AppointmentController {
     @ResponseBody
     public Map<String, Object> cancleTeaCancleAppoint(@RequestBody Map<String, String> map) {
     	Map<String, Object> result = new HashMap<>();
-    	System.out.println(map.get("appointmentFlag")+"!!!!!");
     	if("3".equals(map.get("appointmentFlag"))) {
     		result.put("code", 201);
     		result.put("msg", "已取消，不能再次取消！");
@@ -251,17 +245,12 @@ public class AppointmentController {
     @ResponseBody
     public Map<String, Object> stuContent(@RequestBody Map<String, String> map) {
         Map<String, Object> result = new HashMap<>();
-        System.out.println(map);
         //获取id，根据id查询评论信息
         Appointment apponit = appointmentService.findApponitById(map.get("id"));
-        System.out.println("/////////");
         String xypl = map.get("xypl");
         if (xypl== null) {
         	xypl = "";
 		}
-        System.out.println(xypl);
-        System.out.println(apponit);
-        System.out.println(apponit.getAppointmentFlag());
         if (xypl.equals("1")) {
         	result.put("code", 201);
             result.put("msg", "学员未评论，无法回复！");
