@@ -13,7 +13,7 @@
          SELECT
         (select b.stu_name from student b where a.stu_id=b.stu_id) as xsmc,
         (select b.tea_name from teacher b where a.tea_id=b.tea_id) as jlmc,
-        a.subject,a.boarding_time,a.alighting_time
+        a.subject,DATE_FORMAT(a.boarding_time,'%Y-%m-%d %H:%i:%S') as boarding_time,DATE_FORMAT(a.alighting_time,'%Y-%m-%d %H:%i:%S') as alighting_time
         FROM appointment a
         <where>
          a.stu_star is not null
@@ -23,7 +23,6 @@
         </if>
         </where>) a
         <where>
-            0 = 0
             <if test="xsmc != null">
                 and a.xsmc =#{xsmc}
             </if>

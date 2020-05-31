@@ -46,19 +46,19 @@ public class LoginIntercept implements HandlerInterceptor{
         Object student = redisUtils.get("student");
         //获取请求路径，根据请求路径来区分登录角色
         String servletPath = request.getServletPath();
-        if(servletPath.contains("student")) {
+        if(servletPath.contains("/student/")) {
             if(student == null) {
                 request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
                 return false;
             }
         }
-        if(servletPath.contains("admin")) {
+        if(servletPath.contains("/admin/")) {
             if(admin == null) {
                 request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
                 return false;
             }
         }
-        if(servletPath.contains("teacher")) {
+        if(servletPath.contains("/teacher/")) {
             if(teacher == null) {
                 request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
                 return false;
