@@ -48,19 +48,20 @@ public class LoginIntercept implements HandlerInterceptor{
         String servletPath = request.getServletPath();
         if(servletPath.contains("/student/")) {
             if(student == null) {
-                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+//                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/login/index");
                 return false;
             }
-        }
-        if(servletPath.contains("/admin/")) {
+        } else if(servletPath.contains("/admin/")) {
             if(admin == null) {
-                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+//                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/login/index");
                 return false;
             }
-        }
-        if(servletPath.contains("/teacher/")) {
+        } else if(servletPath.contains("/teacher/")) {
             if(teacher == null) {
-                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+//                request.getRequestDispatcher(request.getContextPath()+"/login.html").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/login/index");
                 return false;
             }
         }

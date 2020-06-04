@@ -28,7 +28,8 @@ public class MvnConfig implements WebMvcConfigurer{
                 InterceptorRegistration interceptorRegistration = registry.addInterceptor(new LoginIntercept());
 
                 interceptorRegistration.addPathPatterns("/**");
-                interceptorRegistration.excludePathPatterns("/", "/login.html", "/login", "/login/**", "/css/**", "/js/**", "/lib/**", "/images/**", "/fonts/**", "/error");
+//                interceptorRegistration.excludePathPatterns("/", "/login.html", "/login", "/login/**", "/css/**", "/js/**", "/lib/**", "/images/**", "/fonts/**", "/error");
+                interceptorRegistration.excludePathPatterns("/", "/**/login.html", "/**/login", "/**/login/**", "/**/css/**", "/**/js/**", "/**/lib/**", "/**/images/**", "/**/fonts/**", "/**/error");
             }
 
             @Override
